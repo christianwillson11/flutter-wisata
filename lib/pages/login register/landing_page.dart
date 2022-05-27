@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/home_nav.dart';
 import 'package:flutter_wisata/pages/login%20register/login.dart';
 import 'package:flutter_wisata/pages/login%20register/register.dart';
 
