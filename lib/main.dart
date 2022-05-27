@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter_wisata/pages/home.dart';
+import 'package:flutter_wisata/pages/input_cerita.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -19,54 +21,52 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _page = 0;
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
+  var page_displayed;
 
+  @override
+  void initState() {
+    page_displayed = Home(index: "0");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutter Wisata"),
+        title: const Text("Flutter Wisata"),
       ),
       bottomNavigationBar: CurvedNavigationBar(
         key: _bottomNavigationKey,
         index: 0,
         height: 60.0,
-        items: <Widget>[
+        items: const <Widget>[
           Icon(Icons.home, size: 30),
           Icon(Icons.search, size: 30),
           Icon(Icons.add, size: 30),
           Icon(Icons.cloud, size: 30),
           Icon(Icons.people, size: 30),
         ],
-        color: Colors.white,
-        buttonBackgroundColor: Colors.white,
-        backgroundColor: Colors.blueAccent,
+        color: Colors.blueAccent,
+        buttonBackgroundColor: Colors.blue,
+        backgroundColor: const Color(0x00fafafa),
         animationCurve: Curves.easeInOut,
-        animationDuration: Duration(milliseconds: 600),
+        animationDuration: const Duration(milliseconds: 600),
         onTap: (index) {
           setState(() {
             _page = index;
+            if (index == 2) {
+              page_displayed = InputCerita();
+            } else {
+              page_displayed = Home(index: index.toString());
+            }
+            
           });
         },
         letIndexChange: (index) => true,
       ),
       body: Container(
-        color: Colors.blueAccent,
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(_page.toString(), textScaleFactor: 10.0),
-              ElevatedButton(
-                child: Text('Go To Page of index 1'),
-                onPressed: () {
-                  final CurvedNavigationBarState? navBarState =
-                      _bottomNavigationKey.currentState;
-                  navBarState?.setPage(1);
-                },
-              )
-            ],
-          ),
+          child: page_displayed,
         ),
       ),
     );
