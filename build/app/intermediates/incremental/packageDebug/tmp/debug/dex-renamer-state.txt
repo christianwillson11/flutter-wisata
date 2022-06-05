@@ -1,0 +1,4 @@
+#Sun Jun 05 22:08:25 SGT 2022
+base.0=E\:\\Richson\\UK PETRA\\SEMESTER 6\\AMBW\\Proyek UAS\\flutter-wisata\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
