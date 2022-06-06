@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "196179892904",
+    "project_id": "proyekuas-travellingappflutter",
+    "storage_bucket": "proyekuas-travellingappflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:196179892904:android:e235da6164a51cdd30409d",
+        "android_client_info": {
+          "package_name": "com.example.flutter_wisata"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "196179892904-geh4tr5qm82mumnbc6mh0v95u1ik0oks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZj_lCjHDSDStU0qwPr7SwIR6He6Eu2bs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "196179892904-geh4tr5qm82mumnbc6mh0v95u1ik0oks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/home_nav.dart';
 import 'package:flutter_wisata/pages/login%20register/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Register extends StatefulWidget {
   const Register({ Key? key }) : super(key: key);
@@ -11,6 +14,10 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  TextEditingController _emailRegisterController = TextEditingController();
+  TextEditingController _passwordRegisterController = TextEditingController();
+  TextEditingController _fullnameRegisterController = TextEditingController();
+  TextEditingController _phoneNumberRegisterController = TextEditingController();
 
   void moveTolOGIN() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -52,13 +59,14 @@ class _RegisterState extends State<Register> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Full name',
                       ),
+                      controller: _fullnameRegisterController,
                     ),
                   ),
                 ),
@@ -74,14 +82,14 @@ class _RegisterState extends State<Register> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
-                      obscureText: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
                       ),
+                      controller: _emailRegisterController,
                     ),
                   ),
                 ),
@@ -97,10 +105,10 @@ class _RegisterState extends State<Register> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
-                      obscureText: true,
+                      controller: _phoneNumberRegisterController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Phone Number',
@@ -120,7 +128,7 @@ class _RegisterState extends State<Register> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
                       obscureText: true,
@@ -128,6 +136,7 @@ class _RegisterState extends State<Register> {
                         border: InputBorder.none,
                         hintText: 'Password',
                       ),
+                      controller: _passwordRegisterController,
                     ),
                   ),
                 ),
@@ -142,7 +151,17 @@ class _RegisterState extends State<Register> {
                   ),
                   color: Colors.purple,
                   onPressed: (){
-                    moveToMainApp();
+                    FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(email: _emailRegisterController.text, password: _passwordRegisterController.text)
+                      .then((value){
+                        Fluttertoast.showToast(
+                          msg: "Berhasil membuat akun",
+                          toastLength: Toast.LENGTH_LONG,);
+                        moveToMainApp();
+                      })
+                      .catchError((e){
+                        Fluttertoast.showToast(msg: e!.message);
+                      });
                   }, 
                   child: const Text('SIGN UP',
                   style: TextStyle(

@@ -1,6 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <script defer src="./init-firebase.js"></script>
+  <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyCm83wf5Kzc4bW5qcwwL4eAPSJthyJPJig",
+    authDomain: "proyekuas-travellingappflutter.firebaseapp.com",
+    projectId: "proyekuas-travellingappflutter",
+    storageBucket: "proyekuas-travellingappflutter.appspot.com",
+    messagingSenderId: "196179892904",
+    appId: "1:196179892904:web:8d3dc1b1ebd77e9a30409d"
+  };
+  </script>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.

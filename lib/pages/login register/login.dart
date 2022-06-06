@@ -1,7 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/home_nav.dart';
 import 'package:flutter_wisata/pages/login%20register/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,6 +15,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  TextEditingController _emailLoginController = TextEditingController();
+  TextEditingController _passwordLoginController = TextEditingController();
   void moveToRegister() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const Register();
@@ -54,9 +61,10 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
+                      controller: _emailLoginController,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Email',
@@ -76,9 +84,10 @@ class _LoginState extends State<Login> {
                     borderRadius: BorderRadius.circular(20)
                     
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: TextField(
+                      controller: _passwordLoginController,
                       obscureText: true,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -98,7 +107,15 @@ class _LoginState extends State<Login> {
                   ),
                   color: Colors.purple,
                   onPressed: (){
-                    moveToMainApp();
+                    FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailLoginController.text,
+                      password: _passwordLoginController.text).then((value){
+                        moveToMainApp();
+                      }).catchError((e){
+                        Fluttertoast.showToast(
+                          msg: e!.message,
+                          toastLength: Toast.LENGTH_LONG);
+                      });
                   }, 
                   child: const Text('SIGN IN',
                   style: TextStyle(
