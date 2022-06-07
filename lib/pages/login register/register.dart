@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/home_nav.dart';
+import 'package:flutter_wisata/model/UserModel.dart';
 import 'package:flutter_wisata/pages/login%20register/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -29,6 +31,26 @@ class _RegisterState extends State<Register> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const MyApp();
     }));
+  }
+
+  void sendNewUserData() async{
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    UserModel userDetail = UserModel();
+    userDetail.email = user!.email;
+    userDetail.uid = user.uid;
+    userDetail.fullname = _fullnameRegisterController.text;
+    userDetail.phone = _phoneNumberRegisterController.text;
+
+    await db
+    .collection("users")
+    .doc(user.uid)
+    .set(userDetail.toMap());
+
+    Fluttertoast.showToast(
+                          msg: "Berhasil membuat akun",
+                          toastLength: Toast.LENGTH_LONG,);
   }
   @override
   Widget build(BuildContext context) {
@@ -154,10 +176,9 @@ class _RegisterState extends State<Register> {
                     FirebaseAuth.instance
                       .createUserWithEmailAndPassword(email: _emailRegisterController.text, password: _passwordRegisterController.text)
                       .then((value){
-                        Fluttertoast.showToast(
-                          msg: "Berhasil membuat akun",
-                          toastLength: Toast.LENGTH_LONG,);
+                        
                         moveToMainApp();
+                        sendNewUserData();
                       })
                       .catchError((e){
                         Fluttertoast.showToast(msg: e!.message);

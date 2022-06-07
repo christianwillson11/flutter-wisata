@@ -25,9 +25,6 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Landing Page"),
-      ),
 
       body: SafeArea(
         child: Center(

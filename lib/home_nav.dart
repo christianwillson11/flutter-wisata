@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_wisata/pages/home.dart';
 import 'package:flutter_wisata/pages/input_cerita.dart';
+import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -26,9 +27,6 @@ class _MyAppState extends State<MyApp> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Flutter Wisata"),
-        ),
         bottomNavigationBar: CurvedNavigationBar(
           key: _bottomNavigationKey,
           index: 0,
@@ -50,7 +48,11 @@ class _MyAppState extends State<MyApp> {
               _page = index;
               if (index == 2) {
                 page_displayed = InputCerita();
-              } else {
+              } 
+              if (index == 4){
+                page_displayed = profilePage();
+              }
+              else {
                 page_displayed = Home(index: index.toString());
               }
             });
