@@ -3,6 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_wisata/pages/home.dart';
 import 'package:flutter_wisata/pages/input_cerita.dart';
 import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
+import 'package:flutter_wisata/pages/search_wisata.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -46,10 +47,11 @@ class _MyAppState extends State<MyApp> {
           onTap: (index) {
             setState(() {
               _page = index;
-              if (index == 2) {
+              if (index == 1) {
+                page_displayed = SearchWisata();
+              } else if (index == 2) {
                 page_displayed = InputCerita();
-              } 
-              if (index == 4){
+              } else if (index == 4){
                 page_displayed = profilePage();
               }
               else {
