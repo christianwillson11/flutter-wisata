@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/apiservices.dart';
-import 'package:flutter_application_1/weatherData.dart';
+import 'package:flutter_wisata/pages/apiservices.dart';
+import 'package:flutter_wisata/pages/weatherData.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     // TODO: implement initState
-    data = weather.getWeatherData('London');
+    // data = weather.getWeatherData('London');
     super.initState();
   }
   
@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("assets/images/pagi.png"),
+                  image: AssetImage("lib/images/pagi.png"),
                   fit: BoxFit.cover)),
           child: Expanded(
             child: Column(
