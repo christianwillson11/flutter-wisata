@@ -1,16 +1,13 @@
-# flutter_wisata
+FLUTTER WISATA
 
-A new Flutter project.
+ANGGOTA KELOMPOK
+1. CHRISTIAN WILLSON - C14190178
+2. RICHARDO JASON - C14190181
+3. RICHSON SEDJIE - C14190185
 
-## Getting Started
+PEMBAGIAN TUGAS :
+1. CHRISTIAN WILLSON : Add data cerita + fetch data tempat wisata
+2. RICHARDO JASON : Fetch data hotel dan fetch weather
+3. RICHSON SEDJIE : Login, register, profile page
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+REFERENSI :
