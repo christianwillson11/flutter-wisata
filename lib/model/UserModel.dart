@@ -5,12 +5,14 @@ class UserModel{
   String? email;
   String? fullname;
   String? phone;
+  String? birthday;
 
   UserModel({
     this.uid,
     this.email,
     this.fullname,
-    this.phone
+    this.phone,
+    this.birthday
   });
 
   factory UserModel.fromMap(map){
@@ -18,7 +20,8 @@ class UserModel{
       uid : map['uid'],
       email: map['email'],
       fullname: map['fullname'],
-      phone : map['phone']
+      phone : map['phone'],
+      birthday : map['birthday']
     );
   }
 
@@ -27,7 +30,8 @@ class UserModel{
       'uid' : uid,
       'email' : email,
       'fullname' : fullname,
-      'phone' : phone
+      'phone' : phone,
+      'birthday' : birthday
     };
   }
 

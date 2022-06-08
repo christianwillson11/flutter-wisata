@@ -42,6 +42,7 @@ class _RegisterState extends State<Register> {
     userDetail.uid = user.uid;
     userDetail.fullname = _fullnameRegisterController.text;
     userDetail.phone = _phoneNumberRegisterController.text;
+    userDetail.birthday = "";
 
     await db
     .collection("users")
