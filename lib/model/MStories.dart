@@ -2,7 +2,7 @@ class StoriesItem {
   final String locationId;
   final String judulCerita;
   final String isiCerita;
-  final String image;
+  final List<String> image;
   final String owner;
 
   StoriesItem ({

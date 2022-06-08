@@ -29,6 +29,7 @@ class _InputCeritaState extends State<InputCerita> {
 
   final ImagePicker _picker = ImagePicker();
   List<XFile> _selectedFiles = [];
+  List<String> _arrImageUrl = [];
   FirebaseStorage _storageRef = FirebaseStorage.instance;
 
   @override
@@ -79,7 +80,7 @@ class _InputCeritaState extends State<InputCerita> {
                   Text("No Images Selected")
                 else
                   SizedBox(
-                    height: 600,
+                    height: 300,
                     child: Expanded(
                       child: GridView.builder(
                           itemCount: _selectedFiles.length,
@@ -109,9 +110,9 @@ class _InputCeritaState extends State<InputCerita> {
                         locationId: "12345",
                         judulCerita: _judulCerita.text.toString(),
                         isiCerita: _isiCerita.text.toString(),
-                        image: "Ini image",
+                        image: _arrImageUrl,
                         owner: "owner");
-                    Database.insertData(item: dt);
+                    uploadFunction(_selectedFiles, dt);
                   },
                 ),
               ],
@@ -120,6 +121,19 @@ class _InputCeritaState extends State<InputCerita> {
         ],
       ),
     );
+  }
+
+  void uploadFunction(List<XFile> _images, StoriesItem dt) {
+
+    if (dt.judulCerita == "" || dt.isiCerita == "") {
+      print("ERROR!");
+    } else {
+      for (int i = 0; i<_images.length; i++) {
+        var imageUrl = Database.uploadFile(image: _images[i]);
+        _arrImageUrl.add(imageUrl.toString());
+      }
+      Database.insertData(item: dt);
+    }
   }
 
   Future<void> selectImage() async {
