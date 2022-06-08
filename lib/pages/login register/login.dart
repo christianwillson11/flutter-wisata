@@ -23,6 +23,14 @@ class _LoginState extends State<Login> {
       return const Register();
     }));
   }
+
+  void passwordChecker() {
+    if (_passwordLoginController.text.length < 6 ){
+      Fluttertoast.showToast(msg: "Password must contain at least 6 character");
+    } else{
+      
+    }
+  }
   void moveToMainApp() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const MyApp();
@@ -116,6 +124,7 @@ class _LoginState extends State<Login> {
                           msg: e!.message,
                           toastLength: Toast.LENGTH_LONG);
                       });
+                    //moveToMainApp();
                   }, 
                   child: const Text('SIGN IN',
                   style: TextStyle(
