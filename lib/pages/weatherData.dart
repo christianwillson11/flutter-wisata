@@ -20,7 +20,7 @@ class Weather {
     return Weather(
         cityName: json["name"],
         temp: json["main"]["temp"],
-        feels: json["main"]["feelslike"],
+        feels: json["main"]["feels_like"],
         wind: json["wind"]["speed"],
         humidity: json["main"]["humidity"],
         pressure: json["main"]["pressure"],

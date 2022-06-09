@@ -11,20 +11,21 @@ class service{
      };
     
     final response = await http.get(
-      Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=d881571f5c62312c8f5d0ffbada6beee'),
+      Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=d881571f5c62312c8f5d0ffbada6beee&units=metric'),
       headers: requestHeaders
     );
 
     if(response.statusCode == 200){
-      Weather jsonResponse = json.decode(response.body);
-      print(jsonResponse.cityName);
-      return jsonResponse;
+      var jsonResponse = json.decode(response.body);
+      Weather _simp = Weather.fromJson(jsonResponse);
+      print(_simp.cityName);
+      return _simp;
       // List jsonResponse = json.decode(response.body);
       // return jsonResponse.map((data) => Weather.fromJson(data)).toList();
     }else{
       throw('Failed to load Data');
     }
 
-    print(response.body.toString());
+    //print(response.body.toString());
   }
 }
