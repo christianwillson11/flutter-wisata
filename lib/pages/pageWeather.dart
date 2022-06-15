@@ -4,18 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/apiservices.dart';
 import 'package:flutter_wisata/pages/weatherData.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+class pageWeather extends StatefulWidget {
+  const pageWeather({ Key? key }) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<pageWeather> createState() => _pageWeatherState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _pageWeatherState extends State<pageWeather> {
   final _ctrCuaca = TextEditingController();
   service weather = service();
   late Future<Weather> data;

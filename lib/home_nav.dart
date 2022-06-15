@@ -3,6 +3,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_wisata/pages/home.dart';
 import 'package:flutter_wisata/pages/input_cerita.dart';
 import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
+import 'package:flutter_wisata/pages/pageWeather.dart';
 import 'package:flutter_wisata/pages/search_wisata.dart';
 
 class MyApp extends StatefulWidget {
@@ -51,7 +52,10 @@ class _MyAppState extends State<MyApp> {
                 page_displayed = SearchWisata();
               } else if (index == 2) {
                 page_displayed = InputCerita();
-              } else if (index == 4){
+              } else if (index == 3){
+                page_displayed == pageWeather();
+              }
+              else if (index == 4){
                 page_displayed = profilePage();
               }
               else {
