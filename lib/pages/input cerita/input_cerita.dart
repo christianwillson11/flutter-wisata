@@ -119,7 +119,9 @@ class _InputCeritaState extends State<InputCerita> {
                             judulCerita: _judulCerita.text.toString(),
                             isiCerita: _isiCerita.text.toString(),
                             image: _arrImageUrl,
-                            owner: "owner");
+                            owner: "owner",
+                            category: "attraction"
+                            );
                         uploadFunction(_selectedFiles, dt);
                       },
                     ),

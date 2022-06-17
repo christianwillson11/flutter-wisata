@@ -4,6 +4,7 @@ class StoriesItem {
   final String isiCerita;
   final List<String> image;
   final String owner;
+  final String category;
 
   StoriesItem ({
     required this.locationId,
@@ -11,6 +12,7 @@ class StoriesItem {
     required this.isiCerita,
     required this.image,
     required this.owner,
+    required this.category
   });
 
   Map<String, dynamic> toJson() {
@@ -19,11 +21,12 @@ class StoriesItem {
       "judulCerita": judulCerita,
       "isiCerita": isiCerita,
       "image": image,
-      "owner": owner
+      "owner": owner,
+      "category": category
     };
   }
 
   factory StoriesItem.fromJson(Map<String, dynamic> json) {
-    return StoriesItem(locationId: json['locationId'], judulCerita: json['judulCerita'], isiCerita: json['isiCerita'], image: json['image'], owner: json['owner']);
+    return StoriesItem(locationId: json['locationId'], judulCerita: json['judulCerita'], isiCerita: json['isiCerita'], image: json['image'], owner: json['owner'], category: json['category']);
   }
 }

@@ -1,39 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/model/MResep.dart';
+import 'package:flutter_wisata/model/MStories.dart';
 
-class ListWisata extends StatefulWidget {
-  final MResep postresep;
+class DetailWisata extends StatefulWidget {
+  // final StoriesItem data;
 
-  const ListWisata({Key? key, required this.postresep}) : super(key: key);
+  const DetailWisata({Key? key}) : super(key: key);
 
   @override
-  State<ListWisata> createState() => _ListWisataState();
+  State<DetailWisata> createState() => _DetailWisataState();
 }
 
-class _ListWisataState extends State<ListWisata> {
+class _DetailWisataState extends State<DetailWisata> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Detail Makanan"),
+          title: Text("Details"),
         ),
         body: Column(
           children: [
-            Image.network(widget.postresep.gambarURL),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                widget.postresep.namamenu,
+                "Test",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: Text(widget.postresep.alamatURL),
             ),
             ElevatedButton(
                 onPressed: Navigator.of(context).pop,
