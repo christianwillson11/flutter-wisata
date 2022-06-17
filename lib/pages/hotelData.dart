@@ -1,8 +1,9 @@
 class Hotel{
-  String geoID;
+  String? geoID;
+  String? alamat;
 
   Hotel({
-    required this.geoID
+    this.geoID, this.alamat
     }
   );
 
@@ -16,9 +17,15 @@ class Hotel{
 }
 
 class listHotel{
-  String hotelName;
+  String? geoID;
+  String? hotelName;
+  String? alamat;
   
-  listHotel({required this.hotelName});
+  listHotel({
+    this.geoID,
+    this.hotelName,
+    this.alamat
+    });
 
   factory listHotel.fromJson(Map<String, dynamic> json) {
     int index = 0;

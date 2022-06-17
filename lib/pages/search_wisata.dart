@@ -12,14 +12,14 @@ class SearchWisata extends StatefulWidget {
 class _SearchWisataState extends State<SearchWisata> {
   hotelService hotelID = hotelService();
   hotelData hotelList = hotelData();
-  late Future<Hotel> dataa;
-  late Future<listHotel> data2;
+  late Future<listHotel> dataa;
+  late Future<List<listHotel>> data2;
 
   @override
   void initState() {
-    dataa = hotelID.getDestinationID('Jakarta');
-
-    data2 = hotelList.getHotelData("659455");
+    //dataa = hotelID.getDestinationID('Jakarta');
+    data2 = hotelID.getDestinationID('Jakarta');
+    //data2 = hotelList.getHotelList("659455");
     super.initState();
   }
 
@@ -31,25 +31,28 @@ class _SearchWisataState extends State<SearchWisata> {
       // Main List View With Builder
       body: SafeArea(
         child: Center(
-          child: FutureBuilder(
+          child: FutureBuilder<List<listHotel>>(
             future: data2,
-            builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                listHotel simpanData = snapshot.data! as listHotel;
+            builder: ((context, snapshot){
+              if (snapshot.hasData){
+                List<listHotel> isiData = snapshot.data!;
                 return ListView.builder(
-                  itemCount: 5,
-                  itemBuilder: ((context, index) {
-                    return Container(
-                      child: Text(simpanData.hotelName),
+                  itemCount: isiData.length,
+                  itemBuilder: (context, index){
+                    return Card(
+                      child: ListTile(
+                        title: Text("${isiData[index].hotelName}"),
+                        subtitle: Text("${isiData[index].alamat}"),
+                      ),
                     );
-                  }),
+                  },
                 );
-              } else {
-                return CircularProgressIndicator();
               }
-              return Container();
-            },
-          ),
+              return Center(
+                          child: CircularProgressIndicator(),
+                        );
+            }),
+          )
         ),
       ),
     );
