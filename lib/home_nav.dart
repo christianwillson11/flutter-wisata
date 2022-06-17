@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter_wisata/pages/home.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_kota.dart';
+import 'package:flutter_wisata/pages/home%20page/home.dart';
 import 'package:flutter_wisata/pages/input%20cerita/menu.dart';
 import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
 import 'package:flutter_wisata/pages/pageWeather.dart';

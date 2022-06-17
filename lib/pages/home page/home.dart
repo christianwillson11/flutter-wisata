@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MResep.dart';
-import 'package:flutter_wisata/pages/det_wisata.dart';
+import 'package:flutter_wisata/pages/home%20page/det_wisata.dart';
 
 class Home extends StatefulWidget {
   final String index;
