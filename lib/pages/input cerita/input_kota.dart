@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_wisata/model/MPlace.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_attractions.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
 class InputKota extends StatefulWidget {
@@ -40,8 +40,19 @@ class _InputKotaState extends State<InputKota> {
           title: Text("Input Kota"),
         ),
         body: Container(
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
           child: Column(
             children: [
+              Text(
+                "Sebelumnya, pilih kota dulu yuk...",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+                
+              ),
+              SizedBox(
+                height: 20,
+              ),
               TextField(
                 controller: _namaTempat,
                 decoration: InputDecoration(
@@ -70,12 +81,28 @@ class _InputKotaState extends State<InputKota> {
                           return ListView.builder(
                             itemCount: isiData.length,
                             itemBuilder: (context, index) {
-                              return Text(
-                                  "${isiData[index].cnama!} || ${isiData[index].cid}");
+                              return Card(
+                                child: ListTile(
+                                  title: Text("${isiData[index].cnama!}"),
+                                  subtitle: Text("${isiData[index].cdesc}"),
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return InputAttractions();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                              // return
                             },
                           );
                         }
-                        return CircularProgressIndicator();
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
                       }),
                     ),
                   ),

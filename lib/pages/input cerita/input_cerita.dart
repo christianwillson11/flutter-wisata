@@ -7,7 +7,9 @@ import 'package:flutter_wisata/services/dbservices.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InputCerita extends StatefulWidget {
-  const InputCerita({Key? key}) : super(key: key);
+  final idContext;
+  final context;
+  const InputCerita({Key? key, required this.idContext, required this.context}) : super(key: key);
 
   @override
   State<InputCerita> createState() => _InputCeritaState();
@@ -38,7 +40,7 @@ class _InputCeritaState extends State<InputCerita> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Input Cerita Anda"),
+          title: Text("${widget.idContext.toString()}"),
         ),
         body: SingleChildScrollView(
           child: Stack(

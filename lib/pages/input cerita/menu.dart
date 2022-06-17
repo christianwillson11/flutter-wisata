@@ -59,7 +59,7 @@ class _MenuState extends State<Menu> {
                             } else if (index == 1) {
                               return InputKota();
                             } else {
-                              return InputCerita();
+                              return InputCerita(idContext: "x", context: "x");
                             }
                             
                           },
