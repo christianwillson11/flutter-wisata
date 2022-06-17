@@ -1,30 +1,28 @@
-class MDestination {
-  String cid;
-  String cavatar;
-  String cnama;
-  String calamat;
-  String cemail;
-  String cpekerjaan;
-  String cquote;
+class DestinationData {
+  String? cid;
+  String? cnama;
+  String? cdescription;
+  String? caddress;
+  String? cwebUrl;
+  String? ctimezone;
+  List? cimagesUrl;
+  String? cimageUploadedDate;
+  String? cphotoCaption;
 
-  MDestination(
-      {required this.cid,
-      required this.cavatar,
-      required this.cnama,
-      required this.calamat,
-      required this.cemail,
-      required this.cpekerjaan,
-      required this.cquote});
+  DestinationData({
+    this.cid,
+    this.cnama,
+    this.cdescription,
+    this.caddress,
+    this.cwebUrl,
+    this.ctimezone,
+    this.cimagesUrl,
+    this.cimageUploadedDate,
+    this.cphotoCaption,
+  });
 
-  factory MDestination.fromJson(Map<String, dynamic> json) {
-    return MDestination(
-      cid: json['id'],
-      cnama: json['nama'],
-      cavatar: json['avatar'],
-      calamat: json['alamat'],
-      cemail: json['email'],
-      cpekerjaan: json['pekerjaan'],
-      cquote: json['quote'],
-    );
+  factory DestinationData.fromJson(Map<dynamic, dynamic> json) {
+    return DestinationData(cid: json['location_id'], cnama: json['name']);
   }
 }
+

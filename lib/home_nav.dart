@@ -3,7 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter_wisata/pages/home.dart';
-import 'package:flutter_wisata/pages/input_cerita.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_kota.dart';
+import 'package:flutter_wisata/pages/input%20cerita/menu.dart';
 import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
 import 'package:flutter_wisata/pages/pageWeather.dart';
 import 'package:flutter_wisata/pages/search_wisata.dart';
@@ -53,9 +55,9 @@ class _MyAppState extends State<MyApp> {
               if (index == 1) {
                 page_displayed = SearchWisata();
               } else if (index == 2) {
-                page_displayed = InputCerita();
+                page_displayed = Menu();
               } else if (index == 3){
-                page_displayed == pageWeather();
+                page_displayed = pageWeather();
               }
               else if (index == 4){
                 page_displayed = profilePage();

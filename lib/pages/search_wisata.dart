@@ -28,31 +28,30 @@ class _SearchWisataState extends State<SearchWisata> {
     // MediaQuery to get Device Width
     double width = MediaQuery.of(context).size.width * 0.6;
     return Scaffold(
-        // Main List View With Builder
-        body: SafeArea(
-      child: Center(
-        child: FutureBuilder(
-          future: data2,
-          builder: (context, AsyncSnapshot snapshot){
-            if (snapshot.hasData){
-              listHotel simpanData = snapshot.data! as listHotel;
-              return ListView.builder(
-                itemCount: 5,
-                itemBuilder: ((context, index) {
-                  return Container(
-                    child: Text(simpanData.hotelName),
-                  );
-                }),
-              );
-            }
-            else{
-              return CircularProgressIndicator();
-            }
-            return Container();
-          }
-          ,
+      // Main List View With Builder
+      body: SafeArea(
+        child: Center(
+          child: FutureBuilder(
+            future: data2,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                listHotel simpanData = snapshot.data! as listHotel;
+                return ListView.builder(
+                  itemCount: 5,
+                  itemBuilder: ((context, index) {
+                    return Container(
+                      child: Text(simpanData.hotelName),
+                    );
+                  }),
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
+              return Container();
+            },
+          ),
         ),
       ),
-    ));
+    );
   }
 }
