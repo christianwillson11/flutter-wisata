@@ -25,7 +25,7 @@ class _MenuState extends State<Menu> {
     return Column(
       children: [
         const Padding(
-          padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
+          padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(

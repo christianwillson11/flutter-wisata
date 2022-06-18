@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MResep.dart';
 import 'package:flutter_wisata/pages/home%20page/det_wisata.dart';
@@ -13,28 +15,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<String> images = ["pagi.png", "tourist.png", "pagi.png"];
-  List<String> title = ["Hotels", "Attractions", "Restaurant"];
-  List<String> subTitle = ["Ayo Input Ceritamu"];
-  List<String> description = ["Masukkan cerita serumu"];
-  List<String> description2 = [
-    "Tentang pengalamanmu menginap di hotel",
-    "Tentang pengalamanmu berwisata",
-    "Tentang testimoni restoran"
-  ];
 
   @override
-  void initState() {
-    var x = Database.getAllData();
-    print(x.toString());
-    super.initState();
-  }
+  // void initState() {
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const Padding(
-          padding: EdgeInsets.fromLTRB(10, 30, 10, 0),
+          padding: EdgeInsets.fromLTRB(10, 40, 10, 0),
           child: Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -47,81 +39,111 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
+        Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text("Fetched From Firestore"),
+          ),
+        ),
         Expanded(
-          child: ListView.builder(
-            itemCount: title.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                child: Card(
-                  clipBehavior: Clip.antiAlias,
-                  elevation: 16,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return DetailWisata();
-                            
-                          },
+          child: StreamBuilder<QuerySnapshot>(
+              stream: Database.getAllData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text("ERROR fetch data");
+                } else if (snapshot.hasData || snapshot.data != null) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      //here
+                      DocumentSnapshot dsData = snapshot.data!.docs[index];
+                      String lvJudul = dsData['judulCerita'];
+                      String lvIsi = dsData['isiCerita'];
+                      String lvCategory = dsData['category'];
+                      //here
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Card(
+                          clipBehavior: Clip.antiAlias,
+                          elevation: 16,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return DetailWisata();
+                                  },
+                                ),
+                              );
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
+                                  alignment: Alignment.bottomLeft,
+                                  children: [
+                                    Ink.image(
+                                      height: 200,
+                                      image: AssetImage(
+                                          "assets/images/${images[index]}"),
+                                      fit: BoxFit.fitWidth,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Text(
+                                        lvJudul,
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.fromLTRB(0, 0, 0, 6),
+                                        child: Text(
+                                          lvCategory,
+                                          style:
+                                              TextStyle(color: Colors.black54),
+                                        ),
+                                      ),
+                                      Text(lvIsi),
+                                      // Text(description2[index]),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       );
                     },
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Stack(
-                          alignment: Alignment.bottomLeft,
-                          children: [
-                            Ink.image(
-                              height: 200,
-                              image:
-                                  AssetImage("assets/images/${images[index]}"),
-                              fit: BoxFit.fitWidth,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Text(
-                                title[index],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 6),
-                                child: Text(
-                                  subTitle[0],
-                                  style: TextStyle(color: Colors.black54),
-                                ),
-                              ),
-                              Text(description[0]),
-                              Text(description2[index]),
-                            ],
-                          ),
-                        ),
-                      ],
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.pinkAccent,
                     ),
                   ),
-                ),
-              );
-            },
-          ),
+                );
+              }),
         ),
       ],
     );
   }
-
 }
