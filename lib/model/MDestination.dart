@@ -1,4 +1,4 @@
-class DestinationData {
+class DestinationAttractionData {
   String? cid;
   String? cnama;
   String? cdescription;
@@ -9,7 +9,7 @@ class DestinationData {
   String? cimageUploadedDate;
   String? cphotoCaption;
 
-  DestinationData({
+  DestinationAttractionData({
     this.cid,
     this.cnama,
     this.cdescription,
@@ -21,8 +21,8 @@ class DestinationData {
     this.cphotoCaption,
   });
 
-  factory DestinationData.fromJson(Map<dynamic, dynamic> json) {
-    return DestinationData(cid: json['location_id'], cnama: json['name']);
-  }
+  // factory DestinationData.fromJson(Map<dynamic, dynamic> json) {
+  //   return DestinationData(cid: json['location_id'], cnama: json['name']);
+  // }
 }
 

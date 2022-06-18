@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
+import 'package:flutter_wisata/services/apiservices.dart';
 
 class DetailWisata extends StatefulWidget {
   final StoriesItem data;
@@ -11,6 +13,17 @@ class DetailWisata extends StatefulWidget {
 }
 
 class _DetailWisataState extends State<DetailWisata> {
+
+  late Future<List<DestinationAttractionData>> attraction;
+
+  void fetchDetailData() {
+    if (widget.data.category == "attraction") {
+      DestinationApiService destApi = DestinationApiService();
+      attraction = destApi.getAttractionData(widget.data.locationId);
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,6 +40,9 @@ class _DetailWisataState extends State<DetailWisata> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
+
+            Text(widget.data.isiCerita),
+            
             ElevatedButton(
                 onPressed: Navigator.of(context).pop,
                 child: Text("Back"),

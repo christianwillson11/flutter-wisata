@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/model/MResep.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/pages/home%20page/det_wisata.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
@@ -16,11 +14,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<String> images = ["pagi.png", "tourist.png", "pagi.png"];
-
-  @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +55,7 @@ class _HomeState extends State<Home> {
                       String lvJudul = dsData['judulCerita'];
                       String lvIsi = dsData['isiCerita'];
                       String lvCategory = dsData['category'];
-                      var x = StoriesItem(locationId: dsData['locationId'], judulCerita: lvJudul, isiCerita: lvIsi, image: ['image', 'image2'], owner: dsData['owner'], category: lvCategory);
+                      var x = StoriesItem(cityId: dsData['cityId'], locationId: dsData['locationId'], judulCerita: lvJudul, isiCerita: lvIsi, image: ['image', 'image2'], owner: dsData['owner'], category: lvCategory);
                       //here
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -91,7 +84,7 @@ class _HomeState extends State<Home> {
                                     Ink.image(
                                       height: 200,
                                       image: AssetImage(
-                                          "assets/images/${images[index]}"),
+                                          "assets/images/${images[0]}"),
                                       fit: BoxFit.fitWidth,
                                     ),
                                     Padding(

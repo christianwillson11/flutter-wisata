@@ -42,7 +42,7 @@ class _SearchWisataState extends State<SearchWisata> {
                     return Card(
                       child: ListTile(
                         title: Text("${isiData[index].hotelName}"),
-                        subtitle: Text("${isiData[index].alamat}"),
+                        subtitle: Text("${isiData[index].geoID}"),
                       ),
                     );
                   },

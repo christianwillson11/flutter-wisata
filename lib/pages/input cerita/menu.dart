@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_kota.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_attraction.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -55,11 +55,11 @@ class _MenuState extends State<Menu> {
                         MaterialPageRoute(
                           builder: (context) {
                             if (index == 0) {
-                              return InputKota();
+                              return InputAttraction();
                             } else if (index == 1) {
-                              return InputKota();
+                              return InputAttraction();
                             } else {
-                              return InputCerita(idContext: "x", context: "x");
+                              return InputCerita(idCity: "123", idContext: "x", context: "x");
                             }
                             
                           },
