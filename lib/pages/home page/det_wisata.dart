@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 
 class DetailWisata extends StatefulWidget {
-  // final StoriesItem data;
+  final StoriesItem data;
 
-  const DetailWisata({Key? key}) : super(key: key);
+  const DetailWisata({Key? key, required this.data}) : super(key: key);
 
   @override
   State<DetailWisata> createState() => _DetailWisataState();
@@ -23,7 +23,7 @@ class _DetailWisataState extends State<DetailWisata> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Text(
-                "Test",
+                widget.data.judulCerita,
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
