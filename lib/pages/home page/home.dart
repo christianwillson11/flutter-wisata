@@ -55,7 +55,14 @@ class _HomeState extends State<Home> {
                       String lvJudul = dsData['judulCerita'];
                       String lvIsi = dsData['isiCerita'];
                       String lvCategory = dsData['category'];
-                      var x = StoriesItem(cityId: dsData['cityId'], locationId: dsData['locationId'], judulCerita: lvJudul, isiCerita: lvIsi, image: ['image', 'image2'], owner: dsData['owner'], category: lvCategory);
+                      var x = StoriesItem(
+                          cityId: dsData['cityId'],
+                          locationId: dsData['locationId'],
+                          judulCerita: lvJudul,
+                          isiCerita: lvIsi,
+                          image: ['image', 'image2'],
+                          owner: dsData['owner'],
+                          category: lvCategory);
                       //here
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -116,7 +123,21 @@ class _HomeState extends State<Home> {
                                               TextStyle(color: Colors.black54),
                                         ),
                                       ),
-                                      Text(lvIsi),
+                                      Container(
+                                        height: 40,
+                                        child: Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            strutStyle:
+                                                StrutStyle(fontSize: 12.0),
+                                            text: TextSpan(
+                                              style: TextStyle(
+                                                  color: Colors.black),
+                                              text: lvIsi,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       // Text(description2[index]),
                                     ],
                                   ),
