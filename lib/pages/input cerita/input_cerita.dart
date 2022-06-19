@@ -7,9 +7,10 @@ import 'package:flutter_wisata/services/dbservices.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InputCerita extends StatefulWidget {
+  final idCity;
   final idContext;
   final context;
-  const InputCerita({Key? key, required this.idContext, required this.context}) : super(key: key);
+  const InputCerita({Key? key, required this.idCity, this.idContext, required this.context}) : super(key: key);
 
   @override
   State<InputCerita> createState() => _InputCeritaState();
@@ -115,11 +116,14 @@ class _InputCeritaState extends State<InputCerita> {
                         // ServiceAPIDestinasi.getAllData();
 
                         final dt = StoriesItem(
-                            locationId: "12345",
+                            cityId: widget.idCity,
+                            locationId: widget.idContext,
                             judulCerita: _judulCerita.text.toString(),
                             isiCerita: _isiCerita.text.toString(),
                             image: _arrImageUrl,
-                            owner: "owner");
+                            owner: "owner",
+                            category: "attraction"
+                            );
                         uploadFunction(_selectedFiles, dt);
                       },
                     ),

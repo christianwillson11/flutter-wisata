@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/model/MPlace.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_attractions.dart';
+import 'package:flutter_wisata/model/MDestination.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
-class InputKota extends StatefulWidget {
-  const InputKota({Key? key}) : super(key: key);
+class InputAttraction extends StatefulWidget {
+  const InputAttraction({Key? key}) : super(key: key);
 
   @override
-  State<InputKota> createState() => _InputKotaState();
+  State<InputAttraction> createState() => _InputAttractionState();
 }
 
-class _InputKotaState extends State<InputKota> {
+class _InputAttractionState extends State<InputAttraction> {
   final _namaTempat = TextEditingController();
 
   @override
@@ -19,14 +19,26 @@ class _InputKotaState extends State<InputKota> {
     super.dispose();
   }
 
-  late Future<List<PlaceData>> places;
-
+  DestinationApiService destApi = DestinationApiService();
+  late Future<List<DestinationAttractionData>> places;
+  late String idCity;
+  
   bool isShow = false;
 
-  void submit() {
+  void submit() async {
+
+    setState(() {
+      isShow = false;
+    });
+
     //services
-    DestinationApiService destPlaceApi = DestinationApiService();
-    places = destPlaceApi.getPlaceData(_namaTempat.text.toString());
+    try {
+      idCity = await destApi.getLocId(_namaTempat.text.toString());
+      places = destApi.getAttractionData(idCity);
+    } on Exception catch (ex) {
+      print("Query process error: $ex");
+    }
+
     setState(() {
       isShow = true;
     });
@@ -37,7 +49,7 @@ class _InputKotaState extends State<InputKota> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Input Kota"),
+          title: Text("Input Attraction"),
         ),
         body: Container(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
@@ -73,23 +85,24 @@ class _InputKotaState extends State<InputKota> {
               if (isShow == true)
                 Expanded(
                   child: Container(
-                    child: FutureBuilder<List<PlaceData>>(
+                    padding: EdgeInsets.all(5.0),
+                    child: FutureBuilder<List<DestinationAttractionData>>(
                       future: places,
                       builder: ((context, snapshot) {
                         if (snapshot.hasData) {
-                          List<PlaceData> isiData = snapshot.data!;
+                          List<DestinationAttractionData> isiData = snapshot.data!;
                           return ListView.builder(
-                            itemCount: isiData.length,
+                            itemCount: isiData.length - 1,
                             itemBuilder: (context, index) {
                               return Card(
                                 child: ListTile(
-                                  title: Text("${isiData[index].cnama!}"),
-                                  subtitle: Text("${isiData[index].cdesc}"),
+                                  title: Text("${isiData[index].cnama}"),
+                                  subtitle: Text("${isiData[index].cdescription}"),
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return InputAttractions();
+                                          return InputCerita(idCity: idCity, idContext: isiData[index].cid, context: "attraction",);
                                         },
                                       ),
                                     );

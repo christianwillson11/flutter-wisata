@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter_wisata/model/MDestination.dart';
-import 'package:flutter_wisata/model/MPlace.dart';  
 import 'package:http/http.dart' as http;
 
 class DestinationApiService {
@@ -9,47 +8,50 @@ class DestinationApiService {
     "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com"
   };
   
-  Future<List<PlaceData>> getPlaceData(String query) async {
+  Future<String> getLocId(String query) async {
     var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
     final response = await http.get(url, headers: requestHeaders);
 
     if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)['data'];
+      var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
+      return locId;
+      // List<PlaceData> placeDataList = [];
       
-      List<PlaceData> placeDataList = [];
+      // for (int i = 0; i<5; i++) {
+      //   var json = jsonResponse[i];
+
+      //   var id;
+      //   var name;
+      //   var desc;
+      //   var locationString;
+
+      //   try {
+      //     id = json['result_object']['location_id'];
+      //     name = json['result_object']['name'];
+      //     locationString = json['result_object']['location_string'];
+      //     desc = json['result_object']['description'];
+      //   } catch (e) {
+      //     print("error");
+      //   }
+
+      //   placeDataList.add(PlaceData(cid: id, cnama: name, clocationString: locationString, cdesc: desc));
+      // }
+      // return placeDataList;
+
       
-      for (int i = 0; i<5; i++) {
-        var json = jsonResponse[i];
-
-        var id;
-        var name;
-        var desc;
-        var locationString;
-
-        try {
-          id = json['result_object']['location_id'];
-          name = json['result_object']['name'];
-          locationString = json['result_object']['location_string'];
-          desc = json['result_object']['description'];
-        } catch (e) {
-          print("error");
-        }
-
-        placeDataList.add(PlaceData(cid: id, cnama: name, clocationString: locationString, cdesc: desc));
-      }
-      return placeDataList;
     } else {
       throw Exception("failed to load data");
     }
   }
 
-  Future<List> getAttractionData(String locationId) async {
+  //Destination
+  Future<List<DestinationAttractionData>> getAttractionData(String locationId) async {
     // Jakarta
     final response = await http.get(
       Uri.parse("https://travel-advisor.p.rapidapi.com/attractions/list?location_id=$locationId&currency=IDR&lang=en_US&lunit=km&sort=recommended"), headers: requestHeaders
     );
     
-    List destinationDataList = [];
+    List<DestinationAttractionData> destinationDataList = [];
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
@@ -70,14 +72,12 @@ class DestinationApiService {
           // print("error");
         }
 
-        destinationDataList.add(DestinationData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt));
+        destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt));
       }
 
-      for (int i = 0; i<destinationDataList.length; i++) {
-        print(destinationDataList[i].cnama.toString());
-        print(destinationDataList[i].cdescription.toString());
-        print(destinationDataList[i].cwebUrl.toString());
-      }
+      // for (int i = 0; i<destinationDataList.length; i++) {
+      //   print(destinationDataList[i].cnama.toString());
+      // }
       
       
       return destinationDataList;
