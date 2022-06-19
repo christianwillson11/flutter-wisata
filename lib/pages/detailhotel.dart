@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    const MaterialApp(
-      title: "Detail Hotel",
-      home: detailHotel(),
-    ),
-  );
-}
+// void main() {
+//   runApp(
+//     const MaterialApp(
+//       title: "Detail Hotel",
+//       home: detailHotel(),
+//     ),
+//   );
+// }
 
 class detailHotel extends StatefulWidget {
   const detailHotel({Key? key}) : super(key: key);
