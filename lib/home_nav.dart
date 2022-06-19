@@ -6,7 +6,8 @@ import 'package:flutter_wisata/pages/home%20page/home.dart';
 import 'package:flutter_wisata/pages/input%20cerita/menu.dart';
 import 'package:flutter_wisata/pages/login%20register/profile_page.dart';
 import 'package:flutter_wisata/pages/pageWeather.dart';
-import 'package:flutter_wisata/pages/search_wisata.dart';
+import 'package:flutter_wisata/pages/search page/searchPage.dart';
+import 'package:flutter_wisata/pages/search page/search_hotel.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
             setState(() {
               _page = index;
               if (index == 1) {
-                page_displayed = SearchWisata();
+                page_displayed = searchPage();
               } else if (index == 2) {
                 page_displayed = Menu();
               } else if (index == 3){
