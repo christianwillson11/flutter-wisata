@@ -1,30 +1,26 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
+import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/pages/apiservices.dart';
-import 'package:flutter_wisata/pages/hotelData.dart';
 
-class searchHotel extends StatefulWidget {
-  const searchHotel({ Key? key }) : super(key: key);
+class attractionPage extends StatefulWidget {
+  const attractionPage({ Key? key }) : super(key: key);
 
   @override
-  State<searchHotel> createState() => _searchHotelState();
+  State<attractionPage> createState() => _attractionPageState();
 }
 
-class _searchHotelState extends State<searchHotel> {
-
+class _attractionPageState extends State<attractionPage> {
   TextEditingController tfCity = TextEditingController();
-  hotelService hotelID = hotelService();
+  AttractionService attractionID = AttractionService();
   hotelData hotelList = hotelData();
-  late Future<listHotel> dataa;
-  late Future<List<listHotel>> data2;
-
+  late Future<DestinationAttractionData> dataa;
+  late Future<List<DestinationAttractionData>> data2;
   String city = "Jakarta";
 
   @override
   void initState() {
     //dataa = hotelID.getDestinationID('Jakarta');
-    data2 = hotelID.getDestinationID('${city}');
+    data2 = attractionID.getAttractionList('Jakarta');
     //data2 = hotelList.getHotelList("659455");
     super.initState();
   }
@@ -61,8 +57,7 @@ class _searchHotelState extends State<searchHotel> {
                               suffixIcon: IconButton(
                                 onPressed: (){  
                                   setState(() {
-                                    city = tfCity.text.toString();
-                                    data2 = hotelID.getDestinationID('${city}');
+                                    data2 = attractionID.getAttractionList('${city}');
                                   });    
                                 }, 
                                 icon: Icon(Icons.arrow_forward_ios))
@@ -81,11 +76,11 @@ class _searchHotelState extends State<searchHotel> {
                 child: Text("Current Location = " + "${city}"),
               ),
               Expanded(
-                child: FutureBuilder<List<listHotel>>(
+                child: FutureBuilder<List<DestinationAttractionData>>(
                   future: data2,
                   builder: ((context, snapshot){
                     if (snapshot.hasData){
-                      List<listHotel> isiData = snapshot.data!;
+                      List<DestinationAttractionData> isiData = snapshot.data!;
                       return ListView.builder(
                         itemCount: isiData.length,
                         itemBuilder: (context, index){
@@ -93,8 +88,8 @@ class _searchHotelState extends State<searchHotel> {
                             children: [
                               Card(
                                 child: ListTile(
-                                  title: Text("${isiData[index].hotelName}"),
-                                  subtitle: Text("${isiData[index].alamat}"),
+                                  title: Text("${isiData[index].cnama}"),
+                                  subtitle: Text("${isiData[index].caddress}"),
                                   
                                 ),
                               ),

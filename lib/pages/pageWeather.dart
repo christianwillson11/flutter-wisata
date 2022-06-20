@@ -118,7 +118,7 @@ class _pageWeatherState extends State<pageWeather> {
                         Text(
                           "Additional Information",
                           style: TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.bold,
                               fontSize: 24.0),
                         ),
@@ -261,7 +261,7 @@ class _pageWeatherState extends State<pageWeather> {
                               );
                             }
                           },
-                          child: Text("Get Weather"),
+                          child: Text("Get Weather", style: TextStyle(fontSize: 20),),
                         ),
                       ],
                     ),

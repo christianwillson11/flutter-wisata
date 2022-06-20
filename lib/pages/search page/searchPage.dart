@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/search page/search_hotel.dart';
+import 'package:flutter_wisata/pages/search%20page/search_attractions.dart';
 
 class searchPage extends StatefulWidget {
   const searchPage({Key? key}) : super(key: key);
@@ -14,6 +15,12 @@ class _searchPageState extends State<searchPage> {
   void moveToHotel() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const searchHotel();
+    }));
+  }
+
+  void moveToAttraction() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const attractionPage();
     }));
   }
 
@@ -74,7 +81,7 @@ class _searchPageState extends State<searchPage> {
                 child: InkWell(
                   splashColor: Colors.blue.withAlpha(30),
                   onTap: () {
-                    moveToHotel();
+                    moveToAttraction();
                   },
                   child: SizedBox(
                       height: 250,

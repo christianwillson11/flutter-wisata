@@ -24,7 +24,7 @@ class listHotel{
   listHotel({
     this.geoID,
     this.hotelName,
-    this.alamat
+    this.alamat,
     });
 
   factory listHotel.fromJson(Map<String, dynamic> json) {
