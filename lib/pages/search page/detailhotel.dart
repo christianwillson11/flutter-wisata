@@ -1,18 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(
-//     const MaterialApp(
-//       title: "Detail Hotel",
-//       home: detailHotel(),
-//     ),
-//   );
-// }
+import 'package:flutter_wisata/pages/hotelData.dart';
 
 class detailHotel extends StatefulWidget {
-  const detailHotel({Key? key}) : super(key: key);
+  final listHotel myhotel;
+  const detailHotel({Key? key, required this.myhotel}) : super(key: key);
 
   @override
   State<detailHotel> createState() => _detailHotelState();
@@ -29,7 +22,7 @@ class _detailHotelState extends State<detailHotel> {
             Container(
               child: Image(
                 image: NetworkImage(
-                    "https://cdn.pixabay.com/photo/2014/07/10/17/17/hotel-389256_960_720.jpg"),
+                    widget.myhotel.gambar.toString()),
                 fit: BoxFit.cover,
               ),
             ),
@@ -46,7 +39,7 @@ class _detailHotelState extends State<detailHotel> {
                   //   height: 8,
                   // ),
                   Text(
-                    "OYO Bintang Lima",
+                    widget.myhotel.hotelName.toString(),
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -58,7 +51,7 @@ class _detailHotelState extends State<detailHotel> {
                   Row(
                     children: [
                       Text(
-                        "Makassar",
+                        widget.myhotel.locality.toString(),
                         style: TextStyle(fontSize: 14),
                       ),
                       SizedBox(
@@ -71,7 +64,7 @@ class _detailHotelState extends State<detailHotel> {
                             fontStyle: FontStyle.italic),
                       ),
                       Text(
-                        "data",
+                        widget.myhotel.rating.toString(),
                         style: TextStyle(
                             color: Colors.blueGrey,
                             fontStyle: FontStyle.italic),
@@ -87,7 +80,7 @@ class _detailHotelState extends State<detailHotel> {
                     height: 14,
                   ),
                   Text(
-                    "Jalan Tupai No.78, Bonto Biraeng, Kecamatan Mamajang, Kota Makassar, Sulawesi Selatan 90132",
+                    widget.myhotel.alamat.toString(),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.blueGrey,
@@ -97,7 +90,7 @@ class _detailHotelState extends State<detailHotel> {
                     height: 16.0,
                   ),
                   Text(
-                    "Review",
+                    "User Story",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),

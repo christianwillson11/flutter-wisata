@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/apiservices.dart';
+import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/pages/hotelData.dart';
 
 class searchHotel extends StatefulWidget {
@@ -54,7 +55,6 @@ class _searchHotelState extends State<searchHotel> {
                           child: TextField(
                             controller: tfCity,
                             decoration: InputDecoration(
-                              
                               hintText: "Search city",
                               prefixIcon: Icon(Icons.search),
                               border: InputBorder.none,
@@ -95,7 +95,18 @@ class _searchHotelState extends State<searchHotel> {
                                 child: ListTile(
                                   title: Text("${isiData[index].hotelName}"),
                                   subtitle: Text("${isiData[index].alamat}"),
-                                  
+                                  onTap: (){
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return detailHotel(
+                                          myhotel: isiData[index],
+                                        );
+                                      },
+                                    ),
+                                  );
+                                  },
                                 ),
                               ),
                             ],

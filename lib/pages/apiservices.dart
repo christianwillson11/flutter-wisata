@@ -73,14 +73,20 @@ class hotelService{
 
         var alamat;
         var hotelName;
+        var rating;
+        var locality;
+        var gambar;
 
         try{
           hotelName = json["name"];
           alamat = json["address"]["streetAddress"];
+          rating = json["starRating"];
+          locality = json["address"]["locality"];
+          gambar = json["optimizedThumbUrls"]["srpDesktop"];
         } catch (e){
           print("error");
         }
-        hotelList.add(listHotel(hotelName: hotelName, alamat: alamat));
+        hotelList.add(listHotel(hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar));
       }
       return hotelList;
     }

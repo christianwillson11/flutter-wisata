@@ -20,11 +20,17 @@ class listHotel{
   String? geoID;
   String? hotelName;
   String? alamat;
+  double? rating;
+  String? locality;
+  String? gambar;
   
   listHotel({
     this.geoID,
     this.hotelName,
     this.alamat,
+    this.rating,
+    this.locality,
+    this.gambar
     });
 
   factory listHotel.fromJson(Map<String, dynamic> json) {
