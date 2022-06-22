@@ -123,9 +123,8 @@ class _HomeState extends State<Home> {
                                               TextStyle(color: Colors.black54),
                                         ),
                                       ),
-                                      Container(
-                                        height: 40,
-                                        child: Flexible(
+                                      SizedBox(
+                                        height: 35,
                                           child: RichText(
                                             overflow: TextOverflow.ellipsis,
                                             strutStyle:
@@ -137,7 +136,6 @@ class _HomeState extends State<Home> {
                                             ),
                                           ),
                                         ),
-                                      ),
                                       // Text(description2[index]),
                                     ],
                                   ),
