@@ -41,6 +41,8 @@ class _pageWeatherState extends State<pageWeather> {
             padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
             decoration: BoxDecoration(
               image: DecorationImage(
+                colorFilter: new ColorFilter.mode(
+                    Colors.black.withOpacity(0.85), BlendMode.dstATop),
                 image: AssetImage("assets/images/pagi.png"),
                 fit: BoxFit.cover,
               ),
@@ -110,21 +112,22 @@ class _pageWeatherState extends State<pageWeather> {
                         SizedBox(
                           height: 60.0,
                         ),
-                        const Divider(
-                          height: 10,
-                          thickness: 3,
-                          color: Colors.black,
-                        ),
+
                         Text(
                           "Additional Information",
                           style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: 24.0),
+                              fontSize: 20.0),
                         ),
-                        SizedBox(
-                          height: 30.0,
+                        const Divider(
+                          height: 10,
+                          thickness: 1,
+                          color: Colors.black,
                         ),
+                        // SizedBox(
+                        //   height: 10.0,
+                        // ),
                         Container(
                           margin: EdgeInsets.all(16.0),
                           child: Column(
@@ -190,7 +193,7 @@ class _pageWeatherState extends State<pageWeather> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Humidity ",
+                                        "Humidity : ",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -200,7 +203,7 @@ class _pageWeatherState extends State<pageWeather> {
                                         height: 16.0,
                                       ),
                                       Text(
-                                        "Visibility ",
+                                        "Visibility : ",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -239,11 +242,11 @@ class _pageWeatherState extends State<pageWeather> {
                         ),
                         const Divider(
                           height: 10,
-                          thickness: 3,
+                          thickness: 1,
                           color: Colors.black,
                         ),
                         SizedBox(
-                          height: 40.0,
+                          height: 80.0,
                         ),
                         ElevatedButton(
                           onPressed: () {
@@ -261,7 +264,10 @@ class _pageWeatherState extends State<pageWeather> {
                               );
                             }
                           },
-                          child: Text("Get Weather", style: TextStyle(fontSize: 20),),
+                          child: Text(
+                            "Get Weather",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ],
                     ),
