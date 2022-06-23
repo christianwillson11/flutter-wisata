@@ -15,7 +15,7 @@ class _detailHotelState extends State<detailHotel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
+        body: SingleChildScrollView(
       child: SafeArea(
         child: Container(
           child: Column(
@@ -23,8 +23,7 @@ class _detailHotelState extends State<detailHotel> {
               Container(
                 height: 230,
                 child: Image(
-                  image: NetworkImage(
-                      widget.myhotel.gambar.toString()),
+                  image: NetworkImage(widget.myhotel.gambar.toString()),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -43,54 +42,90 @@ class _detailHotelState extends State<detailHotel> {
                     Text(
                       widget.myhotel.hotelName.toString(),
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
-                      height: 18,
+                      height: 8,
                     ),
-                    Row(
-                      children: [
-                        Text(
-                          widget.myhotel.locality.toString(),
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        SizedBox(
-                          width: 32,
-                        ),
-                        Text(
-                          "Rating : ",
-                          style: TextStyle(
-                              color: Colors.blueGrey,
-                              fontStyle: FontStyle.italic),
-                        ),
-                        Text(
-                          widget.myhotel.rating.toString(),
-                          style: TextStyle(
-                              color: Colors.blueGrey,
-                              fontStyle: FontStyle.italic),
-                        ),
-                        SizedBox(width: 4,),
-                        Icon(
-                          Icons.star,
-                          color: Colors.greenAccent,
-                        ),
-                      ],
+                    Divider(
+                      height: 10,
+                      thickness: 1,
+                      color: Colors.black,
                     ),
                     SizedBox(
-                      height: 14,
+                      height: 8,
+                    ),
+                    Text(
+                      "Alamat Hotel : ",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 12,
                     ),
                     Text(
                       widget.myhotel.alamat.toString(),
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 18,
                         color: Colors.blueGrey,
                       ),
                     ),
                     SizedBox(
                       height: 16.0,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "Daerah : ",
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            Text(
+                              widget.myhotel.locality.toString(),
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.blueGrey),
+                            ),
+                          ],
+                        ),
+                        // SizedBox(
+                        //   width: 32,
+                        // ),
+                        Row(
+                          children: [
+                            Text(
+                              "Rating : ",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 16.0),
+                            ),
+                            Text(
+                              widget.myhotel.rating.toString(),
+                              style: TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontStyle: FontStyle.italic,
+                                  fontSize: 16.0),
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 14,
+                    ),
+
                     Text(
                       "User Story",
                       style: TextStyle(
