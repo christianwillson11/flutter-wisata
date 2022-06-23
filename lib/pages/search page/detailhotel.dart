@@ -57,68 +57,51 @@ class _detailHotelState extends State<detailHotel> {
                     SizedBox(
                       height: 8,
                     ),
-                    Text(
-                      "Alamat Hotel : ",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
+                    // Text(
+                    //   "Alamat Hotel : ",
+                    //   style: TextStyle(
+                    //     fontSize: 23,
+                    //   ),
+                    // ),
                     SizedBox(
                       height: 12,
                     ),
                     Text(
-                      widget.myhotel.alamat.toString(),
+                      widget.myhotel.alamat.toString() +
+                          ", " +
+                          widget.myhotel.locality.toString(),
                       style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.blueGrey,
-                      ),
+                          fontSize: 23,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 16.0,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Daerah : ",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text(
-                              widget.myhotel.locality.toString(),
-                              style: TextStyle(
-                                  fontSize: 16, color: Colors.blueGrey),
-                            ),
-                          ],
+                        Text(
+                          "Bintang : ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20.0),
                         ),
-                        // SizedBox(
-                        //   width: 32,
-                        // ),
-                        Row(
-                          children: [
-                            Text(
-                              "Rating : ",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 16.0),
-                            ),
-                            Text(
-                              widget.myhotel.rating.toString(),
-                              style: TextStyle(
-                                  color: Colors.blueGrey,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 16.0),
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.yellow,
-                            ),
-                          ],
+                        Text(
+                          widget.myhotel.rating.toString(),
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20.0),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 28,
                         ),
                       ],
                     ),
