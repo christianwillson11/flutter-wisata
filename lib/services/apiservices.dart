@@ -15,29 +15,20 @@ class DestinationApiService {
     if (response.statusCode == 200) {
       var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
       return locId;
-      // List<PlaceData> placeDataList = [];
       
-      // for (int i = 0; i<5; i++) {
-      //   var json = jsonResponse[i];
+    } else {
+      throw Exception("failed to load data");
+    }
+  }
 
-      //   var id;
-      //   var name;
-      //   var desc;
-      //   var locationString;
+  Future<List<DestinationAttractionData>> getAttractionList(String query) async {
+    var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
+    final response = await http.get(url, headers: requestHeaders);
 
-      //   try {
-      //     id = json['result_object']['location_id'];
-      //     name = json['result_object']['name'];
-      //     locationString = json['result_object']['location_string'];
-      //     desc = json['result_object']['description'];
-      //   } catch (e) {
-      //     print("error");
-      //   }
-
-      //   placeDataList.add(PlaceData(cid: id, cnama: name, clocationString: locationString, cdesc: desc));
-      // }
-      // return placeDataList;
-
+    if (response.statusCode == 200) {
+      var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
+      Future<List<DestinationAttractionData>>  data = getAttractionData(locId.toString());
+      return data;
       
     } else {
       throw Exception("failed to load data");
@@ -72,7 +63,9 @@ class DestinationApiService {
           // print("error");
         }
 
-        destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt));
+        if (data['name'] != null) {
+          destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt));
+        }
       }
 
       // for (int i = 0; i<destinationDataList.length; i++) {

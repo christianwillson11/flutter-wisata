@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/apiservices.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
-import 'package:flutter_wisata/pages/hotelData.dart';
+import 'package:flutter_wisata/model/hotelData.dart';
 
 class searchHotel extends StatefulWidget {
   const searchHotel({ Key? key }) : super(key: key);

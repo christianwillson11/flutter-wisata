@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/apiservices.dart';
-import 'package:flutter_wisata/pages/weatherData.dart';
+import 'package:flutter_wisata/model/weatherData.dart';
 
 class pageWeather extends StatefulWidget {
   const pageWeather({Key? key}) : super(key: key);

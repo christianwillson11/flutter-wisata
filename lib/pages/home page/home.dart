@@ -13,8 +13,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<String> images = ["pagi.png", "tourist.png", "pagi.png"];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,11 +31,11 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text("Fetched From Firestore"),
+            child: Text("Owned by you"),
           ),
         ),
         Expanded(
@@ -55,17 +53,20 @@ class _HomeState extends State<Home> {
                       String lvJudul = dsData['judulCerita'];
                       String lvIsi = dsData['isiCerita'];
                       String lvCategory = dsData['category'];
+                      List<String> lvImages = (dsData['image'] as List)
+                          .map((item) => item as String)
+                          .toList();
                       var x = StoriesItem(
                           cityId: dsData['cityId'],
                           locationId: dsData['locationId'],
                           judulCerita: lvJudul,
                           isiCerita: lvIsi,
-                          image: ['image', 'image2'],
+                          image: lvImages,
                           owner: dsData['owner'],
                           category: lvCategory);
                       //here
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                         child: Card(
                           clipBehavior: Clip.antiAlias,
                           elevation: 16,
@@ -90,18 +91,25 @@ class _HomeState extends State<Home> {
                                   children: [
                                     Ink.image(
                                       height: 200,
-                                      image: AssetImage(
-                                          "assets/images/${images[0]}"),
+                                      image: NetworkImage(lvImages[0]),
                                       fit: BoxFit.fitWidth,
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Text(
                                         lvJudul,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 30,
                                           fontWeight: FontWeight.bold,
+                                          shadows: <Shadow>[
+                                            Shadow(
+                                              offset: Offset(1.2, 1.2),
+                                              blurRadius: 3.0,
+                                              color:
+                                                  Color.fromARGB(255, 0, 0, 0),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -125,17 +133,17 @@ class _HomeState extends State<Home> {
                                       ),
                                       SizedBox(
                                         height: 35,
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            strutStyle:
-                                                StrutStyle(fontSize: 12.0),
-                                            text: TextSpan(
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                              text: lvIsi,
-                                            ),
+                                        child: RichText(
+                                          overflow: TextOverflow.ellipsis,
+                                          strutStyle:
+                                              StrutStyle(fontSize: 12.0),
+                                          text: TextSpan(
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                            text: lvIsi,
                                           ),
                                         ),
+                                      ),
                                       // Text(description2[index]),
                                     ],
                                   ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_attraction.dart';
+import 'package:flutter_wisata/pages/input%20cerita/input_attraction_and_hotel.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  List<String> images = ["pagi.png", "tourist.png", "pagi.png"];
+  List<String> images = ["hotels.jpg", "attraction.png", "pagi.png"];
   List<String> title = ["Hotels", "Attractions", "Restaurant"];
   List<String> subTitle = ["Ayo Input Ceritamu"];
   List<String> description = ["Masukkan cerita serumu"];
@@ -55,13 +55,14 @@ class _MenuState extends State<Menu> {
                         MaterialPageRoute(
                           builder: (context) {
                             if (index == 0) {
-                              return InputAttraction();
+                              //attraction = destination
+                              return InputSelector(type: "hotel");
                             } else if (index == 1) {
-                              return InputAttraction();
+                              return InputSelector(type: "attraction");
                             } else {
-                              return InputCerita(idCity: "123", idContext: "x", context: "x");
+                              return InputCerita(
+                                  idCity: "123", idContext: "x", konteks: "x");
                             }
-                            
                           },
                         ),
                       );
@@ -87,6 +88,14 @@ class _MenuState extends State<Menu> {
                                   color: Colors.white,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
+                                  shadows: <Shadow>[
+                                    Shadow(
+                                      offset: Offset(1.2, 1.2),
+                                      blurRadius: 3.0,
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                    ),
+                                    
+                                  ],
                                 ),
                               ),
                             ),

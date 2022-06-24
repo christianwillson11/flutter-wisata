@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InputCerita extends StatefulWidget {
-  final idCity;
-  final idContext;
-  final context;
-  const InputCerita({Key? key, required this.idCity, this.idContext, required this.context}) : super(key: key);
+  final String idCity;
+  final String idContext;
+  final String konteks;
+  const InputCerita({Key? key, required this.idCity, required this.idContext, required this.konteks}) : super(key: key);
 
   @override
   State<InputCerita> createState() => _InputCeritaState();
@@ -26,15 +25,59 @@ class _InputCeritaState extends State<InputCerita> {
     super.dispose();
   }
 
-  //services
-  // Service ServiceAPIDestinasi = Service();
-
   final ImagePicker _picker = ImagePicker();
   List<XFile> _selectedFiles = [];
   List<String> _arrImageUrl = [];
 
   int uploadItem = 0;
   bool _isUploading = false;
+
+  void uploadFunction(List<XFile> _images, StoriesItem dt) async {
+    setState(() {
+      _isUploading = true;
+    });
+    var msg = "";
+    if (dt.judulCerita == "" || dt.isiCerita == "") {
+      msg = "Gagal menginput cerita. Harap lengkapi semua data";
+      final snackBar = SnackBar(content: Text(msg));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      for (int i = 0; i < _images.length; i++) {
+        var imageUrl = await Database.uploadFile(image: _images[i]);
+        _arrImageUrl.add(imageUrl.toString());
+      }
+      Database.insertData(item: dt);
+      var msg = "Berhasil menginput data!";
+      final snackBar = SnackBar(content: Text(msg));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      setState(() {
+        Navigator.pop(context);
+      });
+    }
+    
+  }
+
+  Future<void> selectImage() async {
+
+    var msg = "";
+    
+    if (_selectedFiles != null) {
+      _selectedFiles.clear();
+    }
+
+    try {
+      final List<XFile>? images = await _picker.pickMultiImage();
+      if (images!.isNotEmpty) {
+        _selectedFiles.addAll(images);
+      }
+    } catch (e) {
+      msg = e.toString();
+      final snackBar = SnackBar(content: Text(msg));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +104,7 @@ class _InputCeritaState extends State<InputCerita> {
                           ),
                           labelText: "Judul Cerita Anda"),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 22,
                     ),
                     TextField(
@@ -76,17 +119,17 @@ class _InputCeritaState extends State<InputCerita> {
                         labelText: "Isi Cerita Anda",
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     OutlinedButton(
                       onPressed: () {
                         selectImage();
                       },
-                      child: Text("Select Photos"),
+                      child: const Text("Select Photos"),
                     ),
                     if (_selectedFiles.length == null)
-                      Text("No Images Selected")
+                      const Text("No Images Selected")
                     else
                       SizedBox(
                         height: 300,
@@ -98,7 +141,7 @@ class _InputCeritaState extends State<InputCerita> {
                                       crossAxisCount: 3),
                               itemBuilder: (BuildContext context, int index) {
                                 return Padding(
-                                  padding: EdgeInsets.all(2),
+                                  padding: const EdgeInsets.all(2),
                                   child: Image.file(
                                     File(_selectedFiles[index].path),
                                     fit: BoxFit.cover,
@@ -108,23 +151,22 @@ class _InputCeritaState extends State<InputCerita> {
                         ),
                       ),
                     ElevatedButton(
-                      child: Text('Submit'),
+                      child: const Text('Submit'),
                       onPressed: () {
-                        // final CurvedNavigationBarState? navBarState =
-                        //     _bottomNavigationKey.currentState;
-                        // navBarState?.setPage(1);
-                        // ServiceAPIDestinasi.getAllData();
-
-                        final dt = StoriesItem(
+                        if (_isUploading == false) {
+                          final dt = StoriesItem(
                             cityId: widget.idCity,
                             locationId: widget.idContext,
                             judulCerita: _judulCerita.text.toString(),
                             isiCerita: _isiCerita.text.toString(),
                             image: _arrImageUrl,
                             owner: "owner",
-                            category: "attraction"
+                            category: widget.konteks
                             );
                         uploadFunction(_selectedFiles, dt);
+                        } else {
+                          null;
+                        }
                       },
                     ),
                   ],
@@ -135,34 +177,5 @@ class _InputCeritaState extends State<InputCerita> {
         ),
       ),
     );
-  }
-
-  void uploadFunction(List<XFile> _images, StoriesItem dt) {
-    if (dt.judulCerita == "" || dt.isiCerita == "") {
-      print("ERROR!");
-    } else {
-      for (int i = 0; i < _images.length; i++) {
-        var imageUrl = Database.uploadFile(image: _images[i]);
-        _arrImageUrl.add(imageUrl.toString());
-      }
-      Database.insertData(item: dt);
-    }
-  }
-
-  Future<void> selectImage() async {
-    if (_selectedFiles != null) {
-      _selectedFiles.clear();
-    }
-
-    try {
-      final List<XFile>? images = await _picker.pickMultiImage();
-      if (images!.isNotEmpty) {
-        _selectedFiles.addAll(images);
-      }
-      print("List of selected images: " + images.length.toString());
-    } catch (e) {
-      print(e);
-    }
-    setState(() {});
   }
 }

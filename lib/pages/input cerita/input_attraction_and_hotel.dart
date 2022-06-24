@@ -3,14 +3,16 @@ import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
-class InputAttraction extends StatefulWidget {
-  const InputAttraction({Key? key}) : super(key: key);
+//input attraction
+class InputSelector extends StatefulWidget {
+  final String type;
+  const InputSelector({Key? key, required this.type}) : super(key: key);
 
   @override
-  State<InputAttraction> createState() => _InputAttractionState();
+  State<InputSelector> createState() => _InputSelectorState();
 }
 
-class _InputAttractionState extends State<InputAttraction> {
+class _InputSelectorState extends State<InputSelector> {
   final _namaTempat = TextEditingController();
 
   @override
@@ -32,11 +34,16 @@ class _InputAttractionState extends State<InputAttraction> {
     });
 
     //services
-    try {
-      idCity = await destApi.getLocId(_namaTempat.text.toString());
-      places = destApi.getAttractionData(idCity);
-    } on Exception catch (ex) {
-      print("Query process error: $ex");
+
+    if (widget.type == "attraction") {
+      try {
+        idCity = await destApi.getLocId(_namaTempat.text.toString());
+        places = destApi.getAttractionData(idCity);
+      } on Exception catch (ex) {
+        print("Query process error: $ex");
+      }
+    } else if (widget.type == "hotel") {
+
     }
 
     setState(() {
@@ -49,20 +56,20 @@ class _InputAttractionState extends State<InputAttraction> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Input Attraction"),
+          title: Text("Input ${widget.type}"),
         ),
         body: Container(
           padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
           child: Column(
             children: [
-              Text(
+              const Text(
                 "Sebelumnya, pilih kota dulu yuk...",
                 style: TextStyle(
                   fontSize: 15,
                 ),
                 
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextField(
@@ -80,13 +87,14 @@ class _InputAttractionState extends State<InputAttraction> {
                 onPressed: () {
                   submit();
                 },
-                child: Text("Submit"),
+                child: const Text("Cari"),
               ),
               if (isShow == true)
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.all(5.0),
-                    child: FutureBuilder<List<DestinationAttractionData>>(
+                    padding: const EdgeInsets.all(5.0),
+                    child: (widget.type == "attraction")
+                      ? FutureBuilder<List<DestinationAttractionData>>(
                       future: places,
                       builder: ((context, snapshot) {
                         if (snapshot.hasData) {
@@ -102,7 +110,7 @@ class _InputAttractionState extends State<InputAttraction> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) {
-                                          return InputCerita(idCity: idCity, idContext: isiData[index].cid, context: "attraction",);
+                                          return InputCerita(idCity: idCity, idContext: isiData[index].cid!, konteks: widget.type);
                                         },
                                       ),
                                     );
@@ -113,11 +121,13 @@ class _InputAttractionState extends State<InputAttraction> {
                             },
                           );
                         }
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       }),
-                    ),
+                    )
+                    : Text("ini hotel"),
+                  
                   ),
                 ),
             ],

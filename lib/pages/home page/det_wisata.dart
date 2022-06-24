@@ -26,20 +26,19 @@ class _DetailWisataState extends State<DetailWisata> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Color(0xfff3f3f3),
-          appBar: AppBar(
-            title: Text("Details"),
-          ),
-          body: SizedBox.expand(
-              child: Stack(
+        backgroundColor: Color(0xfff3f3f3),
+        appBar: AppBar(
+          title: Text("Details"),
+        ),
+        body: SizedBox.expand(
+          child: Stack(
             children: <Widget>[
               Align(
                 alignment: Alignment.center,
                 child: Column(
                   children: [
                     Image(
-                      image: NetworkImage(
-                          "https://media-cdn.tripadvisor.com/media/photo-s/16/37/b8/a9/sunset-beach-every-night.jpg"),
+                      image: NetworkImage(widget.data.image.last),
                     ),
                     Spacer(),
                   ],
@@ -53,7 +52,7 @@ class _DetailWisataState extends State<DetailWisata> {
                     builder: (BuildContext context, index) {
                       return Container(
                         padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20.0),
@@ -78,33 +77,68 @@ class _DetailWisataState extends State<DetailWisata> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 20,
                             ),
                             Text(
                               widget.data.judulCerita,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 24,
                               ),
                             ),
-                            SizedBox(height: 20),
+                            const SizedBox(height: 20),
                             ListTile(
                               title: Text(widget.data.isiCerita),
                             ),
-                            ListTile(
-                              title: Text("penjelasan 2"),
+                            Container(
+                              padding: EdgeInsets.fromLTRB(15, 5, 15, 10),
+                              height: 150,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  for (var i in widget.data.image) 
+                                  buildCard(i)
+                                  
+                                ],
+                              ),
+
                             ),
                             ListTile(
-                              title: Text("penjelasan 3"),
-                            ),
+                                title: ElevatedButton(
+                                    onPressed: () {
+
+                                      //TODO
+                                      //pergi ke detail hotel / detail attraction punya richardo
+                                    },
+                                    child: Text(
+                                        "Go to ${widget.data.category} details"))),
                           ],
                         ),
                       );
                     }),
               )
             ],
-          ))),
+          ),
+        ),
+      ),
+      
     );
   }
+
+  Widget buildCard(String i) { 
+    return Row(
+      children: [
+        SizedBox(
+          width: 150,
+          height: 150,
+          child: FittedBox(
+            child: Image.network(i),
+            fit: BoxFit.fill,
+          ),
+        ),
+        SizedBox(width: 12), 
+        ]
+      );
+    }
 }
