@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/pages/apiservices.dart';
+import 'package:flutter_wisata/services/apiservices.dart';
 import 'package:flutter_wisata/model/weatherData.dart';
 
 class pageWeather extends StatefulWidget {

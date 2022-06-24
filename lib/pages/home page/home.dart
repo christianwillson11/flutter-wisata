@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MStories.dart';
-import 'package:flutter_wisata/pages/home%20page/det_wisata.dart';
+import 'package:flutter_wisata/pages/home%20page/details.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
 
 class Home extends StatefulWidget {
@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return DetailWisata(data: x);
+                                    return Details(data: x);
                                   },
                                 ),
                               );

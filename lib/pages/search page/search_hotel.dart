@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter_wisata/pages/apiservices.dart';
+import 'package:flutter_wisata/services/apiservices.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/model/hotelData.dart';
 
@@ -78,7 +78,7 @@ class _searchHotelState extends State<searchHotel> {
               Container(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
                 alignment: Alignment.centerLeft,
-                child: Text("Current Location = " + "${city}"),
+                child: Text("Current Location = ${city}"),
               ),
               Expanded(
                 child: FutureBuilder<List<listHotel>>(

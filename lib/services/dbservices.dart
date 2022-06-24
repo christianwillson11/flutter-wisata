@@ -12,6 +12,12 @@ class Database {
     return tblCerita.snapshots();
   }
 
+  static Stream<QuerySnapshot> getData(String whereClause) {
+    return tblCerita
+    .where("locationId", isEqualTo: whereClause)
+    .snapshots();
+  }
+
   static Future<bool> insertData({required StoriesItem item}) async {
     DocumentReference docRef = tblCerita.doc();
 

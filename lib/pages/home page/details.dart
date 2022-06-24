@@ -3,16 +3,16 @@ import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
-class DetailWisata extends StatefulWidget {
+class Details extends StatefulWidget {
   final StoriesItem data;
 
-  const DetailWisata({Key? key, required this.data}) : super(key: key);
+  const Details({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<DetailWisata> createState() => _DetailWisataState();
+  State<Details> createState() => _DetailsState();
 }
 
-class _DetailWisataState extends State<DetailWisata> {
+class _DetailsState extends State<Details> {
   late Future<List<DestinationAttractionData>> attraction;
 
   void fetchDetailData() {
@@ -27,9 +27,6 @@ class _DetailWisataState extends State<DetailWisata> {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xfff3f3f3),
-        appBar: AppBar(
-          title: Text("Details"),
-        ),
         body: SizedBox.expand(
           child: Stack(
             children: <Widget>[
@@ -97,17 +94,13 @@ class _DetailWisataState extends State<DetailWisata> {
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
                                 children: [
-                                  for (var i in widget.data.image) 
-                                  buildCard(i)
-                                  
+                                  for (var i in widget.data.image) buildCard(i)
                                 ],
                               ),
-
                             ),
                             ListTile(
                                 title: ElevatedButton(
                                     onPressed: () {
-
                                       //TODO
                                       //pergi ke detail hotel / detail attraction punya richardo
                                     },
@@ -122,23 +115,29 @@ class _DetailWisataState extends State<DetailWisata> {
           ),
         ),
       ),
-      
     );
   }
 
-  Widget buildCard(String i) { 
-    return Row(
-      children: [
-        SizedBox(
-          width: 150,
-          height: 150,
-          child: FittedBox(
-            child: Image.network(i),
-            fit: BoxFit.fill,
+  Widget buildCard(String i) {
+    return Row(children: [
+      SizedBox(
+        width: 150,
+        height: 150,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Card(
+            elevation: 3.0,
+            child: AspectRatio(
+              aspectRatio: 4/3,
+              child: Image.network(
+                i,
+                fit: BoxFit.fill,
+              ),
+            ),
           ),
         ),
-        SizedBox(width: 12), 
-        ]
-      );
-    }
+      ),
+      SizedBox(width: 12),
+    ]);
+  }
 }
