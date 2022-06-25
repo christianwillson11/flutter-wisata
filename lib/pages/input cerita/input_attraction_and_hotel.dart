@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
@@ -24,11 +26,10 @@ class _InputSelectorState extends State<InputSelector> {
   DestinationApiService destApi = DestinationApiService();
   late Future<List<DestinationAttractionData>> places;
   late String idCity;
-  
+
   bool isShow = false;
 
   void submit() async {
-
     setState(() {
       isShow = false;
     });
@@ -42,9 +43,7 @@ class _InputSelectorState extends State<InputSelector> {
       } on Exception catch (ex) {
         print("Query process error: $ex");
       }
-    } else if (widget.type == "hotel") {
-
-    }
+    } else if (widget.type == "hotel") {}
 
     setState(() {
       isShow = true;
@@ -67,67 +66,81 @@ class _InputSelectorState extends State<InputSelector> {
                 style: TextStyle(
                   fontSize: 15,
                 ),
-                
               ),
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              TextField(
-                controller: _namaTempat,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.input),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide(color: Colors.blue),
+              Container(
+                child: Material(
+                  elevation: 10,
+                  borderRadius: BorderRadius.circular(30),
+                  shadowColor: Color(0x55434343),
+                  child: TextField(
+                    controller: _namaTempat,
+                    decoration: InputDecoration(
+                      hintText: "Masukkan nama kota",
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30),
+                      ),
+                      suffixIcon: IconButton(
+                                onPressed: (){   
+                                  submit();
+                                }, 
+                                icon: Icon(Icons.arrow_forward_ios))
+                    ),
                   ),
-                  labelText: "Masukkan nama Kota",
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  submit();
-                },
-                child: const Text("Cari"),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     submit();
+              //   },
+              //   child: const Text("Cari"),
+              // ),
               if (isShow == true)
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.all(5.0),
                     child: (widget.type == "attraction")
-                      ? FutureBuilder<List<DestinationAttractionData>>(
-                      future: places,
-                      builder: ((context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<DestinationAttractionData> isiData = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: isiData.length - 1,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: ListTile(
-                                  title: Text("${isiData[index].cnama}"),
-                                  subtitle: Text("${isiData[index].cdescription}"),
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) {
-                                          return InputCerita(idCity: idCity, idContext: isiData[index].cid!, konteks: widget.type);
+                        ? FutureBuilder<List<DestinationAttractionData>>(
+                            future: places,
+                            builder: ((context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<DestinationAttractionData> isiData =
+                                    snapshot.data!;
+                                return ListView.builder(
+                                  itemCount: isiData.length - 1,
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      child: ListTile(
+                                        title: Text("${isiData[index].cnama}"),
+                                        subtitle: Text(
+                                            "${isiData[index].cdescription}"),
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return InputCerita(
+                                                    idCity: idCity,
+                                                    idContext:
+                                                        isiData[index].cid!,
+                                                    konteks: widget.type);
+                                              },
+                                            ),
+                                          );
                                         },
                                       ),
                                     );
+                                    // return
                                   },
-                                ),
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
                               );
-                              // return
-                            },
-                          );
-                        }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }),
-                    )
-                    : Text("ini hotel"),
-                  
+                            }),
+                          )
+                        : Text("ini hotel"),
                   ),
                 ),
             ],
