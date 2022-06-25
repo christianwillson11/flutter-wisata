@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
+import 'package:flutter_wisata/model/hotelData.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
@@ -25,6 +26,10 @@ class _InputSelectorState extends State<InputSelector> {
 
   DestinationApiService destApi = DestinationApiService();
   late Future<List<DestinationAttractionData>> places;
+
+  hotelService hotelApi = hotelService();
+  late Future<List<listHotel>> hotels;
+
   late String idCity;
 
   bool isShow = false;
@@ -41,9 +46,12 @@ class _InputSelectorState extends State<InputSelector> {
         idCity = await destApi.getLocId(_namaTempat.text.toString());
         places = destApi.getAttractionData(idCity);
       } on Exception catch (ex) {
-        print("Query process error: $ex");
+        final snackBar = SnackBar(content: Text(ex.toString()));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-    } else if (widget.type == "hotel") {}
+    } else if (widget.type == "hotel") {
+      hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
+    }
 
     setState(() {
       isShow = true;
@@ -140,7 +148,43 @@ class _InputSelectorState extends State<InputSelector> {
                               );
                             }),
                           )
-                        : Text("ini hotel"),
+                        : FutureBuilder<List<listHotel>>(
+                            future: hotels,
+                            builder: ((context, snapshot) {
+                              if (snapshot.hasData) {
+                                List<listHotel> isiData =
+                                    snapshot.data!;
+                                return ListView.builder(
+                                  itemCount: isiData.length - 1,
+                                  itemBuilder: (context, index) {
+                                    return Card(
+                                      child: ListTile(
+                                        title: Text("${isiData[index].hotelName}"),
+                                        subtitle: Text(
+                                            "${isiData[index].alamat}"),
+                                        onTap: () {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) {
+                                                return InputCerita(
+                                                    idCity: 'none',
+                                                    idContext: isiData[index].id!,
+                                                    konteks: widget.type);
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                    // return
+                                  },
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }),
+                          )
                   ),
                 ),
             ],

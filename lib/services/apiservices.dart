@@ -46,7 +46,7 @@ class hotelService{
     if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
       var _simp = jsonResponse["suggestions"][0]["entities"][0]["destinationId"];
-      print(_simp);
+
       Future<List<listHotel>> data = getHotelList(_simp.toString());
       return data;
       //return _simp;
@@ -70,6 +70,7 @@ class hotelService{
       for (int i = 0; i < 24; i++) {
         var json = jsonResponse[i];
 
+        var id;
         var alamat;
         var hotelName;
         var rating;
@@ -77,6 +78,7 @@ class hotelService{
         var gambar;
 
         try{
+          id = json["id"];
           hotelName = json["name"];
           alamat = json["address"]["streetAddress"];
           rating = json["starRating"];
@@ -85,7 +87,7 @@ class hotelService{
         } catch (e){
           print("error");
         }
-        hotelList.add(listHotel(hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar));
+        hotelList.add(listHotel(id: id.toString(), hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar));
       }
       return hotelList;
     }
@@ -95,40 +97,40 @@ class hotelService{
   }
 }
 
-class hotelData{
-  Future<List<listHotel>> getHotelList(String destID) async{
-    Map<String, String> requestHeaders = {
-    "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-	  "X-RapidAPI-Key": "7d134ee662mshd76e7f6cb3143afp14c9a3jsn65351c2bde90"
-  };
-    var url = Uri.parse("https://hotels4.p.rapidapi.com/properties/list?destinationId=$destID&pageNumber=1&pageSize=25&checkIn=2022-07-08&checkOut=2022-07-09&adults1=1&sortOrder=PRICE&locale=en_US&currency=IDR");
-    final response = await http.get(url, headers: requestHeaders);
+// class hotelData{
+//   Future<List<listHotel>> getHotelList(String destID) async{
+//     Map<String, String> requestHeaders = {
+//     "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+// 	  "X-RapidAPI-Key": "7d134ee662mshd76e7f6cb3143afp14c9a3jsn65351c2bde90"
+//   };
+//     var url = Uri.parse("https://hotels4.p.rapidapi.com/properties/list?destinationId=$destID&pageNumber=1&pageSize=25&checkIn=2022-07-08&checkOut=2022-07-09&adults1=1&sortOrder=PRICE&locale=en_US&currency=IDR");
+//     final response = await http.get(url, headers: requestHeaders);
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
+//     if (response.statusCode == 200) {
+//       var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
 
-      List <listHotel> hotelList = [];
-      for (int i = 0; i<5; i++) {
-        var json = jsonResponse[i];
+//       List <listHotel> hotelList = [];
+//       for (int i = 0; i<5; i++) {
+//         var json = jsonResponse[i];
 
-        var alamat;
-        var hotelName;
+//         var alamat;
+//         var hotelName;
 
-        try{
-          hotelName = json["name"];
-          alamat = json["address"]["streetAddress"];
-        } catch (e){
-          print("error");
-        }
-        hotelList.add(listHotel(hotelName: hotelName, alamat: alamat));
-      }
-      return hotelList;
-    }
-    else{
-      throw Exception("failed to load data");
-    }
-  }
-}
+//         try{
+//           hotelName = json["name"];
+//           alamat = json["address"]["streetAddress"];
+//         } catch (e){
+//           print("error");
+//         }
+//         hotelList.add(listHotel(hotelName: hotelName, alamat: alamat));
+//       }
+//       return hotelList;
+//     }
+//     else{
+//       throw Exception("failed to load data");
+//     }
+//   }
+// }
 
 class DestinationApiService {
   Map<String, String> requestHeaders = {

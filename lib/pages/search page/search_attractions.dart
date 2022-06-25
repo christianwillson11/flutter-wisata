@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
-import 'package:flutter_wisata/pages/apiservices.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
 class attractionPage extends StatefulWidget {
@@ -13,7 +12,6 @@ class attractionPage extends StatefulWidget {
 class _attractionPageState extends State<attractionPage> {
   TextEditingController tfCity = TextEditingController();
   DestinationApiService attractionID = DestinationApiService();
-  hotelData hotelList = hotelData();
   late Future<DestinationAttractionData> dataa;
   late Future<List<DestinationAttractionData>> data2;
   String city = "Jakarta";

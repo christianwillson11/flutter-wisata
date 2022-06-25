@@ -16,7 +16,6 @@ class _searchHotelState extends State<searchHotel> {
 
   TextEditingController tfCity = TextEditingController();
   hotelService hotelID = hotelService();
-  hotelData hotelList = hotelData();
   late Future<listHotel> dataa;
   late Future<List<listHotel>> data2;
 
@@ -25,7 +24,7 @@ class _searchHotelState extends State<searchHotel> {
   @override
   void initState() {
     //dataa = hotelID.getDestinationID('Jakarta');
-    data2 = hotelID.getDestinationID('${city}');
+    data2 = hotelID.getDestinationID(city);
     //data2 = hotelList.getHotelList("659455");
     super.initState();
   }

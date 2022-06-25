@@ -17,7 +17,7 @@ class Hotel{
 }
 
 class listHotel{
-  String? geoID;
+  String? id;
   String? hotelName;
   String? alamat;
   double? rating;
@@ -25,7 +25,7 @@ class listHotel{
   String? gambar;
   
   listHotel({
-    this.geoID,
+    this.id,
     this.hotelName,
     this.alamat,
     this.rating,
