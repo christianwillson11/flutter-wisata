@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +10,9 @@ FirebaseStorage _storageRef = FirebaseStorage.instance;
 
 class Database {
   static Stream<QuerySnapshot> getAllData () {
-    return tblCerita.snapshots();
+    return tblCerita
+    .where("owner", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+    .snapshots();
   }
 
   static Stream<QuerySnapshot> getData(String whereClause) {

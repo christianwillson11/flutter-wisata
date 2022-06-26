@@ -23,9 +23,8 @@ class _profilePageState extends State<profilePage> {
   final _phoneProfile = TextEditingController();
 
   void moveToLandingPage() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-      return const LandingPage();
-    }));
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => LandingPage()));
   }
   _fetch() async{
   final firebaseUser = await FirebaseAuth.instance.currentUser;

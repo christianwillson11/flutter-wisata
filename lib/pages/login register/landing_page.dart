@@ -10,6 +10,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+
   void moveToRegister() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const Register();
@@ -25,28 +26,27 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
+              SizedBox(
                 height: 250,
                 width: 250,
-                child: Image.asset('lib/images/tourist.png'),
+                child: Image.asset('assets/images/tourist.png'),
               ),
               const Text("Welcome!",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 25
               ),),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               const Text("Travel with LOVE in Our App",
                 style: TextStyle(
                   fontSize: 20
                 ),),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               SizedBox(
                 width: 350,
                 height: 50,
@@ -65,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
                   
                 )
               ),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               SizedBox(
                 width: 350,
                 height: 50,
@@ -84,7 +84,7 @@ class _LandingPageState extends State<LandingPage> {
                   
                 )
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               
             ],
           ),

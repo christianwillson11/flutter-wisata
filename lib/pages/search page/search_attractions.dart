@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
-import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
 class attractionPage extends StatefulWidget {

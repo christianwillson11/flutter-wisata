@@ -33,10 +33,12 @@ class _InputSelectorState extends State<InputSelector> {
   late String idCity;
 
   bool isShow = false;
+  bool progressLoading = false;
 
   void submit() async {
     setState(() {
       isShow = false;
+      progressLoading = true;
     });
 
     //services
@@ -50,11 +52,18 @@ class _InputSelectorState extends State<InputSelector> {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else if (widget.type == "hotel") {
-      hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
+      try {
+        hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
+        print("xxxxx");
+      } on Exception catch (ex) {
+        final snackBar = SnackBar(content: Text(ex.toString()));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     }
 
     setState(() {
       isShow = true;
+      progressLoading = false;
     });
   }
 
@@ -86,16 +95,22 @@ class _InputSelectorState extends State<InputSelector> {
                   child: TextField(
                     controller: _namaTempat,
                     decoration: InputDecoration(
-                      hintText: "Masukkan nama kota",
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(30),
-                      ),
-                      suffixIcon: IconButton(
-                                onPressed: (){   
+                        hintText: "Masukkan nama kota",
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        suffixIcon: (progressLoading == true)
+                            ? IconButton(
+                                onPressed: null,
+                                icon: CircularProgressIndicator(),
+                              )
+                            : IconButton(
+                                onPressed: () {
                                   submit();
-                                }, 
-                                icon: Icon(Icons.arrow_forward_ios))
-                    ),
+                                },
+                                icon: Icon(Icons.arrow_forward_ios),
+                              )),
                   ),
                 ),
               ),
@@ -152,23 +167,24 @@ class _InputSelectorState extends State<InputSelector> {
                             future: hotels,
                             builder: ((context, snapshot) {
                               if (snapshot.hasData) {
-                                List<listHotel> isiData =
-                                    snapshot.data!;
+                                List<listHotel> isiData = snapshot.data!;
                                 return ListView.builder(
                                   itemCount: isiData.length - 1,
                                   itemBuilder: (context, index) {
                                     return Card(
                                       child: ListTile(
-                                        title: Text("${isiData[index].hotelName}"),
-                                        subtitle: Text(
-                                            "${isiData[index].alamat}"),
+                                        title:
+                                            Text("${isiData[index].hotelName}"),
+                                        subtitle:
+                                            Text("${isiData[index].alamat}"),
                                         onTap: () {
                                           Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (context) {
                                                 return InputCerita(
                                                     idCity: 'none',
-                                                    idContext: isiData[index].id!,
+                                                    idContext:
+                                                        isiData[index].id!,
                                                     konteks: widget.type);
                                               },
                                             ),
@@ -184,7 +200,7 @@ class _InputSelectorState extends State<InputSelector> {
                                 child: CircularProgressIndicator(),
                               );
                             }),
-                          )
+                          ),
                   ),
                 ),
             ],

@@ -5,8 +5,7 @@ import 'package:flutter_wisata/pages/home%20page/details.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
 
 class Home extends StatefulWidget {
-  final String index;
-  const Home({Key? key, required this.index}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();

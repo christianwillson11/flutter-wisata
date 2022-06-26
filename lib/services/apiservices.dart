@@ -67,7 +67,7 @@ class hotelService{
       var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
 
       List <listHotel> hotelList = [];
-      for (int i = 0; i < 24; i++) {
+      for (int i = 0; i < 20; i++) {
         var json = jsonResponse[i];
 
         var id;

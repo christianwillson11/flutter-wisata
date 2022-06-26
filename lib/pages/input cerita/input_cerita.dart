@@ -1,5 +1,8 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
@@ -33,27 +36,33 @@ class _InputCeritaState extends State<InputCerita> {
   bool _isUploading = false;
 
   void uploadFunction(List<XFile> _images, StoriesItem dt) async {
-    setState(() {
-      _isUploading = true;
-    });
-    var msg = "";
-    if (dt.judulCerita == "" || dt.isiCerita == "") {
-      msg = "Gagal menginput cerita. Harap lengkapi semua data";
-      final snackBar = SnackBar(content: Text(msg));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } else {
-      for (int i = 0; i < _images.length; i++) {
-        var imageUrl = await Database.uploadFile(image: _images[i]);
-        _arrImageUrl.add(imageUrl.toString());
-      }
-      Database.insertData(item: dt);
-      var msg = "Berhasil menginput data!";
-      final snackBar = SnackBar(content: Text(msg));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
+    if (_images.isNotEmpty) {
       setState(() {
-        Navigator.pop(context);
+        _isUploading = true;
       });
+      var msg = "";
+      if (dt.judulCerita == "" || dt.isiCerita == "") {
+        msg = "Gagal menginput cerita. Harap lengkapi semua data";
+        final snackBar = SnackBar(content: Text(msg));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        for (int i = 0; i < _images.length; i++) {
+          var imageUrl = await Database.uploadFile(image: _images[i]);
+          _arrImageUrl.add(imageUrl.toString());
+        }
+        Database.insertData(item: dt);
+        var msg = "Berhasil menginput data!";
+        final snackBar = SnackBar(content: Text(msg));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        setState(() {
+          Navigator.pop(context);
+        });
+      } 
+    } else {
+      final snackBar = SnackBar(content: Text("Harus menambah foto"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     
   }
@@ -84,7 +93,7 @@ class _InputCeritaState extends State<InputCerita> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text("${widget.idContext.toString()}"),
+          title: Text(widget.idContext),
         ),
         body: SingleChildScrollView(
           child: Stack(
@@ -160,7 +169,7 @@ class _InputCeritaState extends State<InputCerita> {
                             judulCerita: _judulCerita.text.toString(),
                             isiCerita: _isiCerita.text.toString(),
                             image: _arrImageUrl,
-                            owner: "owner",
+                            owner: FirebaseAuth.instance.currentUser!.uid,
                             category: widget.konteks
                             );
                         uploadFunction(_selectedFiles, dt);
