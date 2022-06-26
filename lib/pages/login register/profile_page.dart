@@ -42,40 +42,42 @@ class _profilePageState extends State<profilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Container(
-            margin: EdgeInsets.all(40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                FutureBuilder(
-                  future: _fetch(),
-                  builder: (context, snapshot){
-                    if (snapshot.connectionState == ConnectionState.done){
-                      return displayUserInfo(context, snapshot);
-                    }
-                    return CircularProgressIndicator();
-                  }),
-                SizedBox(height: 30,),
-                SizedBox(
-                    width: 350,
-                    height: 50,
-                    child: MaterialButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      color: Colors.purple,
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut().then((value) {
-                          moveToLandingPage();
-                        });
-                      },
-                      child: const Text(
-                        'SIGN OUT',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),
-              ],
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Container(
+              margin: EdgeInsets.all(40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FutureBuilder(
+                    future: _fetch(),
+                    builder: (context, snapshot){
+                      if (snapshot.connectionState == ConnectionState.done){
+                        return displayUserInfo(context, snapshot);
+                      }
+                      return CircularProgressIndicator();
+                    }),
+                  SizedBox(height: 30,),
+                  SizedBox(
+                      width: 350,
+                      height: 50,
+                      child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        color: Colors.purple,
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut().then((value) {
+                            moveToLandingPage();
+                          });
+                        },
+                        child: const Text(
+                          'SIGN OUT',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )),
+                ],
+              ),
             ),
           ),
         ),

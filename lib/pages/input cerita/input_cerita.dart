@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/services/dbservices.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 class InputCerita extends StatefulWidget {
@@ -41,11 +42,8 @@ class _InputCeritaState extends State<InputCerita> {
       setState(() {
         _isUploading = true;
       });
-      var msg = "";
       if (dt.judulCerita == "" || dt.isiCerita == "") {
-        msg = "Gagal menginput cerita. Harap lengkapi semua data";
-        final snackBar = SnackBar(content: Text(msg));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        Fluttertoast.showToast(msg: "Gagal Menambahkan cerita. Harap lengkapi data", toastLength: Toast.LENGTH_LONG);
       } else {
         for (int i = 0; i < _images.length; i++) {
           var imageUrl = await Database.uploadFile(image: _images[i]);
@@ -61,15 +59,12 @@ class _InputCeritaState extends State<InputCerita> {
         });
       } 
     } else {
-      final snackBar = SnackBar(content: Text("Harus menambah foto"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Fluttertoast.showToast(msg: "Anda harus menyertakan setidaknya 1 foto!", toastLength: Toast.LENGTH_LONG);
     }
     
   }
 
   Future<void> selectImage() async {
-
-    var msg = "";
     
     if (_selectedFiles != null) {
       _selectedFiles.clear();
@@ -81,10 +76,12 @@ class _InputCeritaState extends State<InputCerita> {
         _selectedFiles.addAll(images);
       }
     } catch (e) {
-      msg = e.toString();
-      final snackBar = SnackBar(content: Text(msg));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      Fluttertoast.showToast(msg: e.toString(), toastLength: Toast.LENGTH_LONG);
     }
+
+    setState(() {
+      
+    });
 
   }
 
@@ -159,25 +156,28 @@ class _InputCeritaState extends State<InputCerita> {
                               }),
                         ),
                       ),
-                    ElevatedButton(
+
+                    (_isUploading == false)
+                    ? ElevatedButton(
                       child: const Text('Submit'),
                       onPressed: () {
-                        if (_isUploading == false) {
-                          final dt = StoriesItem(
-                            cityId: widget.idCity,
-                            locationId: widget.idContext,
-                            judulCerita: _judulCerita.text.toString(),
-                            isiCerita: _isiCerita.text.toString(),
-                            image: _arrImageUrl,
-                            owner: FirebaseAuth.instance.currentUser!.uid,
-                            category: widget.konteks
-                            );
+                        final dt = StoriesItem(
+                          cityId: widget.idCity,
+                          locationId: widget.idContext,
+                          judulCerita: _judulCerita.text.toString(),
+                          isiCerita: _isiCerita.text.toString(),
+                          image: _arrImageUrl,
+                          owner: FirebaseAuth.instance.currentUser!.uid,
+                          category: widget.konteks
+                          );
                         uploadFunction(_selectedFiles, dt);
-                        } else {
-                          null;
-                        }
                       },
-                    ),
+                    )
+                    : const SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator()
+                      ),
                   ],
                 ),
               ),
