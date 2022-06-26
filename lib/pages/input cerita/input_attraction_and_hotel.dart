@@ -33,12 +33,12 @@ class _InputSelectorState extends State<InputSelector> {
   late String idCity;
 
   bool isShow = false;
-  bool progressLoading = false;
+  bool isLoading = false;
 
   void submit() async {
     setState(() {
       isShow = false;
-      progressLoading = true;
+      isLoading = true;
     });
 
     //services
@@ -47,24 +47,25 @@ class _InputSelectorState extends State<InputSelector> {
       try {
         idCity = await destApi.getLocId(_namaTempat.text.toString());
         places = destApi.getAttractionData(idCity);
+        places.whenComplete(() {
+          setState(() {
+            isShow = true;
+            isLoading = false;
+          });
+        });
       } on Exception catch (ex) {
         final snackBar = SnackBar(content: Text(ex.toString()));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     } else if (widget.type == "hotel") {
-      try {
-        hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
-        print("xxxxx");
-      } on Exception catch (ex) {
-        final snackBar = SnackBar(content: Text(ex.toString()));
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
+      hotels.whenComplete(() {
+        setState(() {
+          isShow = true;
+          isLoading = false;
+        });
+      });
     }
-
-    setState(() {
-      isShow = true;
-      progressLoading = false;
-    });
   }
 
   @override
@@ -100,10 +101,10 @@ class _InputSelectorState extends State<InputSelector> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        suffixIcon: (progressLoading == true)
+                        suffixIcon: (isLoading == true)
                             ? IconButton(
                                 onPressed: null,
-                                icon: CircularProgressIndicator(),
+                                icon: Icon(Icons.arrow_forward_ios),
                               )
                             : IconButton(
                                 onPressed: () {
@@ -120,93 +121,98 @@ class _InputSelectorState extends State<InputSelector> {
               //   },
               //   child: const Text("Cari"),
               // ),
-              if (isShow == true)
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(5.0),
-                    child: (widget.type == "attraction")
-                        ? FutureBuilder<List<DestinationAttractionData>>(
-                            future: places,
-                            builder: ((context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<DestinationAttractionData> isiData =
-                                    snapshot.data!;
-                                return ListView.builder(
-                                  itemCount: isiData.length - 1,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                      child: ListTile(
-                                        title: Text("${isiData[index].cnama}"),
-                                        subtitle: Text(
-                                            "${isiData[index].cdescription}"),
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return InputCerita(
-                                                    idCity: idCity,
-                                                    idContext:
-                                                        isiData[index].cid!,
-                                                    konteks: widget.type);
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                    // return
-                                  },
-                                );
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }),
-                          )
-                        : FutureBuilder<List<listHotel>>(
-                            future: hotels,
-                            builder: ((context, snapshot) {
-                              if (snapshot.hasData) {
-                                List<listHotel> isiData = snapshot.data!;
-                                return ListView.builder(
-                                  itemCount: isiData.length - 1,
-                                  itemBuilder: (context, index) {
-                                    return Card(
-                                      child: ListTile(
-                                        title:
-                                            Text("${isiData[index].hotelName}"),
-                                        subtitle:
-                                            Text("${isiData[index].alamat}"),
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) {
-                                                return InputCerita(
-                                                    idCity: 'none',
-                                                    idContext:
-                                                        isiData[index].id!,
-                                                    konteks: widget.type);
-                                              },
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                    // return
-                                  },
-                                );
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }),
-                          ),
-                  ),
-                ),
+              Expanded(
+                child: data(),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget data() {
+    if (isShow == true && isLoading == false) {
+      return Container(
+        padding: const EdgeInsets.all(5.0),
+        child: (widget.type == "attraction")
+            ? FutureBuilder<List<DestinationAttractionData>>(
+                future: places,
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<DestinationAttractionData> isiData = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: isiData.length - 1,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            title: Text("${isiData[index].cnama}"),
+                            subtitle: Text("${isiData[index].cdescription}"),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return InputCerita(
+                                        idCity: idCity,
+                                        idContext: isiData[index].cid!,
+                                        konteks: widget.type);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                        // return
+                      },
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+              )
+            : FutureBuilder<List<listHotel>>(
+                future: hotels,
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<listHotel> isiData = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: isiData.length - 1,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            title: Text("${isiData[index].hotelName}"),
+                            subtitle: Text("${isiData[index].alamat}"),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return InputCerita(
+                                        idCity: 'none',
+                                        idContext: isiData[index].id!,
+                                        konteks: widget.type);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                        // return
+                      },
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+              ),
+      );
+    } else if (isLoading == true) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Text("...");
+    }
   }
 }

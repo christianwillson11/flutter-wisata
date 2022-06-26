@@ -12,15 +12,14 @@ class attractionPage extends StatefulWidget {
 class _attractionPageState extends State<attractionPage> {
   TextEditingController tfCity = TextEditingController();
   DestinationApiService attractionID = DestinationApiService();
-  late Future<DestinationAttractionData> dataa;
   late Future<List<DestinationAttractionData>> data2;
   String city = "Jakarta";
 
+  var isLoading = false;
+
   @override
   void initState() {
-    //dataa = hotelID.getDestinationID('Jakarta');
     data2 = attractionID.getAttractionList('Jakarta');
-    //data2 = hotelList.getHotelList("659455");
     super.initState();
   }
   
@@ -54,10 +53,18 @@ class _attractionPageState extends State<attractionPage> {
                               prefixIcon: Icon(Icons.search),
                               border: InputBorder.none,
                               suffixIcon: IconButton(
-                                onPressed: (){  
+                                onPressed: (){
                                   setState(() {
-                                    data2 = attractionID.getAttractionList('${city}');
-                                  });    
+                                    isLoading = true;   
+                                  });
+                                  city = tfCity.text.toString();
+                                  data2 = attractionID.getAttractionList(city);
+                                  data2.whenComplete(() {
+                                    setState(() {
+                                      isLoading = false;
+                                    });    
+                                  });
+                                  
                                 }, 
                                 icon: Icon(Icons.arrow_forward_ios))
                             ),
@@ -72,10 +79,11 @@ class _attractionPageState extends State<attractionPage> {
               Container(
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
                 alignment: Alignment.centerLeft,
-                child: Text("Current Location = " + "${city}"),
+                child: Text("Current Location: $city"),
               ),
               Expanded(
-                child: FutureBuilder<List<DestinationAttractionData>>(
+                child: (isLoading == false)
+                ? FutureBuilder<List<DestinationAttractionData>>(
                   future: data2,
                   builder: ((context, snapshot){
                     if (snapshot.hasData){
@@ -112,7 +120,10 @@ class _attractionPageState extends State<attractionPage> {
                                 child: CircularProgressIndicator(),
                               );
                   }),
-                ),
+                )
+                : Center(
+                  child: CircularProgressIndicator(),
+                )
               ),
             ],
           )
