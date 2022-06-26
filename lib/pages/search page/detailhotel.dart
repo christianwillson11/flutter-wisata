@@ -27,10 +27,10 @@ class _detailHotelState extends State<detailHotel> {
           child: Column(
             children: [
               SizedBox(
-                height: 230,
+                height: 310,
                 child: Image(
                   image: NetworkImage(widget.myhotel.gambar.toString()),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
               Container(
@@ -107,7 +107,8 @@ class _detailHotelState extends State<detailHotel> {
                     ),
                     Text(
                       "User Story",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     StreamBuilder<QuerySnapshot>(
                       stream: onFetch(),
@@ -132,7 +133,7 @@ class _detailHotelState extends State<detailHotel> {
                                 );
                               },
                               separatorBuilder: (context, index) {
-                                return SizedBox(height: 0.0);
+                                return SizedBox(height: 4.0);
                               },
                               itemCount: snapshot.data!.docs.length,
                             ),

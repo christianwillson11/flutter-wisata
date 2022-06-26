@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
+
+import '../../services/dbservices.dart';
 
 class detailWisata extends StatefulWidget {
   final DestinationAttractionData myDestination;
@@ -12,25 +15,31 @@ class detailWisata extends StatefulWidget {
 }
 
 class _detailWisataState extends State<detailWisata> {
+
+  Stream<QuerySnapshot<Object?>> onFetch() {
+    return Database.getData(widget.myDestination.cid.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Container(
             child: Column(
               children: [
-                Container(
-                  height: 230,
+                SizedBox(
+                  // height: 230,
                   child: Image(
-                    image: NetworkImage(widget.myDestination.cimagesUrl.toString()),
-                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                        widget.myDestination.cimagesUrl![0].toString()),
+                    fit: BoxFit.cover,
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                    left: 12,
-                    right: 24,
+                    left: 16,
+                    right: 16,
                     top: 16,
                   ),
                   child: Column(
@@ -52,66 +61,70 @@ class _detailWisataState extends State<detailWisata> {
                         color: Colors.black,
                       ),
                       SizedBox(
-                        height: 8,
-                      ),
-                      SizedBox(
                         height: 12,
                       ),
-                      // Text(
-                      //   widget.myDestination.caddress.toString() +
-                      //       ", " +
-                      //       widget.myDestination.c.toString(),
-                      //   style: TextStyle(
-                      //       fontSize: 23,
-                      //       color: Colors.black,
-                      //       fontWeight: FontWeight.bold),
-                      // ),
+                      Text(
+                        widget.myDestination.caddress.toString(),
+                        style: TextStyle(
+                            fontSize: 23,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
                       SizedBox(
                         height: 16.0,
                       ),
-                      // Row(
-                      //   children: [
-                      //     Text(
-                      //       "Bintang : ",
-                      //       style: TextStyle(
-                      //           color: Colors.black,
-                      //           fontStyle: FontStyle.italic,
-                      //           fontSize: 20.0),
-                      //     ),
-                      //     Text(
-                      //       widget.myDestination..toString(),
-                      //       style: TextStyle(
-                      //           color: Colors.blueGrey,
-                      //           fontWeight: FontWeight.bold,
-                      //           fontStyle: FontStyle.italic,
-                      //           fontSize: 20.0),
-                      //     ),
-                      //     SizedBox(
-                      //       width: 4,
-                      //     ),
-                      //     Icon(
-                      //       Icons.star,
-                      //       color: Colors.yellow,
-                      //       size: 28,
-                      //     ),
-                      //   ],
-                      // ),
+                      Text(
+                        "Locality : " +
+                            widget.myDestination.ctimezone.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                      SizedBox(height: 8.0,),
+                      Text(widget.myDestination.cwebUrl.toString(), style: TextStyle(fontSize: 14, color: Colors.blueAccent),),
                       SizedBox(
-                        height: 14,
+                        height: 18,
                       ),
                       Text(
                         "User Story",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
-                      // Container(
-                      //   child: Text("Ini Test Scroll view"),
-                      //   height: 150.0,
-                      //   decoration: BoxDecoration(
-                      //     color: Colors.red
-                      //   ),
-                      // ),
+                      StreamBuilder<QuerySnapshot>(
+                      stream: onFetch(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Error");
+                        } else if (snapshot.hasData || snapshot.data != null) {
+                          return Card(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot dsData =
+                                    snapshot.data!.docs[index];
+                                String lvJudul = dsData['judulCerita'];
+                                String lvIsi = dsData['isiCerita'];
+                                return ListTile(
+                                  onTap: () {},
+                                  title: Text(lvJudul),
+                                  subtitle: Text(lvIsi),
+                                  leading: Icon(Icons.person),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(height: 4.0);
+                              },
+                              itemCount: snapshot.data!.docs.length,
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
                     ],
                   ),
                 ),

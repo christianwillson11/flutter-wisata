@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
+import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
 class attractionPage extends StatefulWidget {
@@ -97,18 +98,18 @@ class _attractionPageState extends State<attractionPage> {
                                 child: ListTile(
                                   title: Text("${isiData[index].cnama}"),
                                   subtitle: Text("${isiData[index].caddress}"),
-                                  // onTap: (){
-                                  //   Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) {
-                                  //       return detailWisata(
-                                  //         myDestination: isiData[index],
-                                  //       );
-                                  //     },
-                                  //   ),
-                                  // );
-                                  // },
+                                  onTap: (){
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return detailWisata(
+                                          myDestination: isiData[index],
+                                        );
+                                      },
+                                    ),
+                                  );
+                                  },
                                 ),
                               ),
                             ],
