@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/hotelData.dart';
 
+import '../../services/dbservices.dart';
+
 class detailHotel extends StatefulWidget {
   final listHotel myhotel;
   const detailHotel({Key? key, required this.myhotel}) : super(key: key);
@@ -13,109 +15,141 @@ class detailHotel extends StatefulWidget {
 }
 
 class _detailHotelState extends State<detailHotel> {
-  
+  Stream<QuerySnapshot<Object?>> onFetch() {
+    return Database.getData(widget.myhotel.id.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-          children: [
-            SizedBox(
-              height: 230,
-              child: Image(
-                image: NetworkImage(widget.myhotel.gambar.toString()),
-                fit: BoxFit.fill,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 230,
+                child: Image(
+                  image: NetworkImage(widget.myhotel.gambar.toString()),
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            Container(
-              padding: EdgeInsets.only(
-                left: 12,
-                right: 24,
-                top: 16,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.myhotel.hotelName.toString(),
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+              Container(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.myhotel.hotelName.toString(),
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Divider(
-                    height: 10,
-                    thickness: 1,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  // Text(
-                  //   "Alamat Hotel : ",
-                  //   style: TextStyle(
-                  //     fontSize: 23,
-                  //   ),
-                  // ),
-                  SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    widget.myhotel.alamat.toString() +
-                        ", " +
-                        widget.myhotel.locality.toString(),
-                    style: TextStyle(
-                        fontSize: 23,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "Bintang : ",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20.0),
-                      ),
-                      Text(
-                        widget.myhotel.rating.toString(),
-                        style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic,
-                            fontSize: 20.0),
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                        size: 28,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-
-                  Text(
-                    "User Story",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 8,
                     ),
-                  ),
-                ],
+                    Divider(
+                      height: 10,
+                      thickness: 1,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      widget.myhotel.alamat.toString() +
+                          ", " +
+                          widget.myhotel.locality.toString(),
+                      style: TextStyle(
+                          fontSize: 23,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Bintang : ",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20.0),
+                        ),
+                        Text(
+                          widget.myhotel.rating.toString(),
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              fontSize: 20.0),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 28,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 18,
+                    ),
+                    Text(
+                      "User Story",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: onFetch(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text("Error");
+                        } else if (snapshot.hasData || snapshot.data != null) {
+                          return Card(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                DocumentSnapshot dsData =
+                                    snapshot.data!.docs[index];
+                                String lvJudul = dsData['judulCerita'];
+                                String lvIsi = dsData['isiCerita'];
+                                return ListTile(
+                                  onTap: () {},
+                                  title: Text(lvJudul),
+                                  subtitle: Text(lvIsi),
+                                  leading: Icon(Icons.person),
+                                );
+                              },
+                              separatorBuilder: (context, index) {
+                                return SizedBox(height: 0.0);
+                              },
+                              itemCount: snapshot.data!.docs.length,
+                            ),
+                          );
+                        }
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      );
+      ),
+    );
   }
 }
