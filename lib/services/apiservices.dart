@@ -37,7 +37,7 @@ class hotelService{
   Future<String> getCityID(String location, [String date='2022-07-08']) async {
     Map<String, String> requestHeaders = {
       "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-	    "X-RapidAPI-Key": "7d134ee662mshd76e7f6cb3143afp14c9a3jsn65351c2bde90"
+	    "X-RapidAPI-Key": "2bf8da321dmsh17ce66024ac8067p1c5c94jsn7698a8baa3c0"
     };
 
     final response = await http.get(
