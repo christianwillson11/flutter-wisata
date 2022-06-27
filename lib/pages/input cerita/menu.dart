@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/input%20cerita/input_cerita.dart';
-import 'package:flutter_wisata/pages/input%20cerita/input_attraction_and_hotel.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -56,12 +55,11 @@ class _MenuState extends State<Menu> {
                           builder: (context) {
                             if (index == 0) {
                               //attraction = destination
-                              return InputSelector(type: "hotel");
+                              return InputCerita(konteks: "hotel");
                             } else if (index == 1) {
-                              return InputSelector(type: "attraction");
+                              return InputCerita(konteks: "attraction");
                             } else {
-                              return InputCerita(
-                                  idCity: "123", idContext: "x", konteks: "x");
+                              return InputCerita(konteks: "x");
                             }
                           },
                         ),
