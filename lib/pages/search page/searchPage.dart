@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata/pages/search page/search_hotel.dart';
 import 'package:flutter_wisata/pages/search%20page/search_attractions.dart';
 
-class searchPage extends StatefulWidget {
-  const searchPage({Key? key}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<searchPage> createState() => _searchPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _searchPageState extends State<searchPage> {
+class _SearchPageState extends State<SearchPage> {
   void moveToHotel() {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return const searchHotel();
@@ -29,86 +29,101 @@ class _searchPageState extends State<searchPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-          child: Center(
-        child: Container(
-          padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
-          child: ListView(
-            children: [
-              Text(
-                "What do you want to find ?",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 30,),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    moveToHotel();
-                  },
-                  child: SizedBox(
-                      height: 250,
-                      child: Stack(
-                        children: [
-                          Ink.image(
-                            image: AssetImage(
-                              "assets/images/hotelillustration.jpg",
-                            ),
-                            fit: BoxFit.fill,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              "Hotel",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      )),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 11, 10, 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "What do you want to find ?",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                semanticContainer: true,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                child: InkWell(
-                  splashColor: Colors.blue.withAlpha(30),
-                  onTap: () {
-                    moveToAttraction();
-                  },
-                  child: SizedBox(
-                      height: 250,
-                      child: Stack(
-                        children: [
-                          Ink.image(
-                            image: AssetImage(
-                              "assets/images/eiffel.jpg",
-                            ),
-                            fit: BoxFit.fill,
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            child: Text(
-                              "Attractions",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      )),
-                ),
+            ),
+            Expanded(
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          moveToHotel();
+                        },
+                        child: SizedBox(
+                            height: 250,
+                            child: Stack(
+                              children: [
+                                Ink.image(
+                                  image: AssetImage(
+                                    "assets/images/hotelillustration.jpg",
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Text(
+                                    "Hotel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      semanticContainer: true,
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: InkWell(
+                        splashColor: Colors.blue.withAlpha(30),
+                        onTap: () {
+                          moveToAttraction();
+                        },
+                        child: SizedBox(
+                            height: 250,
+                            child: Stack(
+                              children: [
+                                Ink.image(
+                                  image: AssetImage(
+                                    "assets/images/eiffel.jpg",
+                                  ),
+                                  fit: BoxFit.fill,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  child: Text(
+                                    "Attractions",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      )),
+      ),
     );
   }
 }

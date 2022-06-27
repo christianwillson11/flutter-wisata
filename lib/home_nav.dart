@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
             onTap: (index) {
               setState(() {
                 if (index == 1) {
-                  page_displayed = searchPage();
+                  page_displayed = SearchPage();
                 } else if (index == 2) {
                   page_displayed = Menu();
                 } else if (index == 3){
