@@ -9,14 +9,13 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  List<String> images = ["hotels.jpg", "attraction.png", "pagi.png"];
-  List<String> title = ["Hotels", "Attractions", "Restaurant"];
+  List<String> images = ["hotels.jpg", "attraction.png"];
+  List<String> title = ["Hotels", "Attractions"];
   List<String> subTitle = ["Ayo Input Ceritamu"];
   List<String> description = ["Masukkan cerita serumu"];
   List<String> description2 = [
     "Tentang pengalamanmu menginap di hotel",
-    "Tentang pengalamanmu berwisata",
-    "Tentang testimoni restoran"
+    "Tentang pengalamanmu berwisata"
   ];
 
   @override
