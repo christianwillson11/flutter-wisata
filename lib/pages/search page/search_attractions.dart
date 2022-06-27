@@ -37,7 +37,16 @@ class _attractionPageState extends State<attractionPage> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                        "Trending destinations",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: Row(
                   children: [
                     Expanded(
@@ -94,24 +103,91 @@ class _attractionPageState extends State<attractionPage> {
                         itemBuilder: (context, index){
                           return Column(
                             children: [
-                              Card(
-                                child: ListTile(
-                                  title: Text("${isiData[index].cnama}"),
-                                  subtitle: Text("${isiData[index].caddress}"),
-                                  onTap: (){
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return detailWisata(
-                                          myDestination: isiData[index],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                  },
+                              // Card(
+                              //   child: ListTile(
+                              //     title: Text("${isiData[index].cnama}"),
+                              //     subtitle: Text("${isiData[index].caddress}"),
+                              //     onTap: (){
+                              //       Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) {
+                              //           return detailWisata(
+                              //             myDestination: isiData[index],
+                              //           );
+                              //         },
+                              //       ),
+                              //     );
+                              //     },
+                              //   ),
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8,8,8,0),
+                                child: Card(
+                                  
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.white,
+                                  child: ClipRect(
+                                    child: AspectRatio(
+                                      aspectRatio: 2.7,
+                                      child: Stack(
+                                        
+                                        children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                                              return detailWisata(myDestination: isiData[index]);
+                                            }));
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              children: [
+                                                AspectRatio(
+                                                  aspectRatio: 0.9,
+                                                  child: Image.network("${isiData[index].thumbnail.toString()}", fit: BoxFit.cover,),
+                                                ),
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "${isiData[index].cnama}",
+                                                          textAlign: TextAlign.left,
+                                                          maxLines: 2,
+                                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                        ),
+                                                        Text(
+                                                          "${isiData[index].caddress}",
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                        Expanded(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text("${isiData[index].location}",
+                                                                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), ),
+                                                              )
+                                                            ],
+                                                          )
+                                                          )
+                                                      ],
+                                                    ),
+                                                  )
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ]),
+                                      ),
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           );
                         },

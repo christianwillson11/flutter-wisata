@@ -132,44 +132,53 @@ class _searchHotelState extends State<searchHotel> {
                                     child: AspectRatio(
                                       aspectRatio: 2.7,
                                       child: Stack(children: [
-                                        Row(
-                                          children: [
-                                            AspectRatio(
-                                              aspectRatio: 0.9,
-                                              child: Image.network("${isiData[index].gambar.toString()}", fit: BoxFit.cover,),
-                                            ),
-                                            Expanded(
-                                              child: Container(
-                                                padding: EdgeInsets.all(10),
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "${isiData[index].hotelName}",
-                                                      textAlign: TextAlign.left,
-                                                      maxLines: 2,
-                                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                                    ),
-                                                    Text(
-                                                      "${isiData[index].locality}",
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(fontSize: 14),
-                                                    ),
-                                                    Expanded(
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                                        children: [
-                                                          Text("${isiData[index].price}" + "/night",
-                                                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), )
-                                                        ],
-                                                      )
-                                                      )
-                                                  ],
+                                        GestureDetector(
+                                          onTap: (){
+                                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                                              return detailHotel(myhotel: isiData[index]);
+                                            }));
+                                          },
+                                          child: Container(
+                                            child: Row(
+                                              children: [
+                                                AspectRatio(
+                                                  aspectRatio: 0.9,
+                                                  child: Image.network("${isiData[index].gambar.toString()}", fit: BoxFit.cover,),
                                                 ),
-                                              )
-                                            )
-                                          ],
+                                                Expanded(
+                                                  child: Container(
+                                                    padding: EdgeInsets.all(10),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Text(
+                                                          "${isiData[index].hotelName}",
+                                                          textAlign: TextAlign.left,
+                                                          maxLines: 2,
+                                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                        ),
+                                                        Text(
+                                                          "${isiData[index].locality}",
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(fontSize: 14),
+                                                        ),
+                                                        Expanded(
+                                                          child: Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                            children: [
+                                                              Text("${isiData[index].price}" + "/night",
+                                                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), )
+                                                            ],
+                                                          )
+                                                          )
+                                                      ],
+                                                    ),
+                                                  )
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         )
                                       ]),
                                       ),

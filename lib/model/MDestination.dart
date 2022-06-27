@@ -8,6 +8,8 @@ class DestinationAttractionData {
   List? cimagesUrl;
   String? cimageUploadedDate;
   String? cphotoCaption;
+  String? thumbnail;
+  String? location;
 
   DestinationAttractionData({
     this.cid,
@@ -19,6 +21,8 @@ class DestinationAttractionData {
     this.cimagesUrl,
     this.cimageUploadedDate,
     this.cphotoCaption,
+    this.thumbnail,
+    this.location
   });
 
   // factory DestinationData.fromJson(Map<dynamic, dynamic> json) {

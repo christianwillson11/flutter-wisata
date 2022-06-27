@@ -161,6 +161,7 @@ class DestinationApiService {
     if (response.statusCode == 200) {
       var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
       Future<List<DestinationAttractionData>>  data = getAttractionData(locId.toString());
+      //print("data" + data);
       return data;
       
     } else {
@@ -197,7 +198,7 @@ class DestinationApiService {
         }
 
         if (data['name'] != null) {
-          destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt));
+          destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt, thumbnail: data['photo']['images']['original']['url'], location: data['location_string']));
         }
       }
 

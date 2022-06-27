@@ -32,12 +32,12 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.fromLTRB(10, 11, 10, 10),
+              padding: EdgeInsets.fromLTRB(20, 25, 10, 10),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "What do you want to find ?",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
