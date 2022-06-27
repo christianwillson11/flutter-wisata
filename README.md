@@ -14,6 +14,16 @@ REFERENSI :
 **CHRISTIAN WILLSON**
 
 **RICHARDO JASON**
+https://www.youtube.com/watch?v=Gt2bIEblFX4&t=1529s
+https://stackoverflow.com/questions/56131101/how-to-place-a-listview-inside-a-singlechildscrollview-but-prevent-them-from-scr
+https://api.flutter.dev/flutter/widgets/Image/Image.network.html
+https://stackoverflow.com/questions/60058946/flutter-object-was-given-an-infinite-size-during-layout
+https://stackoverflow.com/questions/61326411/scheme-not-starting-with-alphabetic-character-at-character-1-dart 
+https://stackoverflow.com/questions/44612599/make-boxdecoration-image-faded-transparent
+https://stackoverflow.com/questions/53737363/rendercustommultichildlayoutbox-object-was-given-an-infinite-size-during-layout
+https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html
+https://api.flutter.dev/flutter/widgets/ListView-class.html
+https://stackoverflow.com/questions/54885879/flutter-how-to-handle-image-with-fixed-size-inside-box
 
 **RICHSON SEDJIE**
 
