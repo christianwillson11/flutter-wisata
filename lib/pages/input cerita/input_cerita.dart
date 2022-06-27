@@ -48,7 +48,7 @@ class _InputCeritaState extends State<InputCerita> {
   late String idCity;
   late String idLocation;
 
-  List<String> suggestions = ["a"];
+  List<String> suggestions = [];
 
   bool isShow = false;
   bool isLoading = false;
@@ -84,10 +84,10 @@ class _InputCeritaState extends State<InputCerita> {
     if (widget.konteks == "hotel") {
       lclHotels = await hotels;
       for (var hotel in lclHotels) {
-        suggestions.add(hotel.hotelName.toString());          
+        suggestions.add(hotel.hotelName.toString());
       }
       setState(() {
-        isShow = true;  
+        isShow = true;
         isLoading = false;
       });
     } else {
@@ -96,7 +96,7 @@ class _InputCeritaState extends State<InputCerita> {
         suggestions.add(attraction.cnama.toString());
       }
       setState(() {
-        isShow = true;  
+        isShow = true;
         isLoading = false;
       });
     }
@@ -109,13 +109,9 @@ class _InputCeritaState extends State<InputCerita> {
   int uploadItem = 0;
   bool _isUploading = false;
 
-
-
-
   void uploadFunction(List<XFile> _images, StoriesItem dt) async {
     //db
     if (dt.judulCerita != "" && dt.isiCerita != "") {
-
       if (idLocation != null || idLocation != "") {
         if (_images.isNotEmpty) {
           setState(() {
@@ -135,23 +131,20 @@ class _InputCeritaState extends State<InputCerita> {
           });
         } else {
           Fluttertoast.showToast(
-            msg: "Anda harus menyertakan setidaknya 1 foto!",
-            toastLength: Toast.LENGTH_LONG);
+              msg: "Anda harus menyertakan setidaknya 1 foto!",
+              toastLength: Toast.LENGTH_LONG);
         }
-
       } else {
         Fluttertoast.showToast(
-          msg: "Gagal Menambahkan cerita. Harap pilih hotel / tempat wisata dahulu.",
-          toastLength: Toast.LENGTH_LONG
-        );
-      }
-
-    } else {
-       Fluttertoast.showToast(
-            msg: "Gagal Menambahkan cerita. Harap lengkapi data",
+            msg:
+                "Gagal Menambahkan cerita. Harap pilih hotel / tempat wisata dahulu.",
             toastLength: Toast.LENGTH_LONG);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "Gagal Menambahkan cerita. Harap lengkapi data",
+          toastLength: Toast.LENGTH_LONG);
     }
-
   }
 
   Future<void> selectImage() async {
@@ -176,196 +169,236 @@ class _InputCeritaState extends State<InputCerita> {
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
-          child: Stack(
-            children: [
-              // ClipPath(
-              //   clipper: CurvedBottomClipper(),
-              //   child: Container(
-              //     color: Colors.lightGreen,
-              //     height: 250.0,
-              //     child: Center(
-              //       child: Padding(
-              //         padding: EdgeInsets.only(bottom: 50),
-              //         child: Text(
-              //           "Bagikan ceritamu",
-              //           style: TextStyle(
-              //             fontSize: 25,
-              //             color: Colors.white,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              Container(
-                padding: EdgeInsets.fromLTRB(
-                    8, MediaQuery.of(context).size.height / 4, 8, 8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Material(
-                      elevation: 10,
-                      borderRadius: BorderRadius.circular(30),
-                      shadowColor: Color(0x55434343),
-                      child: TextField(
-                        controller: _namaTempat,
-                        decoration: InputDecoration(
-                            hintText: "Masukkan nama kota",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            suffixIcon: (isLoading == true)
-                                ? IconButton(
-                                    onPressed: null,
-                                    icon: CircularProgressIndicator(),
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      submit();
-                                    },
-                                    icon: Icon(Icons.arrow_forward_ios),
-                                  )),
-                      ),
-                    ),
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        height: 50,
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: TypeAheadFormField(
-                          suggestionsCallback: (pattern) => suggestions.where(
-                            (item) => item
-                                .toLowerCase()
-                                .contains(pattern.toLowerCase()),
-                          ),
-                          itemBuilder: (_, String item) => ListTile(
-                            title: Text(item),
-                          ),
-                          onSuggestionSelected: (String val) {
-                            _textEditingController.text = val;
-                            //search id location from class
+          child: Container(
+            child: Stack(
+              children: [
+                // ClipPath(
+                //   clipper: CurvedBottomClipper(),
+                //   child: Container(
+                //     color: Colors.lightGreen,
+                //     height: 250.0,
+                //     child: Center(
+                //       child: Padding(
+                //         padding: EdgeInsets.only(bottom: 50),
+                //         child: Text(
+                //           "Bagikan ceritamu",
+                //           style: TextStyle(
+                //             fontSize: 25,
+                //             color: Colors.white,
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
 
-                            if (widget.konteks == "attraction") {
-                              for (var attraction in lclAttractions ){
-                                if (attraction.cnama == val) {
-                                  idLocation = attraction.cid.toString();
-                                  break;
-                                } 
-                              }  
-                            } else {
-                              for (var hotel in lclHotels ){
-                                if (hotel.hotelName == val) {
-                                  idLocation = hotel.id.toString();
-                                  break;
-                                } 
-                              }
-                            }
-
-                            
-
-                            // var found = lclHotels.any((e) => e.hotelName == val);
-                            // print("Aaaa -===== $found");
-                          },
-                          getImmediateSuggestions: true,
-                          hideSuggestionsOnKeyboardHide: false,
-                          hideOnEmpty: false,
-                          noItemsFoundBuilder: (context) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('No item found!'),
-                          ),
-                          textFieldConfiguration: TextFieldConfiguration(
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Write your review",
+                            style: TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold),
+                          )),
+                      SizedBox(height: 10,),
+                      Container(
+                        child: Material(
+                          elevation: 10,
+                          borderRadius: BorderRadius.circular(30),
+                          shadowColor: Color(0x55434343),
+                          child: TextField(
+                            controller: _namaTempat,
                             decoration: InputDecoration(
-                              hintText: 'Which one do you want to review',
-                              border: OutlineInputBorder(),
-                              suffixIcon: Icon(Icons.arrow_downward)
-                            ),
-                            controller: _textEditingController,
+                                hintText: "Enter city/country name",
+                                prefixIcon: Icon(Icons.search),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                suffixIcon: (isLoading == true)
+                                    ? IconButton(
+                                        onPressed: null,
+                                        icon: CircularProgressIndicator(),
+                                      )
+                                    : IconButton(
+                                        onPressed: () {
+                                          submit();
+                                        },
+                                        icon: Icon(Icons.arrow_forward_ios),
+                                      )),
                           ),
                         ),
                       ),
-                    ),
-                    TextField(
-                      controller: _judulCerita,
-                      decoration: InputDecoration(
+                      SizedBox(height: 15,),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                            "Current Location: " + _namaTempat.text.toString()),
+                      ),
+                      
+                      Form(
+                        key: _formKey,
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: TypeAheadFormField(
+                            suggestionsCallback: (pattern) => suggestions.where(
+                              (item) => item
+                                  .toLowerCase()
+                                  .contains(pattern.toLowerCase()),
+                            ),
+                            itemBuilder: (_, String item) => ListTile(
+                              title: Text(item),
+                            ),
+                            onSuggestionSelected: (String val) {
+                              _textEditingController.text = val;
+                              //search id location from class
+
+                              if (widget.konteks == "attraction") {
+                                for (var attraction in lclAttractions) {
+                                  if (attraction.cnama == val) {
+                                    idLocation = attraction.cid.toString();
+                                    break;
+                                  }
+                                }
+                              } else {
+                                for (var hotel in lclHotels) {
+                                  if (hotel.hotelName == val) {
+                                    idLocation = hotel.id.toString();
+                                    break;
+                                  }
+                                }
+                              }
+
+                              // var found = lclHotels.any((e) => e.hotelName == val);
+                              // print("Aaaa -===== $found");
+                            },
+                            getImmediateSuggestions: true,
+                            hideSuggestionsOnKeyboardHide: false,
+                            hideOnEmpty: false,
+                            noItemsFoundBuilder: (context) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('No item found!'),
+                            ),
+                            textFieldConfiguration: TextFieldConfiguration(
+                              decoration: InputDecoration(
+                                  hintText: 'Which place do you want to review',
+                                  border: OutlineInputBorder(),
+                                  suffixIcon: Icon(Icons.arrow_downward)),
+                              controller: _textEditingController,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+                      TextField(
+                        controller: _judulCerita,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.try_sms_star_outlined),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            labelText: "Judul Cerita Anda"),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      TextField(
+                        controller: _isiCerita,
+                        maxLines: 8,
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.try_sms_star_outlined),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(color: Colors.blue),
                           ),
-                          labelText: "Judul Cerita Anda"),
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    TextField(
-                      controller: _isiCerita,
-                      maxLines: 8,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.try_sms_star_outlined),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.blue),
-                        ),
-                        labelText: "Isi Cerita Anda",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    OutlinedButton(
-                      onPressed: () {
-                        selectImage();
-                      },
-                      child: const Text("Select Photos"),
-                    ),
-                    if (_selectedFiles.length == null)
-                      const Text("No Images Selected")
-                    else
-                      SizedBox(
-                        height: 300,
-                        child: Expanded(
-                          child: GridView.builder(
-                              itemCount: _selectedFiles.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3),
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(2),
-                                  child: Image.file(
-                                    File(_selectedFiles[index].path),
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              }),
+                          labelText: "Isi Cerita Anda",
                         ),
                       ),
-                    (_isUploading == false)
-                        ? ElevatedButton(
-                            child: const Text('Submit'),
-                            onPressed: () {
-                              final dt = StoriesItem(
-                                  cityId: idCity,
-                                  locationId: idLocation,
-                                  judulCerita: _judulCerita.text.toString(),
-                                  isiCerita: _isiCerita.text.toString(),
-                                  image: _arrImageUrl,
-                                  owner: FirebaseAuth.instance.currentUser!.uid,
-                                  category: widget.konteks);
-                              uploadFunction(_selectedFiles, dt);
-                            },
-                          )
-                        : const SizedBox(
-                            width: 15,
-                            height: 15,
-                            child: CircularProgressIndicator()),
-                  ],
-                ),
-              )
-            ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      OutlinedButton(
+                        onPressed: () {
+                          selectImage();
+                        },
+                        child: const Text("Add some photos"),
+                      ),
+                      if (_selectedFiles.length == null)
+                        const Text("No Images Selected")
+                      else
+                        SizedBox(
+                          height: 300,
+                          child: Expanded(
+                            child: GridView.builder(
+                                itemCount: _selectedFiles.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Image.file(
+                                      File(_selectedFiles[index].path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ),
+                      // (_isUploading == false)
+                      //     ? ElevatedButton(
+                      //         child: const Text('Submit'),
+                      //         onPressed: () {
+                      //           final dt = StoriesItem(
+                      //               cityId: idCity,
+                      //               locationId: idLocation,
+                      //               judulCerita: _judulCerita.text.toString(),
+                      //               isiCerita: _isiCerita.text.toString(),
+                      //               image: _arrImageUrl,
+                      //               owner:
+                      //                   FirebaseAuth.instance.currentUser!.uid,
+                      //               category: widget.konteks);
+                      //           uploadFunction(_selectedFiles, dt);
+                      //         },
+                      //       )
+                      //     : const SizedBox(
+                      //         width: 15,
+                      //         height: 15,
+                      //         child: CircularProgressIndicator()),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
+        floatingActionButton: 
+        (_isUploading == false)?
+        FloatingActionButton.extended(
+        onPressed: () {
+          final dt = StoriesItem(
+                                    cityId: idCity,
+                                    locationId: idLocation,
+                                    judulCerita: _judulCerita.text.toString(),
+                                    isiCerita: _isiCerita.text.toString(),
+                                    image: _arrImageUrl,
+                                    owner:
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                    category: widget.konteks);
+                                uploadFunction(_selectedFiles, dt);
+        },
+        label: const Text('Submit Review'),
+        icon: const Icon(Icons.exit_to_app),
+        backgroundColor: Colors.pink,
+      ):const SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator()),
       ),
     );
   }
