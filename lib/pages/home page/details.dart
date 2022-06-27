@@ -3,6 +3,9 @@ import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 
+import '../search page/detailhotel.dart';
+import '../search page/detailwisata.dart';
+
 class Details extends StatefulWidget {
   final StoriesItem data;
 
@@ -99,13 +102,32 @@ class _DetailsState extends State<Details> {
                               ),
                             ),
                             ListTile(
-                                title: ElevatedButton(
-                                    onPressed: () {
-                                      //TODO
-                                      //pergi ke detail hotel / detail attraction punya richardo
-                                    },
-                                    child: Text(
-                                        "Go to ${widget.data.category} details"))),
+                              title: ElevatedButton(
+                                onPressed: () {
+                                  //TODO
+                                  //pergi ke detail hotel / detail attraction punya richardo
+                                  // if (widget.data.category == 'attraction') {
+                                  //   Navigator.push(context,
+                                  //       MaterialPageRoute(builder: (context) {
+                                  //     return detailHotel(
+                                  //         myhotel: isiData[index]);
+                                  //   }));
+                                  // } else if (widget.data.category == 'hotel') {
+                                  //   Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //       builder: (context) {
+                                  //         return detailWisata(
+                                  //             myDestination: isiData[index]);
+                                  //       },
+                                  //     ),
+                                  //   );
+                                  // }
+                                },
+                                child: Text(
+                                    "Go to ${widget.data.category} details"),
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -128,7 +150,7 @@ class _DetailsState extends State<Details> {
           child: Card(
             elevation: 3.0,
             child: AspectRatio(
-              aspectRatio: 4/3,
+              aspectRatio: 4 / 3,
               child: Image.network(
                 i,
                 fit: BoxFit.fill,
