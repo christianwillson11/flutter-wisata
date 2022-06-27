@@ -68,7 +68,7 @@ class _InputCeritaState extends State<InputCerita> {
         convertFutureToList();
       });
     } else if (widget.konteks == "hotel") {
-      idCity = "none";
+      idCity = await hotelApi.getCityID(_namaTempat.text.toString());
       hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
       hotels.whenComplete(() {
         convertFutureToList();

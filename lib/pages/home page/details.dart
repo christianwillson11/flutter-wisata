@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
+import 'package:flutter_wisata/model/hotelData.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
@@ -16,16 +17,14 @@ class Details extends StatefulWidget {
 
 class _DetailsState extends State<Details> {
   late Future<List<DestinationAttractionData>> attractions;
-  late List<DestinationAttractionData> attractionFix;
+  late List<DestinationAttractionData> attractionsFix;
   late DestinationAttractionData fixKirimWisata;
 
-  bool isLoading = false;
+  late Future<List<listHotel>> hotels;
+  late List<listHotel> hotelsFix;
+  late listHotel fixKirimHotel;
 
-  // @override
-  // initState() {
-  //   isLoading = false;
-  //   super.initState();
-  // }
+  bool isLoading = false;
 
   void fetchDetailData() {
     setState(() {
@@ -33,20 +32,27 @@ class _DetailsState extends State<Details> {
     });
 
     if (widget.data.category == "attraction") {
-      DestinationApiService destApi = DestinationApiService();
-      attractions = destApi.getAttractionData(widget.data.cityId);
+      DestinationApiService attractionApi = DestinationApiService();
+      attractions = attractionApi.getAttractionData(widget.data.cityId);
 
       attractions.whenComplete(() {
         convertFutureAttractionToVar();
+      });
+    } else {
+      hotelService hotelApi = hotelService();
+      hotels = hotelApi.getHotelList(widget.data.cityId);
+
+      hotels.whenComplete(() {
+        convertFutureHotelToVar();
       });
     }
   }
 
   //note: attraction = wisata
   void convertFutureAttractionToVar() async {
-    attractionFix = await attractions;
+    attractionsFix = await attractions;
     //search
-    for (var attraction in attractionFix) {
+    for (var attraction in attractionsFix) {
       if (widget.data.locationId == attraction.cid) {
         fixKirimWisata = attraction;
         Navigator.push(
@@ -54,6 +60,29 @@ class _DetailsState extends State<Details> {
           MaterialPageRoute(
             builder: (context) {
               return detailWisata(myDestination: fixKirimWisata);
+            },
+          ),
+        ).then((value) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+        break;
+      }
+    }
+  }
+
+  void convertFutureHotelToVar() async {
+    hotelsFix = await hotels;
+    for (var hotel in hotelsFix) {
+      if (widget.data.locationId == hotel.id) {
+        fixKirimHotel = hotel;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return detailHotel(
+                  myhotel: fixKirimHotel);
             },
           ),
         ).then((value) {
@@ -147,21 +176,7 @@ class _DetailsState extends State<Details> {
                                   ? ElevatedButton(
                                       onPressed: () {
                                         //pergi ke detail hotel / detail attraction punya richardo
-                                        if (widget.data.category ==
-                                            'attraction') {
-                                          fetchDetailData();
-                                        } else if (widget.data.category ==
-                                            'hotel') {
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //     builder: (context) {
-                                          //       return detailHotel(
-                                          //           myhotel: fixKirim);
-                                          //     },
-                                          //   ),
-                                          // );
-                                        }
+                                        fetchDetailData();
                                       },
                                       child: Text(
                                           "Go to ${widget.data.category} details"),

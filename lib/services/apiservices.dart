@@ -33,6 +33,26 @@ class service{
 }
 
 class hotelService{
+  
+  Future<String> getCityID(String location, [String date='2022-07-08']) async {
+    Map<String, String> requestHeaders = {
+      "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
+	    "X-RapidAPI-Key": "7d134ee662mshd76e7f6cb3143afp14c9a3jsn65351c2bde90"
+    };
+
+    final response = await http.get(
+      Uri.parse("https://hotels4.p.rapidapi.com/locations/v2/search?query=$location&locale=en_US&currency=IDR"),
+      headers: requestHeaders
+    );
+    if(response.statusCode == 200){
+      var jsonResponse = json.decode(response.body);
+      var _simp = jsonResponse["suggestions"][0]["entities"][0]["destinationId"];
+      return _simp;
+    } else {
+      throw('Failed to load data');
+    }
+  }
+
   Future<List<listHotel>> getDestinationID(String location, [String date = '2022-07-08']) async{
     Map<String, String> requestHeaders = {
       "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
