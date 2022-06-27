@@ -7,7 +7,7 @@ ANGGOTA KELOMPOK
 
 PEMBAGIAN TUGAS :
 1. CHRISTIAN WILLSON : Add data cerita + home page
-2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, fetch weather
+2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, page weather
 3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata
 
 REFERENSI :
