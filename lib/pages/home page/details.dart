@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
+import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
+import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
-
-import '../search page/detailhotel.dart';
-import '../search page/detailwisata.dart';
 
 class Details extends StatefulWidget {
   final StoriesItem data;
@@ -16,12 +15,54 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  late Future<List<DestinationAttractionData>> attraction;
+  late Future<List<DestinationAttractionData>> attractions;
+  late List<DestinationAttractionData> attractionFix;
+  late DestinationAttractionData fixKirimWisata;
+
+  bool isLoading = false;
+
+  // @override
+  // initState() {
+  //   isLoading = false;
+  //   super.initState();
+  // }
 
   void fetchDetailData() {
+    setState(() {
+      isLoading = true;
+    });
+
     if (widget.data.category == "attraction") {
       DestinationApiService destApi = DestinationApiService();
-      attraction = destApi.getAttractionData(widget.data.locationId);
+      attractions = destApi.getAttractionData(widget.data.cityId);
+
+      attractions.whenComplete(() {
+        convertFutureAttractionToVar();
+      });
+    }
+  }
+
+  //note: attraction = wisata
+  void convertFutureAttractionToVar() async {
+    attractionFix = await attractions;
+    //search
+    for (var attraction in attractionFix) {
+      if (widget.data.locationId == attraction.cid) {
+        fixKirimWisata = attraction;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return detailWisata(myDestination: fixKirimWisata);
+            },
+          ),
+        ).then((value) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+        break;
+      }
     }
   }
 
@@ -102,31 +143,37 @@ class _DetailsState extends State<Details> {
                               ),
                             ),
                             ListTile(
-                              title: ElevatedButton(
-                                onPressed: () {
-                                  //TODO
-                                  //pergi ke detail hotel / detail attraction punya richardo
-                                  // if (widget.data.category == 'attraction') {
-                                  //   Navigator.push(context,
-                                  //       MaterialPageRoute(builder: (context) {
-                                  //     return detailHotel(
-                                  //         myhotel: isiData[index]);
-                                  //   }));
-                                  // } else if (widget.data.category == 'hotel') {
-                                  //   Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //       builder: (context) {
-                                  //         return detailWisata(
-                                  //             myDestination: isiData[index]);
-                                  //       },
-                                  //     ),
-                                  //   );
-                                  // }
-                                },
-                                child: Text(
-                                    "Go to ${widget.data.category} details"),
-                              ),
+                              title: (isLoading == false)
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        //pergi ke detail hotel / detail attraction punya richardo
+                                        if (widget.data.category ==
+                                            'attraction') {
+                                          fetchDetailData();
+                                        } else if (widget.data.category ==
+                                            'hotel') {
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) {
+                                          //       return detailHotel(
+                                          //           myhotel: fixKirim);
+                                          //     },
+                                          //   ),
+                                          // );
+                                        }
+                                      },
+                                      child: Text(
+                                          "Go to ${widget.data.category} details"),
+                                    )
+                                  : ElevatedButton(
+                                      onPressed: null,
+                                      child: SizedBox(
+                                        width: 12,
+                                        height: 12,
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    ),
                             ),
                           ],
                         ),
