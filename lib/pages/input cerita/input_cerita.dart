@@ -276,8 +276,9 @@ class _InputCeritaState extends State<InputCerita> {
                           ),
                           textFieldConfiguration: TextFieldConfiguration(
                             decoration: InputDecoration(
-                              hintText: 'Type your text here...',
+                              hintText: 'Which one do you want to review',
                               border: OutlineInputBorder(),
+                              suffixIcon: Icon(Icons.arrow_downward)
                             ),
                             controller: _textEditingController,
                           ),
