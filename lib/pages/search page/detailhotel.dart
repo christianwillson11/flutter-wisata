@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/hotelData.dart';
 
+import '../../model/MStories.dart';
 import '../../services/dbservices.dart';
+import '../home page/details.dart';
 
 class detailHotel extends StatefulWidget {
   final listHotel myhotel;
@@ -125,8 +127,27 @@ class _detailHotelState extends State<detailHotel> {
                                     snapshot.data!.docs[index];
                                 String lvJudul = dsData['judulCerita'];
                                 String lvIsi = dsData['isiCerita'];
+                                String lvCategory = dsData['category'];
+                                  List<String> lvImages =
+                                      (dsData['image'] as List)
+                                          .map((item) => item as String)
+                                          .toList();
+                                  var x = StoriesItem(
+                                      cityId: dsData['cityId'],
+                                      locationId: dsData['locationId'],
+                                      judulCerita: lvJudul,
+                                      isiCerita: lvIsi,
+                                      image: lvImages,
+                                      owner: dsData['owner'],
+                                      category: lvCategory);
                                 return ListTile(
-                                  onTap: () {},
+                                  onTap: () {
+                                    print("Mashok Gan");
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return Details(data: x);
+                                      }));
+                                  },
                                   title: Text(lvJudul),
                                   subtitle: Text(lvIsi),
                                   leading: Icon(Icons.person),

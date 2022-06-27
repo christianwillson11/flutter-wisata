@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 
+import '../../model/MStories.dart';
 import '../../services/dbservices.dart';
+import '../home page/details.dart';
 
 class detailWisata extends StatefulWidget {
   final DestinationAttractionData myDestination;
@@ -15,7 +17,6 @@ class detailWisata extends StatefulWidget {
 }
 
 class _detailWisataState extends State<detailWisata> {
-
   Stream<QuerySnapshot<Object?>> onFetch() {
     return Database.getData(widget.myDestination.cid.toString());
   }
@@ -79,8 +80,14 @@ class _detailWisataState extends State<detailWisata> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 14),
                       ),
-                      SizedBox(height: 8.0,),
-                      Text(widget.myDestination.cwebUrl.toString(), style: TextStyle(fontSize: 14, color: Colors.blueAccent),),
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                      Text(
+                        widget.myDestination.cwebUrl.toString(),
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.blueAccent),
+                      ),
                       SizedBox(
                         height: 18,
                       ),
@@ -92,39 +99,59 @@ class _detailWisataState extends State<detailWisata> {
                         ),
                       ),
                       StreamBuilder<QuerySnapshot>(
-                      stream: onFetch(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text("Error");
-                        } else if (snapshot.hasData || snapshot.data != null) {
-                          return Card(
-                            child: ListView.separated(
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                DocumentSnapshot dsData =
-                                    snapshot.data!.docs[index];
-                                String lvJudul = dsData['judulCerita'];
-                                String lvIsi = dsData['isiCerita'];
-                                return ListTile(
-                                  onTap: () {},
-                                  title: Text(lvJudul),
-                                  subtitle: Text(lvIsi),
-                                  leading: Icon(Icons.person),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return SizedBox(height: 4.0);
-                              },
-                              itemCount: snapshot.data!.docs.length,
-                            ),
+                        stream: onFetch(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text("Error");
+                          } else if (snapshot.hasData ||
+                              snapshot.data != null) {
+                            return Card(
+                              child: ListView.separated(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  DocumentSnapshot dsData =
+                                      snapshot.data!.docs[index];
+                                  String lvJudul = dsData['judulCerita'];
+                                  String lvIsi = dsData['isiCerita'];
+                                  String lvCategory = dsData['category'];
+                                  List<String> lvImages =
+                                      (dsData['image'] as List)
+                                          .map((item) => item as String)
+                                          .toList();
+                                  var x = StoriesItem(
+                                      cityId: dsData['cityId'],
+                                      locationId: dsData['locationId'],
+                                      judulCerita: lvJudul,
+                                      isiCerita: lvIsi,
+                                      image: lvImages,
+                                      owner: dsData['owner'],
+                                      category: lvCategory);
+                                  return ListTile(
+                                    onTap: () {
+                                      print("Mashok Gan");
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return Details(data: x);
+                                      }));
+                                    },
+                                    title: Text(lvJudul),
+                                    subtitle: Text(lvIsi),
+                                    leading: Icon(Icons.person),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(height: 4.0);
+                                },
+                                itemCount: snapshot.data!.docs.length,
+                              ),
+                            );
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
                           );
-                        }
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      },
-                    ),
+                        },
+                      ),
                     ],
                   ),
                 ),
