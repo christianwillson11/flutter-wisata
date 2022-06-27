@@ -56,13 +56,38 @@ class _pageWeatherState extends State<pageWeather> {
                         SizedBox(
                           height: 20.0,
                         ),
-                        TextField(
+                        Material(
+                        elevation: 10,
+                        borderRadius: BorderRadius.circular(30),
+                        shadowColor: Color(0x55434343),
+                        child: TextField(
                           controller: _ctrCuaca,
                           decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Masukkan Nama Kota',
-                              prefixIcon: Icon(Icons.search_outlined)),
+                            contentPadding: EdgeInsets.all(20),
+                            hintText: "Masukkan nama kota",
+                            //prefixIcon: Icon(Icons.search),
+                            border: InputBorder.none,
+                            suffixIcon: IconButton(
+                              onPressed: () {  
+                                if (_ctrCuaca.text.isNotEmpty) {
+                              setState(() {
+                                data = weather.getWeatherData(_ctrCuaca.text);
+                              });
+                            }
+                            if (_ctrCuaca.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: const Text(
+                                      'Mohon memasukkan Nama Kota terlebih dahulu!'),
+                                ),
+                              );
+                            }
+                              }, 
+                              icon: Icon(Icons.search))
+                          ),
                         ),
+                      ),
+                        
                         SizedBox(
                           height: 18.0,
                         ),
@@ -248,27 +273,27 @@ class _pageWeatherState extends State<pageWeather> {
                         SizedBox(
                           height: 80.0,
                         ),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (_ctrCuaca.text.isNotEmpty) {
-                              setState(() {
-                                data = weather.getWeatherData(_ctrCuaca.text);
-                              });
-                            }
-                            if (_ctrCuaca.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text(
-                                      'Mohon memasukkan Nama Kota terlebih dahulu!'),
-                                ),
-                              );
-                            }
-                          },
-                          child: Text(
-                            "Get Weather",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     if (_ctrCuaca.text.isNotEmpty) {
+                        //       setState(() {
+                        //         data = weather.getWeatherData(_ctrCuaca.text);
+                        //       });
+                        //     }
+                        //     if (_ctrCuaca.text.isEmpty) {
+                        //       ScaffoldMessenger.of(context).showSnackBar(
+                        //         SnackBar(
+                        //           content: const Text(
+                        //               'Mohon memasukkan Nama Kota terlebih dahulu!'),
+                        //         ),
+                        //       );
+                        //     }
+                        //   },
+                        //   child: Text(
+                        //     "Get Weather",
+                        //     style: TextStyle(fontSize: 20),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),

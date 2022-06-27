@@ -76,6 +76,7 @@ class hotelService{
         var rating;
         var locality;
         var gambar;
+        var price;
 
         try{
           id = json["id"];
@@ -84,10 +85,12 @@ class hotelService{
           rating = json["starRating"];
           locality = json["address"]["locality"];
           gambar = json["optimizedThumbUrls"]["srpDesktop"];
+          price = json["ratePlan"]["price"]["current"];
+
         } catch (e){
           print("error");
         }
-        hotelList.add(listHotel(id: id.toString(), hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar));
+        hotelList.add(listHotel(id: id.toString(), hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar, price: price));
       }
       return hotelList;
     }

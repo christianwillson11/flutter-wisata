@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
@@ -41,9 +41,19 @@ class _searchHotelState extends State<searchHotel> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                        "Best Deals",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 child: Row(
                   children: [
+                    
                     Expanded(
                       child: Material(
                         elevation: 10,
@@ -95,24 +105,77 @@ class _searchHotelState extends State<searchHotel> {
                         itemBuilder: (context, index){
                           return Column(
                             children: [
-                              Card(
-                                child: ListTile(
-                                  title: Text("${isiData[index].hotelName}"),
-                                  subtitle: Text("${isiData[index].alamat}"),
-                                  onTap: (){
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return detailHotel(
-                                          myhotel: isiData[index],
-                                        );
-                                      },
-                                    ),
-                                  );
-                                  },
+                              // Card(
+                              //   child: ListTile(
+                              //     title: Text("${isiData[index].hotelName}"),
+                              //     subtitle: Text("${isiData[index].alamat}"),
+                              //     onTap: (){
+                              //       Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) {
+                              //           return detailHotel(
+                              //             myhotel: isiData[index],
+                              //           );
+                              //         },
+                              //       ),
+                              //     );
+                              //     },
+                              //   ),
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(8,8,8,0),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                  color: Colors.white,
+                                  child: ClipRect(
+                                    child: AspectRatio(
+                                      aspectRatio: 2.7,
+                                      child: Stack(children: [
+                                        Row(
+                                          children: [
+                                            AspectRatio(
+                                              aspectRatio: 0.9,
+                                              child: Image.network("${isiData[index].gambar.toString()}", fit: BoxFit.cover,),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                padding: EdgeInsets.all(10),
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "${isiData[index].hotelName}",
+                                                      textAlign: TextAlign.left,
+                                                      maxLines: 2,
+                                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                                    ),
+                                                    Text(
+                                                      "${isiData[index].locality}",
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(fontSize: 14),
+                                                    ),
+                                                    Expanded(
+                                                      child: Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                                        children: [
+                                                          Text("${isiData[index].price}" + "/night",
+                                                          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), )
+                                                        ],
+                                                      )
+                                                      )
+                                                  ],
+                                                ),
+                                              )
+                                            )
+                                          ],
+                                        )
+                                      ]),
+                                      ),
+                                  ),
                                 ),
-                              ),
+                              )
                             ],
                           );
                         },

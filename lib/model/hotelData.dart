@@ -23,6 +23,7 @@ class listHotel{
   double? rating;
   String? locality;
   String? gambar;
+  String? price;
   
   listHotel({
     this.id,
@@ -30,7 +31,8 @@ class listHotel{
     this.alamat,
     this.rating,
     this.locality,
-    this.gambar
+    this.gambar,
+    this.price
     });
 
   factory listHotel.fromJson(Map<String, dynamic> json) {
