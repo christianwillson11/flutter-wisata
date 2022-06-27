@@ -14,6 +14,7 @@ REFERENSI :
 **CHRISTIAN WILLSON**
 
 **RICHARDO JASON**
+
 https://www.youtube.com/watch?v=Gt2bIEblFX4&t=1529s
 https://stackoverflow.com/questions/56131101/how-to-place-a-listview-inside-a-singlechildscrollview-but-prevent-them-from-scr
 https://api.flutter.dev/flutter/widgets/Image/Image.network.html
