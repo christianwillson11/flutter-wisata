@@ -234,7 +234,20 @@ class _attractionPageState extends State<attractionPage> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Text("Uh oh... something went wrong");
+      return SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                
+                child: Image.asset("assets/images/error.png", width: 200,),
+              ),
+              SizedBox(height: 20,),
+              Text("Sorry, something went wrong", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),)
+            ],
+          ),
+        ));
     }
   }
 }
