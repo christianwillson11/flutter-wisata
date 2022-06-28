@@ -6,9 +6,9 @@ ANGGOTA KELOMPOK
 3. RICHSON SEDJIE - C14190185
 
 PEMBAGIAN TUGAS :
-1. CHRISTIAN WILLSON : **Membuat page "add cerita"**, membuat fungsi upload gambar-gambar ke firebase storage, add data cerita ke firebase firestore, **membuat "home page"**, fetch data dari firestore ke home page, **membuat page "detail"**, membuat fungsi API bagian "Attractions data", fetch data dari API untuk di-parsing ke halaman detal hotel dan attraction, fetch data dari API untuk membuat form input, membuat bottom navigation bar, error handling.
-2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, page weather
-3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata
+1. CHRISTIAN WILLSON : **Membuat page "add cerita"**, membuat fungsi upload gambar-gambar ke firebase storage, add data cerita ke firebase firestore, **membuat "home page"**, fetch data dari firestore ke home page, **membuat page "detail"**, membuat fungsi API bagian "Attractions data", fetch data dari API untuk di-parsing ke halaman detail hotel dan attraction, fetch data dari API untuk membuat form input, membuat bottom navigation bar, error handling.
+2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, page weather, API Weather
+3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata, API Hotel, fix UI
 
 REFERENSI :
 **CHRISTIAN WILLSON**
@@ -25,6 +25,8 @@ https://stackoverflow.com/questions/53737363/rendercustommultichildlayoutbox-obj
 https://api.flutter.dev/flutter/widgets/SingleChildScrollView-class.html
 https://api.flutter.dev/flutter/widgets/ListView-class.html
 https://stackoverflow.com/questions/54885879/flutter-how-to-handle-image-with-fixed-size-inside-box
+https://stackoverflow.com/questions/51478405/how-to-return-future-or-any-other-types-from-a-function-in-dart
+https://flutterhq.com/questions-and-answers/2120/flutterdart-convert-future-bool-to-bool#:~:text=%5BSolved%5D%20Flutter%2FDart%20convert%20future%20bool%20to%20bool&text=void%20main()%20async%20%7B%20bool,will%20print%20one%20on%20console.%20%7D
 
 **RICHSON SEDJIE**
 
