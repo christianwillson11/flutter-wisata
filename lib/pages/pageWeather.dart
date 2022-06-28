@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 import 'package:flutter_wisata/model/weatherData.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class pageWeather extends StatefulWidget {
   const pageWeather({Key? key}) : super(key: key);
@@ -15,6 +16,28 @@ class _pageWeatherState extends State<pageWeather> {
   final _ctrCuaca = TextEditingController();
   service weather = service();
   late Future<Weather> data;
+  late Future<bool> bisa;
+  bool statusFuture = true;
+
+  Future<bool> getStatus(String location) async {
+    bool Futuretfvalue = await weather.getStatus(location);
+    bool tfValue = Futuretfvalue;
+    return (tfValue);
+  }
+
+  void ambilStatusFuture(String location) async {
+    statusFuture = await getStatus(location);
+    if (statusFuture == false) {
+      Fluttertoast.showToast(
+          msg: "Uh oh... something went wrong", toastLength: Toast.LENGTH_LONG);
+    } else {
+      setState(() {
+        data = weather.getWeatherData(_ctrCuaca.text);
+      });
+      Fluttertoast.showToast(
+          msg: "Succed", toastLength: Toast.LENGTH_LONG);
+    }
+  }
 
   @override
   void initState() {
@@ -57,37 +80,35 @@ class _pageWeatherState extends State<pageWeather> {
                           height: 20.0,
                         ),
                         Material(
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(30),
-                        shadowColor: Color(0x55434343),
-                        child: TextField(
-                          controller: _ctrCuaca,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(20),
-                            hintText: "Masukkan nama kota",
-                            //prefixIcon: Icon(Icons.search),
-                            border: InputBorder.none,
-                            suffixIcon: IconButton(
-                              onPressed: () {  
-                                if (_ctrCuaca.text.isNotEmpty) {
-                              setState(() {
-                                data = weather.getWeatherData(_ctrCuaca.text);
-                              });
-                            }
-                            if (_ctrCuaca.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text(
-                                      'Mohon memasukkan Nama Kota terlebih dahulu!'),
-                                ),
-                              );
-                            }
-                              }, 
-                              icon: Icon(Icons.search))
+                          elevation: 10,
+                          borderRadius: BorderRadius.circular(30),
+                          shadowColor: Color(0x55434343),
+                          child: TextField(
+                            controller: _ctrCuaca,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(20),
+                                hintText: "Masukkan nama kota",
+                                //prefixIcon: Icon(Icons.search),
+                                border: InputBorder.none,
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      if (_ctrCuaca.text.isNotEmpty) {
+                                        ambilStatusFuture(_ctrCuaca.text);
+                                      }
+                                      if (_ctrCuaca.text.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: const Text(
+                                                'Mohon memasukkan Nama Kota terlebih dahulu!'),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: Icon(Icons.search))),
                           ),
                         ),
-                      ),
-                        
+
                         SizedBox(
                           height: 18.0,
                         ),
