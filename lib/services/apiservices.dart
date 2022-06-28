@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/hotelData.dart';
 import 'package:flutter_wisata/model/weatherData.dart';
@@ -71,7 +72,7 @@ class hotelService{
       return data;
       //return _simp;
     }else{
-      throw('Failed to load Data');
+      throw('Failed to provide city ID');
     }
   }
   
@@ -108,14 +109,14 @@ class hotelService{
           price = json["ratePlan"]["price"]["current"];
 
         } catch (e){
-          print("error");
+          // print("error");
         }
         hotelList.add(listHotel(id: id.toString(), hotelName: hotelName, alamat: alamat,rating: rating, locality: locality, gambar: gambar, price: price));
       }
       return hotelList;
     }
     else{
-      throw Exception("failed to load data");
+      throw ("Failed to load data");
     }
   }
 }
@@ -170,30 +171,30 @@ class DestinationApiService {
       return locId;
       
     } else {
-      throw Exception("failed to load data");
+      throw('Failed to provide city ID');
     }
   }
 
-  Future<List<DestinationAttractionData>> getAttractionList(String query) async {
-    var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
-    final response = await http.get(url, headers: requestHeaders);
+  // Future<List<DestinationAttractionData>> getAttractionList(String query) async {
+  //   var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
+  //   final response = await http.get(url, headers: requestHeaders);
 
-    if (response.statusCode == 200) {
-      var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
-      Future<List<DestinationAttractionData>>  data = getAttractionData(locId.toString());
-      //print("data" + data);
-      return data;
+  //   if (response.statusCode == 200) {
+  //     var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
+  //     Future<List<DestinationAttractionData>>  data = getAttractionData(locId.toString());
+  //     //print("data" + data);
+  //     return data;
       
-    } else {
-      throw Exception("failed to load data");
-    }
-  }
+  //   } else {
+  //     throw Exception("failed to load data");
+  //   }
+  // }
 
   //Destination
-  Future<List<DestinationAttractionData>> getAttractionData(String locationId) async {
+  Future<List<DestinationAttractionData>> getAttractionData(String cityId) async {
     // Jakarta
     final response = await http.get(
-      Uri.parse("https://travel-advisor.p.rapidapi.com/attractions/list?location_id=$locationId&currency=IDR&lang=en_US&lunit=km&sort=recommended"), headers: requestHeaders
+      Uri.parse("https://travel-advisor.p.rapidapi.com/attractions/list?location_id=$cityId&currency=IDR&lang=en_US&lunit=km&sort=recommended"), headers: requestHeaders
     );
     
     List<DestinationAttractionData> destinationDataList = [];
@@ -229,7 +230,7 @@ class DestinationApiService {
       
       return destinationDataList;
     } else {
-      throw Exception("failed to load data");
+      throw ("Failed to load data");
     }
   }
 }

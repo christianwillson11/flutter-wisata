@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/model/hotelData.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class searchHotel extends StatefulWidget {
   const searchHotel({ Key? key }) : super(key: key);
@@ -15,17 +16,41 @@ class searchHotel extends StatefulWidget {
 class _searchHotelState extends State<searchHotel> {
 
   TextEditingController tfCity = TextEditingController();
-  hotelService hotelID = hotelService();
-  late Future<List<listHotel>> data2;
+  hotelService hotelApi = hotelService();
+  late List<listHotel> data2;
 
   String city = "Jakarta";
 
-  var isSearching = false;
+  bool isLoading = true;
+  bool isError = false;
 
   @override
   void initState() {
-    data2 = hotelID.getDestinationID(city);
+    fetchData();
     super.initState();
+  }
+
+  void fetchData() async {
+    setState(() {
+      isLoading = true;
+      isError = false;
+    });
+    try {
+      data2 = await hotelApi.getDestinationID(city);
+      setState(() {
+        //jika sukses jaya
+        isLoading = false;
+        isError = false;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+      setState(() {
+        //jika tidak sukses
+        isLoading = false;
+        isError = true;
+      });
+    }
+    
   }
   
 
@@ -67,16 +92,8 @@ class _searchHotelState extends State<searchHotel> {
                             border: InputBorder.none,
                             suffixIcon: IconButton(
                               onPressed: () {  
-                                setState(() {
-                                  isSearching = true;
-                                });
                                 city = tfCity.text.toString();
-                                data2 = hotelID.getDestinationID(city);
-                                data2.whenComplete(() {
-                                  setState(() {
-                                    isSearching = false;
-                                  });
-                                });
+                                fetchData();
                               }, 
                               icon: Icon(Icons.arrow_forward_ios))
                           ),
@@ -91,118 +108,115 @@ class _searchHotelState extends State<searchHotel> {
                 padding: EdgeInsets.fromLTRB(20, 0, 0, 10),
                 alignment: Alignment.centerLeft,
                 child: Text("Current Location: $city"),
-              ),
-              
+              ),              
               Expanded( 
-                child: (isSearching == false)
-                ? FutureBuilder<List<listHotel>>(
-                  future: data2,
-                  builder: ((context, snapshot){
-                    if (snapshot.hasData){
-                      List<listHotel> isiData = snapshot.data!;
-                      return ListView.builder(
-                        itemCount: isiData.length,
-                        itemBuilder: (context, index){
-                          return Column(
-                            children: [
-                              // Card(
-                              //   child: ListTile(
-                              //     title: Text("${isiData[index].hotelName}"),
-                              //     subtitle: Text("${isiData[index].alamat}"),
-                              //     onTap: (){
-                              //       Navigator.push(
-                              //       context,
-                              //       MaterialPageRoute(
-                              //         builder: (context) {
-                              //           return detailHotel(
-                              //             myhotel: isiData[index],
-                              //           );
-                              //         },
-                              //       ),
-                              //     );
-                              //     },
-                              //   ),
-                              // ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8,8,8,0),
-                                child: Card(
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                                  color: Colors.white,
-                                  child: ClipRect(
-                                    child: AspectRatio(
-                                      aspectRatio: 2.7,
-                                      child: Stack(children: [
-                                        GestureDetector(
-                                          onTap: (){
-                                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                                              return detailHotel(myhotel: isiData[index]);
-                                            }));
-                                          },
-                                          child: Container(
-                                            child: Row(
-                                              children: [
-                                                AspectRatio(
-                                                  aspectRatio: 0.9,
-                                                  child: Image.network("${isiData[index].gambar.toString()}", fit: BoxFit.cover,),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(10),
-                                                    child: Column(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        Text(
-                                                          "${isiData[index].hotelName}",
-                                                          textAlign: TextAlign.left,
-                                                          maxLines: 2,
-                                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                                                        ),
-                                                        Text(
-                                                          "${isiData[index].locality}",
-                                                          textAlign: TextAlign.left,
-                                                          style: TextStyle(fontSize: 14),
-                                                        ),
-                                                        Expanded(
-                                                          child: Row(
-                                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                                            children: [
-                                                              Text("${isiData[index].price}" + "/night",
-                                                              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), )
-                                                            ],
-                                                          )
-                                                          )
-                                                      ],
-                                                    ),
-                                                  )
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      ]),
-                                      ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          );
-                        },
-                      );
-                    }
-                    return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                  }),
-                )
-                : Center(
-                  child: CircularProgressIndicator(),
-                )
+                child: contentWidget(),
               ),
             ],
           )
         ),
       ),
     );
+  }
+
+  Widget contentWidget() {
+    if (isLoading == false && isError == false) {
+      return ListView.builder(
+              itemCount: data2.length,
+              itemBuilder: (context, index){
+                return Column(
+                  children: [
+                    // Card(
+                    //   child: ListTile(
+                    //     title: Text("${isiData[index].hotelName}"),
+                    //     subtitle: Text("${isiData[index].alamat}"),
+                    //     onTap: (){
+                    //       Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) {
+                    //           return detailHotel(
+                    //             myhotel: isiData[index],
+                    //           );
+                    //         },
+                    //       ),
+                    //     );
+                    //     },
+                    //   ),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8,8,8,0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        color: Colors.white,
+                        child: ClipRect(
+                          child: AspectRatio(
+                            aspectRatio: 2.7,
+                            child: Stack(children: [
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return detailHotel(myhotel: data2[index]);
+                                  }));
+                                },
+                                child: Container(
+                                  child: Row(
+                                    children: [
+                                      AspectRatio(
+                                        aspectRatio: 0.9,
+                                        child: Image.network("${data2[index].gambar.toString()}", fit: BoxFit.cover,),
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${data2[index].hotelName}",
+                                                textAlign: TextAlign.left,
+                                                maxLines: 2,
+                                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                              ),
+                                              Text(
+                                                "${data2[index].locality}",
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                              Expanded(
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text("${data2[index].price} /night",
+                                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold), )
+                                                  ],
+                                                )
+                                                )
+                                            ],
+                                          ),
+                                        )
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ]),
+                            ),
+                        ),
+                      ),
+                    )
+                  ],
+                );
+              },
+            );
+    } else if (isLoading == true && isError == false) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Text("Uh oh... something went wrong");
+    }
+    
   }
 }

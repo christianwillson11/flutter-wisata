@@ -5,6 +5,7 @@ import 'package:flutter_wisata/model/hotelData.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Details extends StatefulWidget {
   final StoriesItem data;
@@ -16,84 +17,83 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  late Future<List<DestinationAttractionData>> attractions;
-  late List<DestinationAttractionData> attractionsFix;
+  late List<DestinationAttractionData> attractions;
   late DestinationAttractionData fixKirimWisata;
 
-  late Future<List<listHotel>> hotels;
-  late List<listHotel> hotelsFix;
+  late List<listHotel> hotels;
   late listHotel fixKirimHotel;
 
   bool isLoading = false;
 
-  void fetchDetailData() {
+  void fetchDetailData() async{
     setState(() {
       isLoading = true;
     });
 
     if (widget.data.category == "attraction") {
       DestinationApiService attractionApi = DestinationApiService();
-      attractions = attractionApi.getAttractionData(widget.data.cityId);
+      try {
+        attractions = await attractionApi.getAttractionData(widget.data.cityId);
+        //search
+        for (var attraction in attractions) {
+          if (widget.data.locationId == attraction.cid) {
+            fixKirimWisata = attraction;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return detailWisata(myDestination: fixKirimWisata);
+                },
+              ),
+            ).then((value) {
+              setState(() {
+                isLoading = false;
+              });
+            });
+            break;
+          }
+        }
 
-      attractions.whenComplete(() {
-        convertFutureAttractionToVar();
-      });
+      } catch (e) {
+        Fluttertoast.showToast(msg: "Uh oh... something went wrong.", toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isLoading = false;
+        });
+      }
+
     } else {
       hotelService hotelApi = hotelService();
-      hotels = hotelApi.getHotelList(widget.data.cityId);
-
-      hotels.whenComplete(() {
-        convertFutureHotelToVar();
-      });
-    }
-  }
-
-  //note: attraction = wisata
-  void convertFutureAttractionToVar() async {
-    attractionsFix = await attractions;
-    //search
-    for (var attraction in attractionsFix) {
-      if (widget.data.locationId == attraction.cid) {
-        fixKirimWisata = attraction;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return detailWisata(myDestination: fixKirimWisata);
-            },
-          ),
-        ).then((value) {
-          setState(() {
-            isLoading = false;
-          });
+      try {
+        hotels = await hotelApi.getHotelList(widget.data.cityId);
+        for (var hotel in hotels) {
+          if (widget.data.locationId == hotel.id) {
+            fixKirimHotel = hotel;
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return detailHotel(
+                      myhotel: fixKirimHotel);
+                },
+              ),
+            ).then((value) {
+              setState(() {
+                isLoading = false;
+              });
+            });
+            break;
+          }
+        }
+      } catch (e) {
+        Fluttertoast.showToast(msg: "Uh oh... something went wrong", toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isLoading = false;
         });
-        break;
       }
+      
     }
   }
 
-  void convertFutureHotelToVar() async {
-    hotelsFix = await hotels;
-    for (var hotel in hotelsFix) {
-      if (widget.data.locationId == hotel.id) {
-        fixKirimHotel = hotel;
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return detailHotel(
-                  myhotel: fixKirimHotel);
-            },
-          ),
-        ).then((value) {
-          setState(() {
-            isLoading = false;
-          });
-        });
-        break;
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

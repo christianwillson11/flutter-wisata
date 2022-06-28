@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class attractionPage extends StatefulWidget {
   const attractionPage({Key? key}) : super(key: key);
@@ -12,16 +13,45 @@ class attractionPage extends StatefulWidget {
 
 class _attractionPageState extends State<attractionPage> {
   TextEditingController tfCity = TextEditingController();
-  DestinationApiService attractionID = DestinationApiService();
-  late Future<List<DestinationAttractionData>> data2;
+  DestinationApiService attractionApi = DestinationApiService();
+  late List<DestinationAttractionData> data2;
   String city = "Jakarta";
+  late String cityId;
 
-  var isLoading = false;
+  bool isLoading = true;
+  bool isError = false;
 
   @override
   void initState() {
-    data2 = attractionID.getAttractionList('Jakarta');
+    fetchData();
     super.initState();
+  }
+
+  void fetchData() async {
+    bool status1 = true;
+    try {
+      cityId = await attractionApi.getLocId(city);
+      status1 = true;
+    } catch (e) {
+      Fluttertoast.showToast(msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+      status1 = false;
+    }
+
+    if (status1 == true) {
+      try {
+        data2 = await attractionApi.getAttractionData(cityId);
+        setState(() {
+          isLoading = false;
+        });
+      } catch (e) {
+        Fluttertoast.showToast(msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isLoading = false;
+          isError = true;  
+        });
+        
+      }
+    }
   }
 
   @override
@@ -63,15 +93,10 @@ class _attractionPageState extends State<attractionPage> {
                                   onPressed: () {
                                     setState(() {
                                       isLoading = true;
+                                      isError = false;
                                     });
                                     city = tfCity.text.toString();
-                                    data2 =
-                                        attractionID.getAttractionList(city);
-                                    data2.whenComplete(() {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    });
+                                    fetchData();
                                   },
                                   icon: Icon(Icons.arrow_forward_ios))),
                         ),
@@ -87,149 +112,129 @@ class _attractionPageState extends State<attractionPage> {
               child: Text("Current Location: $city"),
             ),
             Expanded(
-                child: (isLoading == false)
-                    ? FutureBuilder<List<DestinationAttractionData>>(
-                        future: data2,
-                        builder: ((context, snapshot) {
-                          if (snapshot.hasData) {
-                            List<DestinationAttractionData> isiData =
-                                snapshot.data!;
-                            return ListView.builder(
-                              itemCount: isiData.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    // Card(
-                                    //   child: ListTile(
-                                    //     title: Text("${isiData[index].cnama}"),
-                                    //     subtitle: Text("${isiData[index].caddress}"),
-                                    //     onTap: (){
-                                    //       Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) {
-                                    //           return detailWisata(
-                                    //             myDestination: isiData[index],
-                                    //           );
-                                    //         },
-                                    //       ),
-                                    //     );
-                                    //     },
-                                    //   ),
-                                    // ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                                      child: Card(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        color: Colors.white,
-                                        child: ClipRect(
-                                          child: AspectRatio(
-                                            aspectRatio: 2.7,
-                                            child: Stack(children: [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) {
-                                                        return detailWisata(
-                                                            myDestination:
-                                                                isiData[index]);
-                                                      },
-                                                    ),
-                                                  );
-                                                },
-                                                child: Container(
-                                                  child: Row(
-                                                    children: [
-                                                      AspectRatio(
-                                                        aspectRatio: 0.9,
-                                                        child: Image.network(
-                                                          "${isiData[index].thumbnail.toString()}",
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                          child: Container(
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              "${isiData[index].cnama}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                              maxLines: 2,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 16),
-                                                            ),
-                                                            Text(
-                                                              "${isiData[index].caddress}",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .left,
-                                                              style: TextStyle(
-                                                                  fontSize: 14),
-                                                            ),
-                                                            Expanded(
-                                                                child: Row(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .end,
-                                                              children: [
-                                                                Expanded(
-                                                                  child: Text(
-                                                                    "${isiData[index].location}",
-                                                                    style: TextStyle(
-                                                                        fontSize:
-                                                                            17,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ))
-                                                          ],
-                                                        ),
-                                                      ))
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            ]),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }),
-                      )
-                    : Center(
-                        child: CircularProgressIndicator(),
-                      )),
+              child: contentWidget(),
+            ),
           ],
         )),
       ),
     );
+  }
+
+  Widget contentWidget() {
+    if (isLoading == false && isError == false) {
+      return ListView.builder(
+        itemCount: data2.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              // Card(
+              //   child: ListTile(
+              //     title: Text("${isiData[index].cnama}"),
+              //     subtitle: Text("${isiData[index].caddress}"),
+              //     onTap: (){
+              //       Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //         builder: (context) {
+              //           return detailWisata(
+              //             myDestination: isiData[index],
+              //           );
+              //         },
+              //       ),
+              //     );
+              //     },
+              //   ),
+              // ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  color: Colors.white,
+                  child: ClipRect(
+                    child: AspectRatio(
+                      aspectRatio: 2.7,
+                      child: Stack(children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return detailWisata(
+                                      myDestination: data2[index]);
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            child: Row(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 0.9,
+                                  child: Image.network(
+                                    "${data2[index].thumbnail.toString()}",
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "${data2[index].cnama}",
+                                        textAlign: TextAlign.left,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      Text(
+                                        "${data2[index].caddress}",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(fontSize: 14),
+                                      ),
+                                      Expanded(
+                                          child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "${data2[index].location}",
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          )
+                                        ],
+                                      ))
+                                    ],
+                                  ),
+                                ))
+                              ],
+                            ),
+                          ),
+                        )
+                      ]),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          );
+        },
+      );
+    } else if (isLoading == true && isError == false) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Text("Uh oh... something went wrong");
+    }
   }
 }

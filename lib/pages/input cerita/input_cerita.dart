@@ -40,65 +40,92 @@ class _InputCeritaState extends State<InputCerita> {
   }
 
   DestinationApiService destApi = DestinationApiService();
-  late Future<List<DestinationAttractionData>> places;
-
   hotelService hotelApi = hotelService();
-  late Future<List<listHotel>> hotels;
 
-  late String idCity;
-  late String idLocation;
+  String idCity = "";
+  String idLocation = "";
 
   List<String> suggestions = [];
 
-  bool isShow = false;
   bool isLoading = false;
+  bool isError = false;
 
   void submit() async {
     setState(() {
-      isShow = false;
       isLoading = true;
     });
 
     //services
 
     if (widget.konteks == "attraction") {
-      idCity = await destApi.getLocId(_namaTempat.text.toString());
-      places = destApi.getAttractionData(idCity);
-      places.whenComplete(() {
-        convertFutureToList();
-      });
+      try {
+        idCity = await destApi.getLocId(_namaTempat.text.toString());
+        giveSuggestions();
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
     } else if (widget.konteks == "hotel") {
-      idCity = await hotelApi.getCityID(_namaTempat.text.toString());
-      hotels = hotelApi.getDestinationID(_namaTempat.text.toString());
-      hotels.whenComplete(() {
-        convertFutureToList();
-      });
+      try {
+        idCity = await hotelApi.getCityID(_namaTempat.text.toString());
+        giveSuggestions();
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: "Failed to provide city ID", toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isError = true;
+          isLoading = false;
+        });
+      }
     }
   }
 
   late List<listHotel> lclHotels;
   late List<DestinationAttractionData> lclAttractions;
 
-  void convertFutureToList() async {
+  void giveSuggestions() async {
     suggestions.clear();
     if (widget.konteks == "hotel") {
-      lclHotels = await hotels;
-      for (var hotel in lclHotels) {
-        suggestions.add(hotel.hotelName.toString());
+      try {
+        lclHotels =
+            await hotelApi.getDestinationID(_namaTempat.text.toString());
+        for (var hotel in lclHotels) {
+          suggestions.add(hotel.hotelName.toString());
+        }
+        setState(() {
+          isLoading = false;
+          isError = false;
+        });
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isLoading = false;
+          isError = true;
+        });
       }
-      setState(() {
-        isShow = true;
-        isLoading = false;
-      });
     } else {
-      lclAttractions = await places;
-      for (var attraction in lclAttractions) {
-        suggestions.add(attraction.cnama.toString());
+      try {
+        lclAttractions = await destApi.getAttractionData(idCity);
+        for (var attraction in lclAttractions) {
+          suggestions.add(attraction.cnama.toString());
+        }
+        setState(() {
+          isLoading = false;
+          isError = false;
+        });
+      } catch (e) {
+        Fluttertoast.showToast(
+            msg: e.toString(), toastLength: Toast.LENGTH_LONG);
+        setState(() {
+          isLoading = false;
+          isError = true;
+        });
       }
-      setState(() {
-        isShow = true;
-        isLoading = false;
-      });
     }
   }
 
@@ -111,39 +138,44 @@ class _InputCeritaState extends State<InputCerita> {
 
   void uploadFunction(List<XFile> _images, StoriesItem dt) async {
     //db
-    if (dt.judulCerita != "" && dt.isiCerita != "") {
-      if (idLocation != null || idLocation != "") {
-        if (_images.isNotEmpty) {
-          setState(() {
-            _isUploading = true;
-          });
-          for (int i = 0; i < _images.length; i++) {
-            var imageUrl = await Database.uploadFile(image: _images[i]);
-            _arrImageUrl.add(imageUrl.toString());
-          }
-          Database.insertData(item: dt);
-          var msg = "Berhasil menginput data!";
-          final snackBar = SnackBar(content: Text(msg));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    if (isError == false) {
+      if (dt.judulCerita != "" && dt.isiCerita != "") {
+        if (idLocation != "" && idCity != "") {
+          if (_images.isNotEmpty) {
+            setState(() {
+              _isUploading = true;
+            });
+            for (int i = 0; i < _images.length; i++) {
+              var imageUrl = await Database.uploadFile(image: _images[i]);
+              _arrImageUrl.add(imageUrl.toString());
+            }
+            Database.insertData(item: dt);
+            var msg = "Berhasil menginput data!";
+            final snackBar = SnackBar(content: Text(msg));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-          setState(() {
-            Navigator.pop(context);
-          });
+            setState(() {
+              Navigator.pop(context);
+            });
+          } else {
+            Fluttertoast.showToast(
+                msg: "Anda harus menyertakan setidaknya 1 foto!",
+                toastLength: Toast.LENGTH_LONG);
+          }
         } else {
           Fluttertoast.showToast(
-              msg: "Anda harus menyertakan setidaknya 1 foto!",
+              msg:
+                  "Gagal Menambahkan cerita. Harap pilih hotel / tempat wisata dahulu.",
               toastLength: Toast.LENGTH_LONG);
         }
       } else {
         Fluttertoast.showToast(
-            msg:
-                "Gagal Menambahkan cerita. Harap pilih hotel / tempat wisata dahulu.",
+            msg: "Gagal Menambahkan cerita. Harap lengkapi data",
             toastLength: Toast.LENGTH_LONG);
       }
     } else {
       Fluttertoast.showToast(
-          msg: "Gagal Menambahkan cerita. Harap lengkapi data",
-          toastLength: Toast.LENGTH_LONG);
+          msg: "Please try again later", toastLength: Toast.LENGTH_LONG);
     }
   }
 
@@ -204,7 +236,9 @@ class _InputCeritaState extends State<InputCerita> {
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold),
                           )),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         child: Material(
                           elevation: 10,
@@ -232,13 +266,15 @@ class _InputCeritaState extends State<InputCerita> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
                             "Current Location: " + _namaTempat.text.toString()),
                       ),
-                      
+
                       Form(
                         key: _formKey,
                         child: Container(
@@ -293,7 +329,9 @@ class _InputCeritaState extends State<InputCerita> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       TextField(
                         controller: _judulCerita,
                         decoration: InputDecoration(
@@ -377,28 +415,25 @@ class _InputCeritaState extends State<InputCerita> {
             ),
           ),
         ),
-        floatingActionButton: 
-        (_isUploading == false)?
-        FloatingActionButton.extended(
-        onPressed: () {
-          final dt = StoriesItem(
-                                    cityId: idCity,
-                                    locationId: idLocation,
-                                    judulCerita: _judulCerita.text.toString(),
-                                    isiCerita: _isiCerita.text.toString(),
-                                    image: _arrImageUrl,
-                                    owner:
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                    category: widget.konteks);
-                                uploadFunction(_selectedFiles, dt);
-        },
-        label: const Text('Submit Review'),
-        icon: const Icon(Icons.exit_to_app),
-        backgroundColor: Colors.pink,
-      ):const SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: CircularProgressIndicator()),
+        floatingActionButton: (_isUploading == false)
+            ? FloatingActionButton.extended(
+                onPressed: () {
+                  final dt = StoriesItem(
+                      cityId: idCity,
+                      locationId: idLocation,
+                      judulCerita: _judulCerita.text.toString(),
+                      isiCerita: _isiCerita.text.toString(),
+                      image: _arrImageUrl,
+                      owner: FirebaseAuth.instance.currentUser!.uid,
+                      category: widget.konteks);
+                  uploadFunction(_selectedFiles, dt);
+                },
+                label: const Text('Submit Review'),
+                icon: const Icon(Icons.exit_to_app),
+                backgroundColor: Colors.pink,
+              )
+            : const SizedBox(
+                width: 15, height: 15, child: CircularProgressIndicator()),
       ),
     );
   }
