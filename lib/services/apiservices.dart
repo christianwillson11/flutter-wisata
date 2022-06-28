@@ -18,7 +18,7 @@ class service{
       headers: requestHeaders
     );
 
-    if(response.statusCode == 201){
+    if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
       Weather _simp = Weather.fromJson(jsonResponse);
       print(_simp.cityName);
@@ -45,7 +45,7 @@ class hotelService{
       Uri.parse("https://hotels4.p.rapidapi.com/locations/v2/search?query=$location&locale=en_US&currency=IDR"),
       headers: requestHeaders
     );
-    if(response.statusCode == 201){
+    if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
       var _simp = jsonResponse["suggestions"][0]["entities"][0]["destinationId"];
       return _simp;
@@ -64,7 +64,7 @@ class hotelService{
       Uri.parse("https://hotels4.p.rapidapi.com/locations/v2/search?query=$location&locale=en_US&currency=IDR"),
       headers: requestHeaders
     );
-    if(response.statusCode == 201){
+    if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
       var _simp = jsonResponse["suggestions"][0]["entities"][0]["destinationId"];
 
@@ -84,7 +84,7 @@ class hotelService{
     var url = Uri.parse("https://hotels4.p.rapidapi.com/properties/list?destinationId=$destID&pageNumber=1&pageSize=25&checkIn=$date&checkOut=2022-07-09&adults1=1&starRatings=4&sortOrder=PRICE&locale=en_US&currency=IDR");
     final response = await http.get(url, headers: requestHeaders);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
 
       List <listHotel> hotelList = [];
@@ -166,7 +166,7 @@ class DestinationApiService {
     var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
     final response = await http.get(url, headers: requestHeaders);
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
       return locId;
       
@@ -199,7 +199,7 @@ class DestinationApiService {
     
     List<DestinationAttractionData> destinationDataList = [];
 
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       
       for (int i = 0; i<31; i++) {

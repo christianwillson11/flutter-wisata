@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_wisata/model/MDestination.dart';
 import 'package:flutter_wisata/model/MStories.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_wisata/model/hotelData.dart';
 import 'package:flutter_wisata/pages/search%20page/detailhotel.dart';
 import 'package:flutter_wisata/pages/search%20page/detailwisata.dart';
 import 'package:flutter_wisata/services/apiservices.dart';
+import 'package:flutter_wisata/services/dbservices.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Details extends StatefulWidget {
@@ -24,6 +26,8 @@ class _DetailsState extends State<Details> {
   late listHotel fixKirimHotel;
 
   bool isLoading = false;
+
+  String username = "";
 
   void fetchDetailData() async{
     setState(() {
@@ -94,6 +98,28 @@ class _DetailsState extends State<Details> {
     }
   }
 
+  void getUserName() async {
+    final docRef = FirebaseFirestore.instance.collection("users").doc(widget.data.owner);
+    await docRef.get().then(
+      (DocumentSnapshot doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        setState(() {
+          username = data['fullname'];
+        });
+      },
+      onError: (e) => print("error getting document $e"),
+    );
+
+
+          
+  }
+
+  @override
+  void initState() {
+    getUserName();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +183,9 @@ class _DetailsState extends State<Details> {
                                 fontSize: 24,
                               ),
                             ),
-                            const SizedBox(height: 20),
+                            ListTile(
+                              title: Text("Story by: $username"),
+                            ),
                             ListTile(
                               title: Text(widget.data.isiCerita),
                             ),
@@ -175,7 +203,6 @@ class _DetailsState extends State<Details> {
                               title: (isLoading == false)
                                   ? ElevatedButton(
                                       onPressed: () {
-                                        //pergi ke detail hotel / detail attraction punya richardo
                                         fetchDetailData();
                                       },
                                       child: Text(
