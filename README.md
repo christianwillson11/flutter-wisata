@@ -11,6 +11,7 @@ PEMBAGIAN TUGAS :
 3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata, API Hotel, fix UI
 
 Link API Hotel : https://rapidapi.com/apidojo/api/hotels4/
+
 Link API Attraction : https://rapidapi.com/apidojo/api/travel-advisor/
 
 REFERENSI :
