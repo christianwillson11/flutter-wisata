@@ -16,6 +16,16 @@ PEMBAGIAN TUGAS :
 
 REFERENSI :
 **CHRISTIAN WILLSON**
+- Query single data from firestore: https://firebase.google.com/docs/firestore/query-data/get-data#dart_1 <br>
+- Select & upload multiple images Flutter: https://www.youtube.com/watch?v=MjdBPAHzG98&t=1472s&ab_channel=TheDevMan <br>
+- Catch an error: https://stackoverflow.com/questions/50670994/recommended-way-from-dart-team-to-catch-errors-when-using-await-in-flutter <br>
+- Flutter typeahead: https://pub.dev/packages/flutter_typeahead <br>
+- Suggestion: https://www.youtube.com/watch?v=daArOFWaWxo <br>
+- Else if statement inside widget: https://www.flutterbeads.com/if-else-statement-in-flutter-widget/ <br>
+- Check if user Logged in and SignOut a User: https://www.youtube.com/watch?v=oRgajMp7qIw&ab_channel=CodingCafe <br>
+- Prevent user from navigating back to prev. screen: https://stackoverflow.com/questions/50037710/flutter-move-to-a-new-screen-without-providing-navigate-back-to-previous-screen <br>
+- Disable button: https://www.flutterbeads.com/disable-button-in-flutter/ <br>
+- DraggableScrollableSheet: https://api.flutter.dev/flutter/widgets/DraggableScrollableSheet-class.html <br>
 
 **RICHARDO JASON**
 

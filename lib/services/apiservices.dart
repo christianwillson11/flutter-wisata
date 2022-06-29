@@ -105,7 +105,7 @@ class hotelService{
       var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
 
       List <listHotel> hotelList = [];
-      for (int i = 0; i < 20; i++) {
+      for (int i = 0; i < jsonResponse.length; i++) {
         var json = jsonResponse[i];
 
         var id;
@@ -138,41 +138,6 @@ class hotelService{
   }
 }
 
-// class hotelData{
-//   Future<List<listHotel>> getHotelList(String destID) async{
-//     Map<String, String> requestHeaders = {
-//     "X-RapidAPI-Host": "hotels4.p.rapidapi.com",
-// 	  "X-RapidAPI-Key": "7d134ee662mshd76e7f6cb3143afp14c9a3jsn65351c2bde90"
-//   };
-//     var url = Uri.parse("https://hotels4.p.rapidapi.com/properties/list?destinationId=$destID&pageNumber=1&pageSize=25&checkIn=2022-07-08&checkOut=2022-07-09&adults1=1&sortOrder=PRICE&locale=en_US&currency=IDR");
-//     final response = await http.get(url, headers: requestHeaders);
-
-//     if (response.statusCode == 200) {
-//       var jsonResponse = json.decode(response.body)["data"]["body"]["searchResults"]["results"];
-
-//       List <listHotel> hotelList = [];
-//       for (int i = 0; i<5; i++) {
-//         var json = jsonResponse[i];
-
-//         var alamat;
-//         var hotelName;
-
-//         try{
-//           hotelName = json["name"];
-//           alamat = json["address"]["streetAddress"];
-//         } catch (e){
-//           print("error");
-//         }
-//         hotelList.add(listHotel(hotelName: hotelName, alamat: alamat));
-//       }
-//       return hotelList;
-//     }
-//     else{
-//       throw Exception("failed to load data");
-//     }
-//   }
-// }
-
 class DestinationApiService {
   Map<String, String> requestHeaders = {
     "X-RapidAPI-Key": "f4f09eac2fmsh94c15e0aabf4c8ap119874jsn77c16249a0a7",
@@ -192,21 +157,6 @@ class DestinationApiService {
     }
   }
 
-  // Future<List<DestinationAttractionData>> getAttractionList(String query) async {
-  //   var url = Uri.parse("https://travel-advisor.p.rapidapi.com/locations/search?query=$query&limit=30&offset=0&units=km&location_id=1&currency=USD&sort=relevance&lang=en_US");
-  //   final response = await http.get(url, headers: requestHeaders);
-
-  //   if (response.statusCode == 200) {
-  //     var locId = json.decode(response.body)['data'][0]['result_object']['location_id'];
-  //     Future<List<DestinationAttractionData>>  data = getAttractionData(locId.toString());
-  //     //print("data" + data);
-  //     return data;
-      
-  //   } else {
-  //     throw Exception("failed to load data");
-  //   }
-  // }
-
   //Destination
   Future<List<DestinationAttractionData>> getAttractionData(String cityId) async {
     // Jakarta
@@ -219,7 +169,7 @@ class DestinationApiService {
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body)['data'];
       
-      for (int i = 0; i<31; i++) {
+      for (int i = 0; i<jsonResponse.length; i++) {
         var data = jsonResponse[i];
         List photosUrl = [];
         // ignore: prefer_typing_uninitialized_variables
@@ -239,10 +189,6 @@ class DestinationApiService {
           destinationDataList.add(DestinationAttractionData(cid: data['location_id'], cnama: data['name'], cdescription: data['description'], caddress: data['address'], cwebUrl: data['web_url'], ctimezone: data['timezone'], cimagesUrl: photosUrl, cimageUploadedDate: imgUploadedDate, cphotoCaption: imgCapt, thumbnail: data['photo']['images']['original']['url'], location: data['location_string']));
         }
       }
-
-      // for (int i = 0; i<destinationDataList.length; i++) {
-      //   print(destinationDataList[i].cnama.toString());
-      // }
       
       
       return destinationDataList;
