@@ -129,7 +129,6 @@ class _detailWisataState extends State<detailWisata> {
                                       category: lvCategory);
                                   return ListTile(
                                     onTap: () {
-                                      print("Mashok Gan");
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
                                         return Details(data: x);

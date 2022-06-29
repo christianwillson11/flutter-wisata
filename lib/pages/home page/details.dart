@@ -107,7 +107,7 @@ class _DetailsState extends State<Details> {
           username = data['fullname'];
         });
       },
-      onError: (e) => print("error getting document $e"),
+      onError: (e) => Fluttertoast.showToast(msg: e, toastLength: Toast.LENGTH_LONG),
     );
 
 

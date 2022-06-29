@@ -22,7 +22,6 @@ class service{
     if(response.statusCode == 200){
       var jsonResponse = json.decode(response.body);
       Weather _simp = Weather.fromJson(jsonResponse);
-      print(_simp.cityName);
       return _simp;
     }else{
       throw('Failed to load Data');
