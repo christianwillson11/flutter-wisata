@@ -14,6 +14,8 @@ PEMBAGIAN TUGAS :
 
 **Link API Attraction** : https://rapidapi.com/apidojo/api/travel-advisor/
 
+**Link API Weather** : https://rapidapi.com/community/api/open-weather-map/
+
 REFERENSI :
 **CHRISTIAN WILLSON**
 - Query single data from firestore: https://firebase.google.com/docs/firestore/query-data/get-data#dart_1 <br>
