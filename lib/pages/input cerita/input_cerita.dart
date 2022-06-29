@@ -267,14 +267,16 @@ class _InputCeritaState extends State<InputCerita> {
                         ),
                       ),
                       SizedBox(
-                        height: 15,
+                        height: 25,
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
                             "Current Location: " + _namaTempat.text.toString()),
                       ),
-
+                      SizedBox(
+                        height: 10,
+                      ),
                       Form(
                         key: _formKey,
                         child: Container(
@@ -321,8 +323,11 @@ class _InputCeritaState extends State<InputCerita> {
                             ),
                             textFieldConfiguration: TextFieldConfiguration(
                               decoration: InputDecoration(
+
                                   hintText: 'Which place do you want to review',
-                                  border: OutlineInputBorder(),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
                                   suffixIcon: Icon(Icons.arrow_downward)),
                               controller: _textEditingController,
                             ),
