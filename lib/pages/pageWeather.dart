@@ -66,7 +66,7 @@ class _pageWeatherState extends State<pageWeather> {
               image: DecorationImage(
                 colorFilter: new ColorFilter.mode(
                     Colors.black.withOpacity(0.85), BlendMode.dstATop),
-                image: AssetImage("assets/images/pagi.png"),
+                image: AssetImage("assets/images/landscape.png"),
                 fit: BoxFit.cover,
               ),
             ),
