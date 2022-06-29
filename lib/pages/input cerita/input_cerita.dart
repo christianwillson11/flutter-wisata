@@ -272,36 +272,7 @@ class _InputCeritaState extends State<InputCerita> {
                       Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Write your review",
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
-                        )),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Material(
-                      elevation: 10,
-                      borderRadius: BorderRadius.circular(30),
-                      shadowColor: Color(0x55434343),
-                      child: TextField(
-                        controller: _namaTempat,
-                        decoration: InputDecoration(
-                            hintText: "Enter city/country name",
-                            prefixIcon: Icon(Icons.search),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            suffixIcon: (isLoading == true)
-                                ? IconButton(
-                                    onPressed: null,
-                                    icon: CircularProgressIndicator(),
-                                  )
-                                : IconButton(
-                                    onPressed: () {
-                                      submit();
-                                    },
-                                    icon: Icon(Icons.arrow_forward_ios),
-                                  )),
+                            "Current Location: " + _namaTempat.text.toString()),
                       ),
                       SizedBox(
                         height: 10,
@@ -324,11 +295,19 @@ class _InputCeritaState extends State<InputCerita> {
                               _textEditingController.text = val;
                               //search id location from class
 
-                            if (widget.konteks == "attraction") {
-                              for (var attraction in lclAttractions) {
-                                if (attraction.cnama == val) {
-                                  idLocation = attraction.cid.toString();
-                                  break;
+                              if (widget.konteks == "attraction") {
+                                for (var attraction in lclAttractions) {
+                                  if (attraction.cnama == val) {
+                                    idLocation = attraction.cid.toString();
+                                    break;
+                                  }
+                                }
+                              } else {
+                                for (var hotel in lclHotels) {
+                                  if (hotel.hotelName == val) {
+                                    idLocation = hotel.id.toString();
+                                    break;
+                                  }
                                 }
                               }
 
@@ -352,73 +331,93 @@ class _InputCeritaState extends State<InputCerita> {
                                   suffixIcon: Icon(Icons.arrow_downward)),
                               controller: _textEditingController,
                             ),
-                            controller: _textEditingController,
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextField(
-                      controller: _judulCerita,
-                      decoration: InputDecoration(
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        controller: _judulCerita,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.try_sms_star_outlined),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                            labelText: "Judul Cerita Anda"),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      TextField(
+                        controller: _isiCerita,
+                        maxLines: 8,
+                        decoration: InputDecoration(
                           prefixIcon: Icon(Icons.try_sms_star_outlined),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(color: Colors.blue),
                           ),
-                          labelText: "Judul Cerita Anda"),
-                    ),
-                    const SizedBox(
-                      height: 22,
-                    ),
-                    TextField(
-                      controller: _isiCerita,
-                      maxLines: 8,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.try_sms_star_outlined),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(color: Colors.blue),
+                          labelText: "Isi Cerita Anda",
                         ),
-                        labelText: "Isi Cerita Anda",
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    OutlinedButton(
-                      onPressed: () {
-                        selectImage();
-                      },
-                      child: const Text("Add some photos"),
-                    ),
-                    if (_selectedFiles.length == null)
-                      const Text("No Images Selected")
-                    else
-                      SizedBox(
-                        height: 300,
-                        child: GridView.builder(
-                            itemCount: _selectedFiles.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Image.file(
-                                  File(_selectedFiles[index].path),
-                                  fit: BoxFit.cover,
-                                ),
-                              );
-                            },
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      OutlinedButton(
+                        onPressed: () {
+                          selectImage();
+                        },
+                        child: const Text("Add some photos"),
+                      ),
+                      if (_selectedFiles.length == null)
+                        const Text("No Images Selected")
+                      else
+                        SizedBox(
+                          height: 300,
+                          child: Expanded(
+                            child: GridView.builder(
+                                itemCount: _selectedFiles.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(2),
+                                    child: Image.file(
+                                      File(_selectedFiles[index].path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  );
+                                }),
                           ),
-                      ),
-                  ],
-                ),
-              )
-            ],
+                        ),
+                      // (_isUploading == false)
+                      //     ? ElevatedButton(
+                      //         child: const Text('Submit'),
+                      //         onPressed: () {
+                      //           final dt = StoriesItem(
+                      //               cityId: idCity,
+                      //               locationId: idLocation,
+                      //               judulCerita: _judulCerita.text.toString(),
+                      //               isiCerita: _isiCerita.text.toString(),
+                      //               image: _arrImageUrl,
+                      //               owner:
+                      //                   FirebaseAuth.instance.currentUser!.uid,
+                      //               category: widget.konteks);
+                      //           uploadFunction(_selectedFiles, dt);
+                      //         },
+                      //       )
+                      //     : const SizedBox(
+                      //         width: 15,
+                      //         height: 15,
+                      //         child: CircularProgressIndicator()),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         floatingActionButton: (_isUploading == false)
@@ -442,5 +441,43 @@ class _InputCeritaState extends State<InputCerita> {
                 width: 15, height: 15, child: CircularProgressIndicator()),
       ),
     );
+  }
+}
+
+class CurvedBottomClipper extends CustomClipper<Path> {
+  var pi = 22 / 7;
+  @override
+  Path getClip(Size size) {
+    // I've taken approximate height of curved part of view
+    // Change it if you have exact spec for it
+    final roundingHeight = size.height * 3 / 8;
+
+    // this is top part of path, rectangle without any rounding
+    final filledRectangle =
+        Rect.fromLTRB(0, 0, size.width, size.height - roundingHeight);
+
+    // this is rectangle that will be used to draw arc
+    // arc is drawn from center of this rectangle, so it's height has to be twice roundingHeight
+    // also I made it to go 5 units out of screen on left and right, so curve will have some incline there
+    final roundingRectangle = Rect.fromLTRB(
+        -5, size.height - roundingHeight * 2, size.width + 5, size.height);
+
+    final path = Path();
+    path.addRect(filledRectangle);
+
+    // so as I wrote before: arc is drawn from center of roundingRectangle
+    // 2nd and 3rd arguments are angles from center to arc start and end points
+    // 4th argument is set to true to move path to rectangle center, so we don't have to move it manually
+    path.arcTo(roundingRectangle, pi, -pi, true);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    // returning fixed 'true' value here for simplicity, it's not the part of actual question, please read docs if you want to dig into it
+    // basically that means that clipping will be redrawn on any changes
+    return true;
   }
 }
