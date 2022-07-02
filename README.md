@@ -1,6 +1,12 @@
 # **FLUTTER WISATA**
 
-Video Demo App : https://youtu.be/0lMtD8qVnXc
+> Video Demo App : https://youtu.be/0lMtD8qVnXc
+
+> **Link API Hotel** : https://rapidapi.com/apidojo/api/hotels4/
+
+> **Link API Attraction** : https://rapidapi.com/apidojo/api/travel-advisor/
+
+> **Link API Weather** : https://rapidapi.com/community/api/open-weather-map/
 
 ## **ANGGOTA KELOMPOK**
 1. CHRISTIAN WILLSON - C14190178
@@ -12,13 +18,7 @@ Video Demo App : https://youtu.be/0lMtD8qVnXc
 2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, page weather, API Weather & Error handling Weather
 3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata, API Hotel, fix UI
 
-**Link API Hotel** : https://rapidapi.com/apidojo/api/hotels4/
-
-**Link API Attraction** : https://rapidapi.com/apidojo/api/travel-advisor/
-
-**Link API Weather** : https://rapidapi.com/community/api/open-weather-map/
-
-REFERENSI :
+## REFERENSI :
 **CHRISTIAN WILLSON**
 - Query single data from firestore: https://firebase.google.com/docs/firestore/query-data/get-data#dart_1 <br>
 - Select & upload multiple images Flutter: https://www.youtube.com/watch?v=MjdBPAHzG98&t=1472s&ab_channel=TheDevMan <br>
