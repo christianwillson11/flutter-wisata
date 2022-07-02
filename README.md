@@ -2,12 +2,12 @@
 
 Video Demo App : https://youtu.be/0lMtD8qVnXc
 
-ANGGOTA KELOMPOK
+## **ANGGOTA KELOMPOK**
 1. CHRISTIAN WILLSON - C14190178
 2. RICHARDO JASON - C14190181
 3. RICHSON SEDJIE - C14190185
 
-PEMBAGIAN TUGAS :
+## **PEMBAGIAN TUGAS** :
 1. CHRISTIAN WILLSON : **Membuat page "add cerita"**, membuat fungsi upload gambar-gambar ke firebase storage, add data cerita ke firebase firestore, **membuat "home page"**, fetch data dari firestore ke home page, **membuat page "detail"**, membuat fungsi API bagian "Attractions data", fetch data dari API untuk di-parsing ke halaman detail hotel dan attraction, fetch data dari API untuk membuat form input, membuat bottom navigation bar, error handling.
 2. RICHARDO JASON : Page detail hotel, page detail tempat wisata, page weather, API Weather & Error handling Weather
 3. RICHSON SEDJIE : Login, register, profile page, page list hotel, page list tempat wisata, API Hotel, fix UI
