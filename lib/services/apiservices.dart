@@ -158,7 +158,7 @@ class DestinationApiService {
 
   //Destination
   Future<List<DestinationAttractionData>> getAttractionData(String cityId) async {
-    // Jakarta
+    
     final response = await http.get(
       Uri.parse("https://travel-advisor.p.rapidapi.com/attractions/list?location_id=$cityId&currency=IDR&lang=en_US&lunit=km&sort=recommended"), headers: requestHeaders
     );
